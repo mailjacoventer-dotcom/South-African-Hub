@@ -321,7 +321,7 @@ body {
    PAGE HERO BAND (dark — used on inner pages)
 ══════════════════════════════════════ */
 .page-hero-band {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+  background: url('hero-banner.png') center top / cover no-repeat;
   padding: 52px 48px 44px;
   position: relative;
   overflow: hidden;
@@ -330,26 +330,22 @@ body {
 .page-hero-band::before {
   content: '';
   position: absolute;
-  right: -40px; top: -40px;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(26,92,42,0.2) 0%, transparent 65%);
+  inset: 0;
+  background: rgba(255,255,255,0.55);
   pointer-events: none;
 }
-.page-hero-band::after {
-  content: '';
-  position: absolute;
-  left: -20px; bottom: -20px;
-  width: 200px; height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 65%);
-  pointer-events: none;
+.page-hero-band .section-eyebrow,
+.page-hero-band h1,
+.page-hero-band p,
+.page-hero-band .hero-stats {
+  position: relative;
+  z-index: 1;
 }
 .page-hero-band h1 {
   font-family: var(--font-head);
   font-size: 36px;
   font-weight: 900;
-  color: white;
+  color: var(--navy);
   line-height: 1.1;
   margin-bottom: 10px;
   letter-spacing: -0.02em;
@@ -357,26 +353,26 @@ body {
 }
 .page-hero-band h1 em {
   font-style: normal;
-  color: var(--gold);
+  color: var(--green);
 }
 .page-hero-band p {
-  color: rgba(255,255,255,0.6);
+  color: var(--muted);
   font-size: 15px;
   line-height: 1.7;
   max-width: 500px;
   margin-bottom: 28px;
 }
-.hero-stats { display: flex; gap: 36px; }
+.hero-stats { display: flex; gap: 36px; position: relative; z-index: 1; }
 .hero-stat .n {
   font-family: var(--font-head);
   font-size: 26px;
   font-weight: 900;
-  color: white;
+  color: var(--navy);
   line-height: 1;
 }
 .hero-stat .l {
   font-size: 10px;
-  color: rgba(255,255,255,0.45);
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-top: 4px;
