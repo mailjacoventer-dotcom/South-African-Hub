@@ -783,17 +783,24 @@ document.getElementById("f-submit").addEventListener("click", async function() {
   (function() {
     var params = new URLSearchParams(window.location.search);
     var cat = params.get("cat");
-    if (!cat) return;
-    // Find matching pill and click it
-    document.querySelectorAll(".filter-bar .pill").forEach(function(pill) {
-      var pillCat = pill.getAttribute("data-cat");
-      if (pillCat && pillCat === cat) {
-        // Deactivate all, activate this one, filter
-        document.querySelectorAll(".filter-bar .pill").forEach(function(p) { p.classList.remove("active"); });
-        pill.classList.add("active");
-        filterByCat(cat);
+    var q   = params.get("q");
+    if (cat) {
+      document.querySelectorAll(".filter-bar .pill").forEach(function(pill) {
+        var pillCat = pill.getAttribute("data-cat");
+        if (pillCat && pillCat === cat) {
+          document.querySelectorAll(".filter-bar .pill").forEach(function(p) { p.classList.remove("active"); });
+          pill.classList.add("active");
+          filterByCat(cat);
+        }
+      });
+    }
+    if (q) {
+      var searchInput = document.getElementById("search-input");
+      if (searchInput) {
+        searchInput.value = q;
+        doSearch();
       }
-    });
+    }
   })();
 </script>
 </body>

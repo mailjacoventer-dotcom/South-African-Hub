@@ -76,7 +76,8 @@
   .hero-pillar:nth-child(2) { border-top-color: #c8102e; }
   .hero-pillar:nth-child(3) { border-top-color: #f0a500; }
   .hero-pillar:nth-child(4) { border-top-color: #1a5c2a; }
-  .hero-pillar:hover { background: rgba(255,255,255,0.1); }
+  .hero-pillar { cursor: pointer; }
+  .hero-pillar:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
   .hero-pillar .p-icon { font-size: 22px; display: block; margin-bottom: 8px; }
   .hero-pillar .p-title {
     font-family: 'Montserrat', sans-serif;
@@ -88,6 +89,69 @@
     font-size: 12px; color: rgba(255,255,255,0.5);
     line-height: 1.5;
   }
+  .hero-pillar .p-arrow {
+    font-size: 11px; color: rgba(255,255,255,0.3);
+    margin-top: 8px; display: block;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600; letter-spacing: 0.06em;
+  }
+
+  /* Search popup */
+  .search-popup-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(13,31,60,0.75); z-index: 999;
+    align-items: flex-start; justify-content: center;
+    padding-top: 120px;
+    backdrop-filter: blur(4px);
+  }
+  .search-popup-overlay.open { display: flex; }
+  .search-popup {
+    background: white; border-radius: 14px;
+    width: 100%; max-width: 560px; padding: 32px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+    animation: popIn 0.2s ease;
+    position: relative;
+  }
+  @keyframes popIn { from { transform:scale(0.95) translateY(-10px); opacity:0; } to { transform:scale(1) translateY(0); opacity:1; } }
+  .search-popup-close {
+    position: absolute; top: 14px; right: 14px;
+    background: var(--subtle); border: none; width: 30px; height: 30px;
+    border-radius: 50%; font-size: 16px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+  }
+  .search-popup-close:hover { background: var(--wire); }
+  .search-popup h3 {
+    font-family: 'Montserrat', sans-serif; font-size: 18px;
+    font-weight: 800; color: var(--navy); margin-bottom: 6px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .search-popup p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .search-popup-row { display: flex; gap: 10px; }
+  .search-popup-input {
+    flex: 1; border: 2px solid var(--wire); border-radius: 6px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Open Sans', sans-serif;
+    outline: none; transition: border-color 0.15s;
+  }
+  .search-popup-input:focus { border-color: var(--green); }
+  .search-popup-btn {
+    background: var(--green); color: white; border: none;
+    border-radius: 6px; padding: 12px 22px; font-size: 14px;
+    font-weight: 700; font-family: 'Montserrat', sans-serif;
+    cursor: pointer; white-space: nowrap; transition: background 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .search-popup-btn:hover { background: var(--green-light); }
+  .search-popup-cats { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .search-popup-cat {
+    padding: 5px 12px; border-radius: 16px; font-size: 11px;
+    font-weight: 700; background: var(--subtle); color: var(--navy);
+    border: 1.5px solid var(--wire); cursor: pointer;
+    font-family: 'Montserrat', sans-serif; letter-spacing: 0.03em;
+    text-decoration: none; transition: all 0.15s;
+  }
+  .search-popup-cat:hover { background: var(--navy); color: white; border-color: var(--navy); }
 
   /* Tagline bar */
   .tagline-bar {
@@ -563,25 +627,29 @@
     </div>
   </div>
   <div class="hero-pillars">
-    <div class="hero-pillar">
+    <div class="hero-pillar" onclick="openSearch()" title="Search the directory">
       <span class="p-icon">🔍</span>
       <div class="p-title">Find</div>
-      <div class="p-desc">Discover trusted South African businesses and services in the Netherlands</div>
+      <div class="p-desc">Search for trusted SA businesses and services across the Netherlands</div>
+      <span class="p-arrow">Search directory →</span>
     </div>
-    <div class="hero-pillar">
+    <div class="hero-pillar" onclick="window.location='events.html'" title="View upcoming events">
       <span class="p-icon">🤝</span>
       <div class="p-title">Connect</div>
       <div class="p-desc">Build meaningful connections and grow your network</div>
+      <span class="p-arrow">View events →</span>
     </div>
-    <div class="hero-pillar">
+    <div class="hero-pillar" onclick="window.location='markplaats.html'" title="Markplaats">
       <span class="p-icon">❤️</span>
       <div class="p-title">Support</div>
-      <div class="p-desc">Support local South African businesses and uplift our community</div>
+      <div class="p-desc">Give or find items to support newly arriving SA families</div>
+      <span class="p-arrow">Browse Markplaats →</span>
     </div>
-    <div class="hero-pillar">
+    <div class="hero-pillar" onclick="window.location='directory.html'" title="Browse directory">
       <span class="p-icon">📈</span>
       <div class="p-title">Grow</div>
       <div class="p-desc">Share opportunities, collaborate and grow together</div>
+      <span class="p-arrow">Browse directory →</span>
     </div>
   </div>
 </section>
@@ -817,7 +885,49 @@
   </div>
 </div>
 
-<!-- EMAIL SIGNUP BANNER -->
+<!-- SEARCH POPUP -->
+<div class="search-popup-overlay" id="searchPopup" onclick="if(event.target===this)closeSearch()">
+  <div class="search-popup">
+    <button class="search-popup-close" onclick="closeSearch()">✕</button>
+    <h3>Search the Directory</h3>
+    <p>Find SA-owned businesses by name, service or city across the Netherlands</p>
+    <div class="search-popup-row">
+      <input class="search-popup-input" id="searchInput" type="text" placeholder="e.g. accountant, Utrecht, marketing…" autocomplete="off">
+      <button class="search-popup-btn" onclick="doSearch()">Search →</button>
+    </div>
+    <div class="search-popup-cats">
+      <span style="font-size:11px;color:var(--muted);font-family:'Montserrat',sans-serif;font-weight:600;align-self:center">Or browse:</span>
+      <a class="search-popup-cat" href="directory.html?cat=Tax+%26+Accounting">Tax &amp; Accounting</a>
+      <a class="search-popup-cat" href="directory.html?cat=Property+%26+Housing">Property &amp; Housing</a>
+      <a class="search-popup-cat" href="directory.html?cat=Health+%26+Wellness">Health &amp; Wellness</a>
+      <a class="search-popup-cat" href="directory.html?cat=Food+%26+Retail">Food &amp; Retail</a>
+      <a class="search-popup-cat" href="directory.html?cat=Marketing+%26+Creative">Marketing &amp; Creative</a>
+      <a class="search-popup-cat" href="directory.html?cat=Professional+Services">Professional Services</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openSearch() {
+    document.getElementById('searchPopup').classList.add('open');
+    setTimeout(function() { document.getElementById('searchInput').focus(); }, 100);
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSearch() {
+    document.getElementById('searchPopup').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function doSearch() {
+    var q = document.getElementById('searchInput').value.trim();
+    if (q) window.location = 'directory.html?q=' + encodeURIComponent(q);
+    else window.location = 'directory.html';
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var inp = document.getElementById('searchInput');
+    if (inp) inp.addEventListener('keydown', function(e) { if (e.key === 'Enter') doSearch(); });
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSearch(); });
+</script>
 <div class="signup-banner">
   <div class="signup-inner">
     <div class="signup-copy">
