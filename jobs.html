@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jobs — southafricanhub.nl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page-body { max-width: 1100px; margin: 0 auto; padding: 32px 48px 80px; }
+
+  /* Job grid */
+  .jobs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  /* Job card */
+  .job-card {
+    background: white; border: 1.5px solid var(--wire);
+    border-radius: 12px; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .job-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,31,60,0.1); border-color: var(--green); }
+  .job-card-top {
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid var(--wire);
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .job-icon {
+    width: 42px; height: 42px; border-radius: 8px;
+    background: var(--subtle); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .job-company { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--navy); }
+  .job-title { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 800; color: var(--navy); margin-top: 3px; line-height: 1.3; }
+  .job-body { padding: 14px 18px; }
+  .job-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .job-tag {
+    font-size: 10px; font-weight: 700; padding: 3px 8px;
+    border-radius: 3px; font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tag-type-full { background: #e8f4ec; color: var(--green); }
+  .tag-type-part { background: #fef3c7; color: #92400e; }
+  .tag-type-freelance { background: #ede9fe; color: #6d28d9; }
+  .tag-type-remote { background: #e0f2fe; color: #0369a1; }
+  .tag-city { background: var(--subtle); color: var(--muted); }
+  .job-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .job-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--wire); }
+  .job-salary { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); }
+  .job-age { font-size: 11px; color: var(--muted); }
+
+  /* Apply button */
+  .job-apply-row { padding: 0 18px 16px; display: flex; gap: 8px; }
+  .btn-apply-wa {
+    flex: 1; background: #25D366; color: white; border: none;
+    border-radius: 6px; padding: 10px; font-size: 12px;
+    font-weight: 700; font-family: 'Montserrat', sans-serif;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 6px; transition: background .15s;
+    text-decoration: none;
+  }
+  .btn-apply-wa:hover { background: #1ebe5d; }
+  .btn-apply-email {
+    flex: 1; background: var(--navy); color: white; border: none;
+    border-radius: 6px; padding: 10px; font-size: 12px;
+    font-weight: 700; font-family: 'Montserrat', sans-serif;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; gap: 6px; transition: background .15s;
+    text-decoration: none;
+  }
+  .btn-apply-email:hover { background: var(--navy-mid); }
+
+  /* Post job CTA */
+  .post-job-band {
+    background: var(--navy); border-radius: 12px;
+    padding: 36px 48px; display: flex;
+    justify-content: space-between; align-items: center;
+    gap: 24px; margin-bottom: 48px;
+    position: relative; overflow: hidden;
+  }
+  .post-job-band::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(26,92,42,0.2) 0%, transparent 70%); }
+  .post-job-band h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; color: white; margin-bottom: 6px; text-transform: uppercase; }
+  .post-job-band p { color: rgba(255,255,255,0.5); font-size: 13px; }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-state .e-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state h3 { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 8px; text-transform: uppercase; }
+  .empty-state p { font-size: 14px; max-width: 380px; margin: 0 auto 24px; line-height: 1.7; }
+
+  /* Job detail modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .job-modal { background: white; border-radius: 14px; width: 100%; max-width: 560px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.25); animation: popIn .2s ease; }
+  @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .jm-head { background: var(--navy); padding: 24px 28px; position: relative; }
+  .jm-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.1); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .jm-company { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--green); margin-bottom: 6px; font-family: 'Montserrat', sans-serif; }
+  .jm-title { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; color: white; line-height: 1.2; }
+  .jm-body { padding: 24px 28px; }
+  .jm-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .jm-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; padding: 14px; background: var(--subtle); border-radius: 8px; }
+  .jm-meta-item { font-size: 12px; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  .jm-desc { font-size: 13px; color: var(--muted); line-height: 1.75; margin-bottom: 20px; white-space: pre-line; }
+  .jm-actions { display: flex; gap: 10px; }
+
+  /* Post job modal */
+  .m-label { display: block; font-size: 11px; font-weight: 700; font-family: 'Montserrat', sans-serif; color: var(--navy); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .m-input { width: 100%; border: 1.5px solid var(--wire); border-radius: 6px; padding: 9px 12px; font-size: 13px; font-family: 'Open Sans', sans-serif; outline: none; transition: border-color .15s; }
+  .m-input:focus { border-color: var(--green); }
+  .m-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-box { background: white; border-radius: 14px; width: 100%; max-width: 520px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.25); animation: popIn .2s ease; }
+  .modal-head { background: var(--navy); padding: 24px 28px; position: relative; }
+  .modal-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.1); border: none; color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .modal-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--green); margin-bottom: 6px; font-family: 'Montserrat', sans-serif; }
+  .modal-title { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 800; color: white; }
+  .modal-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+  .modal-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 12px; }
+  .modal-footer { padding: 16px 28px; background: var(--subtle); border-top: 1px solid var(--wire); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .modal-note { font-size: 11px; color: var(--muted); line-height: 1.5; margin: 0; }
+  .btn-green { background: var(--green); color: white; border: none; border-radius: 6px; padding: 10px 22px; font-size: 13px; font-weight: 700; font-family: 'Montserrat', sans-serif; cursor: pointer; letter-spacing: 0.04em; transition: background .15s; white-space: nowrap; }
+  .btn-green:hover { background: #22743a; }
+  .btn-green:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  @media (max-width: 768px) {
+    .page-body { padding: 20px 16px 60px; }
+    .jobs-grid { grid-template-columns: 1fr; gap: 14px; }
+    .post-job-band { flex-direction: column; padding: 24px 16px; text-align: left; }
+    .modal-overlay { padding: 10px; align-items: flex-end; }
+    .modal-box, .job-modal { border-radius: 14px 14px 0 0; max-width: 100%; max-height: 90vh; overflow-y: auto; }
+    .m-row { grid-template-columns: 1fr; }
+    .m-input { font-size: 16px; }
+    .jm-actions { flex-direction: column; }
+    .jm-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">SAH</div>
+    <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="directory.html">Directory</a>
+    <a href="jobs.html" class="active">Jobs</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html">Markplaats</a>
+    <a href="resources.html">Resources</a>
+    <a href="directory.html#list-business" class="nav-cta">List Your Business →</a>
+  </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="directory.html">Directory</a>
+  <a href="jobs.html" class="active">Jobs</a>
+  <a href="events.html">Events</a>
+  <a href="markplaats.html">Markplaats</a>
+  <a href="resources.html">Resources</a>
+  <a href="directory.html#list-business" class="nav-cta">List Your Business →</a>
+</div>
+
+<div class="page-hero-band">
+  <div class="section-eyebrow">SA Community Jobs</div>
+  <h1>Find your next <em>opportunity</em></h1>
+  <p>Jobs at South African-owned businesses across the Netherlands. Apply directly — no middleman.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n" id="job-count">0</div><div class="l">Open positions</div></div>
+    <div class="hero-stat"><div class="n">SA</div><div class="l">Owned businesses</div></div>
+    <div class="hero-stat"><div class="n">Free</div><div class="l">To post & apply</div></div>
+  </div>
+</div>
+
+<div class="filter-bar" id="filter-bar">
+  <button class="pill active" onclick="filterJobs('all', this)">All</button>
+  <button class="pill" onclick="filterJobs('Full-time', this)">Full-time</button>
+  <button class="pill" onclick="filterJobs('Part-time', this)">Part-time</button>
+  <button class="pill" onclick="filterJobs('Freelance', this)">Freelance</button>
+  <button class="pill" onclick="filterJobs('Remote', this)">Remote</button>
+</div>
+
+<div class="page-body">
+
+  <div class="post-job-band">
+    <div>
+      <h3>Hiring? Post a vacancy</h3>
+      <p>Reach the SA community in the Netherlands. Free to post — goes live within 24 hours.</p>
+    </div>
+    <button class="btn-green" onclick="openPostJob()">Post a Job →</button>
+  </div>
+
+  <div id="jobs-container">
+    <div class="empty-state">
+      <div class="e-icon">💼</div>
+      <h3>No jobs posted yet</h3>
+      <p>Be the first to post a vacancy and reach the SA community across the Netherlands.</p>
+      <button class="btn-green" onclick="openPostJob()">Post a Job →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- JOB DETAIL MODAL -->
+<div class="modal-overlay" id="job-detail-modal">
+  <div class="job-modal">
+    <div class="jm-head">
+      <button class="jm-close" onclick="closeJobDetail()">✕</button>
+      <div class="jm-company" id="jm-company"></div>
+      <div class="jm-title" id="jm-title"></div>
+    </div>
+    <div class="jm-body">
+      <div class="jm-tags" id="jm-tags"></div>
+      <div class="jm-meta" id="jm-meta"></div>
+      <div class="jm-desc" id="jm-desc"></div>
+      <div class="jm-actions" id="jm-actions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- POST JOB MODAL -->
+<div class="modal-overlay" id="post-job-modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closePostJob()">✕</button>
+      <div class="modal-eyebrow">Post a Vacancy</div>
+      <div class="modal-title">List a job at your SA business</div>
+      <div class="modal-sub">Free to post · Goes live within 24 hours</div>
+    </div>
+    <div class="modal-body">
+      <div class="m-row">
+        <div><label class="m-label">Job title *</label><input class="m-input" id="j-title" type="text" placeholder="e.g. Marketing Assistant"></div>
+        <div><label class="m-label">Company name *</label><input class="m-input" id="j-company" type="text" placeholder="Your business name"></div>
+      </div>
+      <div class="m-row">
+        <div>
+          <label class="m-label">Job type *</label>
+          <select class="m-input" id="j-type">
+            <option value="">Select…</option>
+            <option>Full-time</option>
+            <option>Part-time</option>
+            <option>Freelance</option>
+            <option>Remote</option>
+          </select>
+        </div>
+        <div><label class="m-label">City *</label><input class="m-input" id="j-city" type="text" placeholder="e.g. Amsterdam"></div>
+      </div>
+      <div class="m-row">
+        <div><label class="m-label">Salary / rate <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(optional)</span></label><input class="m-input" id="j-salary" type="text" placeholder="e.g. €2,500/month"></div>
+        <div>
+          <label class="m-label">Category *</label>
+          <select class="m-input" id="j-cat">
+            <option value="">Select…</option>
+            <option>Marketing & Creative</option>
+            <option>Tax & Accounting</option>
+            <option>Property & Housing</option>
+            <option>Health & Wellness</option>
+            <option>Food & Retail</option>
+            <option>Professional Services</option>
+            <option>Tech & Digital</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div><label class="m-label">Job description *</label><textarea class="m-input" id="j-desc" placeholder="Describe the role, requirements, what you're looking for…" style="resize:vertical;min-height:100px;line-height:1.6"></textarea></div>
+      <div class="m-row">
+        <div><label class="m-label">Your name *</label><input class="m-input" id="j-name" type="text" placeholder="Contact person"></div>
+        <div><label class="m-label">Email *</label><input class="m-input" id="j-email" type="email" placeholder="you@company.com"></div>
+      </div>
+      <div><label class="m-label">WhatsApp number <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(for applicants to contact you)</span></label><input class="m-input" id="j-wa" type="tel" placeholder="+31 6 12 34 56 78"></div>
+    </div>
+    <div class="modal-footer">
+      <p class="modal-note">Sent to <strong>info@southafricanhub.nl</strong><br>We'll add it within 24 hours</p>
+      <button class="btn-green" id="j-submit-btn" onclick="submitJob()">Post Job →</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
+    <div class="footer-tagline">For South Africans in the Netherlands</div>
+    <div class="footer-links" style="margin-top:8px">
+      <a href="directory.html">Directory</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="events.html">Events</a>
+      <a href="markplaats.html">Markplaats</a>
+      <a href="resources.html">Resources</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-powered">Accounting &amp; tax support by <a href="https://smithventer.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-copy">© 2025 southafricanhub.nl</div>
+  </div>
+</footer>
+
+<div class="toast" id="site-toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
+
+<script>
+  // ── JOB DATA — add real jobs here ──
+  var JOBS = [
+    // Example structure (uncomment and fill in when you receive a job posting):
+    // {
+    //   title: "Marketing Assistant",
+    //   company: "Marketing Zoo",
+    //   icon: "🎨",
+    //   type: "Full-time",
+    //   city: "Almere",
+    //   salary: "€2,200/month",
+    //   cat: "Marketing & Creative",
+    //   desc: "We are looking for a creative marketing assistant to join our growing team...",
+    //   wa: "31612345678",
+    //   email: "hello@marketingzoo.nl",
+    //   age: "Today"
+    // },
+  ];
+
+  // ── RENDER JOBS ──
+  function renderJobs(list) {
+    var container = document.getElementById('jobs-container');
+    document.getElementById('job-count').textContent = JOBS.length;
+
+    if (list.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="e-icon">💼</div><h3>No jobs posted yet</h3><p>Be the first to post a vacancy and reach the SA community across the Netherlands.</p><button class="btn-green" onclick="openPostJob()">Post a Job →</button></div>';
+      return;
+    }
+
+    var typeColors = { 'Full-time': 'tag-type-full', 'Part-time': 'tag-type-part', 'Freelance': 'tag-type-freelance', 'Remote': 'tag-type-remote' };
+    var html = '<div class="jobs-grid">';
+    list.forEach(function(j, i) {
+      var idx = JOBS.indexOf(j);
+      var waHref = j.wa ? 'https://wa.me/' + j.wa.replace(/[^0-9]/g,'') + '?text=' + encodeURIComponent('Hi, I\'m interested in the ' + j.title + ' position at ' + j.company + ' listed on southafricanhub.nl') : '';
+      var emailHref = j.email ? 'mailto:' + j.email + '?subject=' + encodeURIComponent('Application: ' + j.title + ' at ' + j.company) : '';
+      html += '<div class="job-card" onclick="openJobDetail(' + idx + ')">' +
+        '<div class="job-card-top">' +
+          '<div class="job-icon">' + (j.icon || '💼') + '</div>' +
+          '<div><div class="job-company">' + j.company + '</div><div class="job-title">' + j.title + '</div></div>' +
+        '</div>' +
+        '<div class="job-body">' +
+          '<div class="job-tags">' +
+            '<span class="job-tag ' + (typeColors[j.type] || 'tag-city') + '">' + j.type + '</span>' +
+            '<span class="job-tag tag-city">📍 ' + j.city + '</span>' +
+            (j.cat ? '<span class="job-tag tag-city">' + j.cat + '</span>' : '') +
+          '</div>' +
+          '<div class="job-desc">' + j.desc + '</div>' +
+          '<div class="job-footer"><span class="job-salary">' + (j.salary || 'Salary TBD') + '</span><span class="job-age">' + (j.age || 'Recently posted') + '</span></div>' +
+        '</div>' +
+        '<div class="job-apply-row">' +
+          (j.wa ? '<a class="btn-apply-wa" href="' + waHref + '" target="_blank" onclick="event.stopPropagation()"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>' : '') +
+          (j.email ? '<a class="btn-apply-email" href="' + emailHref + '" onclick="event.stopPropagation()">✉️ Apply via Email</a>' : '') +
+        '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // ── FILTER ──
+  var activeFilter = 'all';
+  function filterJobs(type, btn) {
+    document.querySelectorAll('#filter-bar .pill').forEach(function(p) { p.classList.remove('active'); });
+    if (btn) btn.classList.add('active');
+    activeFilter = type;
+    var filtered = type === 'all' ? JOBS : JOBS.filter(function(j) { return j.type === type; });
+    renderJobs(filtered);
+  }
+
+  // ── JOB DETAIL ──
+  function openJobDetail(idx) {
+    var j = JOBS[idx];
+    var typeColors = { 'Full-time': 'tag-type-full', 'Part-time': 'tag-type-part', 'Freelance': 'tag-type-freelance', 'Remote': 'tag-type-remote' };
+    document.getElementById('jm-company').textContent = j.company;
+    document.getElementById('jm-title').textContent = j.title;
+    document.getElementById('jm-tags').innerHTML =
+      '<span class="job-tag ' + (typeColors[j.type]||'tag-city') + '">' + j.type + '</span>' +
+      '<span class="job-tag tag-city">📍 ' + j.city + '</span>' +
+      (j.cat ? '<span class="job-tag tag-city">' + j.cat + '</span>' : '');
+    document.getElementById('jm-meta').innerHTML =
+      '<div class="jm-meta-item">💰 ' + (j.salary || 'Salary TBD') + '</div>' +
+      '<div class="jm-meta-item">🏢 ' + j.company + '</div>' +
+      '<div class="jm-meta-item">📍 ' + j.city + '</div>' +
+      '<div class="jm-meta-item">🕐 ' + (j.age || 'Recently posted') + '</div>';
+    document.getElementById('jm-desc').textContent = j.desc;
+    var actions = '';
+    if (j.wa) {
+      var waMsg = encodeURIComponent('Hi, I\'m interested in the ' + j.title + ' position at ' + j.company + ' listed on southafricanhub.nl');
+      actions += '<a class="btn-apply-wa" href="https://wa.me/' + j.wa.replace(/[^0-9]/g,'') + '?text=' + waMsg + '" target="_blank" style="flex:1"><svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>';
+    }
+    if (j.email) {
+      actions += '<a class="btn-apply-email" href="mailto:' + j.email + '?subject=' + encodeURIComponent('Application: ' + j.title) + '" style="flex:1">✉️ Apply via Email</a>';
+    }
+    document.getElementById('jm-actions').innerHTML = actions;
+    document.getElementById('job-detail-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeJobDetail() {
+    document.getElementById('job-detail-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── POST JOB ──
+  function openPostJob() {
+    document.getElementById('post-job-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePostJob() {
+    document.getElementById('post-job-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function submitJob() {
+    var title   = document.getElementById('j-title').value.trim();
+    var company = document.getElementById('j-company').value.trim();
+    var type    = document.getElementById('j-type').value;
+    var city    = document.getElementById('j-city').value.trim();
+    var salary  = document.getElementById('j-salary').value.trim();
+    var cat     = document.getElementById('j-cat').value;
+    var desc    = document.getElementById('j-desc').value.trim();
+    var name    = document.getElementById('j-name').value.trim();
+    var email   = document.getElementById('j-email').value.trim();
+    var wa      = document.getElementById('j-wa').value.trim();
+    if (!title||!company||!type||!city||!desc||!name||!email) { alert('Please fill in all required fields.'); return; }
+    var btn = document.getElementById('j-submit-btn');
+    btn.textContent = 'Sending...'; btn.disabled = true;
+    var fd = new FormData();
+    fd.append('_subject', 'Job Posting — ' + title + ' at ' + company);
+    fd.append('_replyto', email);
+    fd.append('job_title', title);
+    fd.append('company', company);
+    fd.append('job_type', type);
+    fd.append('city', city);
+    fd.append('salary', salary || 'Not specified');
+    fd.append('category', cat);
+    fd.append('description', desc);
+    fd.append('contact_name', name);
+    fd.append('contact_email', email);
+    fd.append('whatsapp', wa || 'Not provided');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://formspree.io/f/xnjrdayb');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.onload = function() {
+      btn.textContent = 'Post Job →'; btn.disabled = false;
+      if (xhr.status === 200 || xhr.status === 201) {
+        closePostJob();
+        showToast('Job posted! We will add it within 24 hours.');
+        ['j-title','j-company','j-city','j-salary','j-desc','j-name','j-email','j-wa'].forEach(function(id){ document.getElementById(id).value=''; });
+      } else {
+        alert('Something went wrong. Please email info@southafricanhub.nl directly.');
+      }
+    };
+    xhr.onerror = function() { btn.textContent = 'Post Job →'; btn.disabled = false; alert('Network error. Please try again.'); };
+    xhr.send(fd);
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    var t = document.getElementById('site-toast');
+    t.querySelector('.toast-icon').textContent = '✅';
+    t.querySelector('.toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3500);
+  }
+
+  // ── HAMBURGER ──
+  function toggleMobileMenu() {
+    var menu = document.getElementById('mobile-menu');
+    var btn = document.getElementById('nav-hamburger');
+    menu.classList.toggle('open');
+    var spans = btn.querySelectorAll('span');
+    if (menu.classList.contains('open')) {
+      spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+      spans[1].style.opacity = '0';
+      spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+    } else {
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    }
+  }
+
+  // ── MODAL CLOSE ──
+  document.getElementById('job-detail-modal').addEventListener('click', function(e) { if (e.target===this) closeJobDetail(); });
+  document.getElementById('post-job-modal').addEventListener('click', function(e) { if (e.target===this) closePostJob(); });
+  document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeJobDetail(); closePostJob(); } });
+
+  // Init
+  renderJobs(JOBS);
+</script>
+</body>
+</html>
