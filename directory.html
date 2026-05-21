@@ -31,7 +31,7 @@
   .dir-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
   .dir-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--wire); }
   .dir-loc { font-size: 12px; color: var(--green); }
-  .dir-web { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .dir-web { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 500; } a.dir-web:hover { text-decoration: underline; }
 
   /* MAP VIEW */
   #dir-map-view { display: none !important; }
@@ -101,7 +101,7 @@
   <h1>Find trusted<br><em>SA businesses</em></h1>
   <p>South African professionals and entrepreneurs across the Netherlands — vetted by the community.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="n">80+</div><div class="l">Businesses listed</div></div>
+    <div class="hero-stat"><div class="n">23</div><div class="l">Businesses listed</div></div>
     <div class="hero-stat"><div class="n">8</div><div class="l">Categories</div></div>
     <div class="hero-stat"><div class="n">12</div><div class="l">Cities</div></div>
   </div>
@@ -125,70 +125,129 @@
 
 <div class="page-body">
   <div class="search-row">
-    <input type="text" placeholder="Search businesses, services, or city…">
+    <input type="text" placeholder="Search businesses, services, or city…" id="dir-search">
     <button>Search</button>
   </div>
 
   <!-- LIST VIEW -->
   <div id="dir-list-view">
-    <div class="dir-full-grid">
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">🏠</div><div><div class="dir-name">Botha Makelaars</div><span class="dir-cat-tag">Property & Housing</span></div></div>
-        <div class="dir-desc">Specialist in expat property searches across Rotterdam and surrounds. Dutch and Afrikaans spoken.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Rotterdam</span><span class="dir-web">bothaMakelaars.nl →</span></div>
+    <div class="dir-full-grid" id="dir-full-grid">
+      <a href="https://www.theadvisorygroup.nl" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">📊</div><div><div class="dir-name">Advisory Group</div><span class="dir-cat-tag">Tax & Accounting</span></div></div>
+        <div class="dir-desc">Accounting, tax, VAT, payroll and financial advisory for growing SMEs and ZZP'ers</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Almere</span><a class="dir-web" href="https://www.theadvisorygroup.nl" target="_blank" onclick="event.stopPropagation()">www.theadvisorygroup.nl →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">📊</div><div><div class="dir-name">Smith Venter Advisory</div><span class="dir-cat-tag">Tax & Accounting</span></div></div>
-        <div class="dir-desc">Dutch tax, bookkeeping, and advisory for SA expats and MKB businesses. ZZP, BV, IB-aangifte, 30% ruling.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Almere</span><span class="dir-web">smithventeradvisory.nl →</span></div>
+      <a href="https://www.ruimteenrustdoordina.nl" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🏡</div><div><div class="dir-name">Ruimte en Rust</div><span class="dir-cat-tag">Professional Services</span></div></div>
+        <div class="dir-desc">Home organisation and deep cleaning services for a clean, organised and stress-free home</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Netherlands</span><a class="dir-web" href="https://www.ruimteenrustdoordina.nl" target="_blank" onclick="event.stopPropagation()">www.ruimteenrustdoordina.nl →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">⚖️</div><div><div class="dir-name">Van der Berg Legal</div><span class="dir-cat-tag">Legal</span></div></div>
-        <div class="dir-desc">Immigration, employment, and contract law. Experienced with expat cases across the Netherlands.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Amsterdam</span><span class="dir-web">vanderberglegal.nl →</span></div>
+      <a href="https://www.sanetvantonder.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🧠</div><div><div class="dir-name">Sanet van Tonder Counselling</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
+        <div class="dir-desc">Counselling for individuals, couples and families focused on mental health, relationships and life transitions</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Netherlands</span><a class="dir-web" href="https://www.sanetvantonder.nl/" target="_blank" onclick="event.stopPropagation()">www.sanetvantonder.nl →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">💆</div><div><div class="dir-name">Cape & Calm Wellness</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
-        <div class="dir-desc">Therapeutic massage, mindfulness coaching, and wellness consultation. SA trained, Dutch registered.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><span class="dir-web">capeandcalm.nl →</span></div>
+      <a href="#" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">💪</div><div><div class="dir-name">LuusFit</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
+        <div class="dir-desc">Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Leiden</span><span class="dir-web" style="color:var(--muted)">No website</span></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">🎨</div><div><div class="dir-name">Khumalo Creative Studio</div><span class="dir-cat-tag">Marketing & Creative</span></div></div>
-        <div class="dir-desc">Brand identity, web design, and digital marketing for startups and growing businesses.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Eindhoven</span><span class="dir-web">khumalocreative.nl →</span></div>
+      <a href="https://www.hardehoutnl.com/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🪵</div><div><div class="dir-name">Hardehout</div><span class="dir-cat-tag">Professional Services</span></div></div>
+        <div class="dir-desc">Supply of premium hardwood for braai, fireplace and home heating in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Bitgummole</span><a class="dir-web" href="https://www.hardehoutnl.com/" target="_blank" onclick="event.stopPropagation()">www.hardehoutnl.com →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">👥</div><div><div class="dir-name">Naidoo Recruitment</div><span class="dir-cat-tag">Recruitment</span></div></div>
-        <div class="dir-desc">Finance, tech, and professional placement across the Netherlands. Specialists in expat candidate support.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Den Haag</span><span class="dir-web">naidoorecruitment.nl →</span></div>
+      <a href="https://www.marketingzoo.co.za" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🎨</div><div><div class="dir-name">Marketing Zoo</div><span class="dir-cat-tag">Marketing & Creative</span></div></div>
+        <div class="dir-desc">Full-service marketing agency offering branding, digital marketing, social media, design, websites and event activations</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Almere</span><a class="dir-web" href="https://www.marketingzoo.co.za" target="_blank" onclick="event.stopPropagation()">www.marketingzoo.co.za →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">🍖</div><div><div class="dir-name">Braaihuis Amsterdam</div><span class="dir-cat-tag">Food & Retail</span></div></div>
-        <div class="dir-desc">SA-style catering for events, braais, and corporate functions. Boerewors, sosaties, and the full works.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Amsterdam</span><span class="dir-web">braaihuis.nl →</span></div>
+      <a href="https://www.expatthings.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🏠</div><div><div class="dir-name">Expat Things</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Independent rental and buying agent supporting expats with housing search and relocation in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Hilversum</span><a class="dir-web" href="https://www.expatthings.nl/" target="_blank" onclick="event.stopPropagation()">www.expatthings.nl →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">💼</div><div><div class="dir-name">Eksteen Consulting</div><span class="dir-cat-tag">Professional Services</span></div></div>
-        <div class="dir-desc">Project management, interim management, and business process improvement for Dutch and international clients.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Amsterdam</span><span class="dir-web">eksteenconsulting.nl →</span></div>
+      <a href="https://www.make-it-special.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🎁</div><div><div class="dir-name">Make-It-Special</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">Curated gift boxes and personalised gifting with a South African touch for special occasions</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Heemskerk</span><a class="dir-web" href="https://www.make-it-special.nl/" target="_blank" onclick="event.stopPropagation()">www.make-it-special.nl →</a></div>
       </a>
-
-      <a href="#" class="dir-full-card">
-        <div class="dir-card-top"><div class="dir-icon-lg">🏘️</div><div><div class="dir-name">Joubert Property Group</div><span class="dir-cat-tag">Property & Housing</span></div></div>
-        <div class="dir-desc">Buying, selling, and renting across Amsterdam and Utrecht. English and Afrikaans spoken.</div>
-        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><span class="dir-web">joubert-property.nl →</span></div>
+      <a href="https://www.thelekkerstore.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🛒</div><div><div class="dir-name">The Lekker Store</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">Online and in-store South African food products and treats in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><a class="dir-web" href="https://www.thelekkerstore.nl/" target="_blank" onclick="event.stopPropagation()">www.thelekkerstore.nl →</a></div>
       </a>
-
+      <a href="https://www.expatrentalsolutions.nl" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🔑</div><div><div class="dir-name">Expat Rental Solutions</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Independent rental search and relocation specialists supporting expats with housing, moving and settling-in services</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><a class="dir-web" href="https://www.expatrentalsolutions.nl" target="_blank" onclick="event.stopPropagation()">www.expatrentalsolutions.nl →</a></div>
+      </a>
+      <a href="#" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🍰</div><div><div class="dir-name">Thuisgebak</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">Homemade rusks, fudge and traditional South African baked goods available for delivery across the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Apeldoorn</span><span class="dir-web" style="color:var(--muted)">No website</span></div>
+      </a>
+      <a href="https://www.amstelkoffie.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">☕</div><div><div class="dir-name">Amstel Koffie</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">Specialty coffee roastery supplying high-quality roasted coffee beans for home use and B2B supply to cafes and businesses</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Netherlands</span><a class="dir-web" href="https://www.amstelkoffie.nl/" target="_blank" onclick="event.stopPropagation()">www.amstelkoffie.nl →</a></div>
+      </a>
+      <a href="https://www.youtube.com/@VanRockMedia" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🎬</div><div><div class="dir-name">Van Rock Media</div><span class="dir-cat-tag">Marketing & Creative</span></div></div>
+        <div class="dir-desc">Professional video and media production helping businesses create high-quality content, tell their story and grow their brand</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Zaandam</span><a class="dir-web" href="https://www.youtube.com/@VanRockMedia" target="_blank" onclick="event.stopPropagation()">www.youtube.com/@VanRockMedia →</a></div>
+      </a>
+      <a href="https://homesforexpats.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🏘️</div><div><div class="dir-name">Homes for Expats</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Assists with international moves and relocation support for expats in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Netherlands</span><a class="dir-web" href="https://homesforexpats.nl/" target="_blank" onclick="event.stopPropagation()">homesforexpats.nl →</a></div>
+      </a>
+      <a href="https://www.kilnandkettle.com/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🎨</div><div><div class="dir-name">Kiln & Kettle</div><span class="dir-cat-tag">Professional Services</span></div></div>
+        <div class="dir-desc">Ceramic painting café offering creative, hands-on experiences for individuals, groups and events</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Heemstede</span><a class="dir-web" href="https://www.kilnandkettle.com/" target="_blank" onclick="event.stopPropagation()">www.kilnandkettle.com →</a></div>
+      </a>
+      <a href="https://www.debeeshive.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🍽️</div><div><div class="dir-name">De Bees Hive</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">Family-run restaurant offering a warm, welcoming dining experience</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><a class="dir-web" href="https://www.debeeshive.nl/" target="_blank" onclick="event.stopPropagation()">www.debeeshive.nl →</a></div>
+      </a>
+      <a href="https://www.uitafrika.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🛍️</div><div><div class="dir-name">Uit Afrika</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">South African online store offering food products, snacks and speciality items in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Meerssen</span><a class="dir-web" href="https://www.uitafrika.nl/" target="_blank" onclick="event.stopPropagation()">www.uitafrika.nl →</a></div>
+      </a>
+      <a href="https://www.jbmakelaars.nl/" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🏠</div><div><div class="dir-name">J&B Makelaars</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Real estate agency assisting with property sales, purchases and housing guidance in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Woerden</span><a class="dir-web" href="https://www.jbmakelaars.nl/" target="_blank" onclick="event.stopPropagation()">www.jbmakelaars.nl →</a></div>
+      </a>
+      <a href="https://www.facebook.com/search/top?q=whisk%20%26%20bake" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🧁</div><div><div class="dir-name">Whisk and Bake</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">Bakery offering cupcakes, cakes, wedding cakes and delicious South African bakes</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Gouda</span><a class="dir-web" href="https://www.facebook.com/search/top?q=whisk%20%26%20bake" target="_blank" onclick="event.stopPropagation()">www.facebook.com/search/top?q=whisk%20%26%20bake →</a></div>
+      </a>
+      <a href="#" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">✂️</div><div><div class="dir-name">Bella Donna Hairstylists</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
+        <div class="dir-desc">South African hairstylist situated in Utrecht</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><span class="dir-web" style="color:var(--muted)">No website</span></div>
+      </a>
+      <a href="https://www.tandartspraktijkbitgummole.nl" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🦷</div><div><div class="dir-name">Tandartspraktijk Bitgummole</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
+        <div class="dir-desc">Dental practice in Friesland providing professional dental care services</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Bitgummole</span><a class="dir-web" href="https://www.tandartspraktijkbitgummole.nl" target="_blank" onclick="event.stopPropagation()">www.tandartspraktijkbitgummole.nl →</a></div>
+      </a>
+      <a href="https://www.thedutchkey.nl" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🗝️</div><div><div class="dir-name">The Dutch Key</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Helping expats find and secure rental homes in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 South Holland</span><a class="dir-web" href="https://www.thedutchkey.nl" target="_blank" onclick="event.stopPropagation()">www.thedutchkey.nl →</a></div>
+      </a>
+      <a href="https://grownova.nl" target="_blank" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🌱</div><div><div class="dir-name">Grow Nova</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
+        <div class="dir-desc">Leadership and life coaching for expats navigating personal and professional growth in the Netherlands</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Den Haag</span><a class="dir-web" href="https://grownova.nl" target="_blank" onclick="event.stopPropagation()">grownova.nl →</a></div>
+      </a>
     </div>
-  </div>
 
   <!-- MAP VIEW -->
   <div id="dir-map-view">
@@ -284,7 +343,37 @@
   function filterCat(el) {
     document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
+    const cat = el.textContent.trim();
+    document.querySelectorAll('.dir-full-card').forEach(card => {
+      const cardCat = card.querySelector('.dir-cat-tag') ? card.querySelector('.dir-cat-tag').textContent.trim() : '';
+      card.style.display = (cat === 'All' || cardCat === cat) ? 'flex' : 'none';
+    });
+    // Update count
+    const visible = [...document.querySelectorAll('.dir-full-card')].filter(c => c.style.display !== 'none').length;
+    const countEl = document.querySelector('.results-count strong');
+    if (countEl) countEl.textContent = visible;
   }
+
+  // Search function
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('.search-row input');
+    const searchBtn   = document.querySelector('.search-row button');
+    if (!searchInput) return;
+    function doSearch() {
+      const q = searchInput.value.toLowerCase().trim();
+      document.querySelectorAll('.dir-full-card').forEach(card => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+      });
+      const visible = [...document.querySelectorAll('.dir-full-card')].filter(c => c.style.display !== 'none').length;
+      const countEl = document.querySelector('.results-count strong');
+      if (countEl) countEl.textContent = visible;
+    }
+    searchInput.addEventListener('input', doSearch);
+    if (searchBtn) searchBtn.addEventListener('click', doSearch);
+    searchInput.removeAttribute('disabled');
+    if (searchBtn) searchBtn.removeAttribute('disabled');
+  });
   function showList() {
     const lv = document.getElementById('dir-list-view');
     const mv = document.getElementById('dir-map-view');
