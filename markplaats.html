@@ -6,423 +6,125 @@
 <title>Markplaats — southafricanhub.nl</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+  /* ── MARKPLAATS PAGE STYLES ── */
+  .page-body { max-width: 1140px; margin: 0 auto; padding: 32px 32px 80px; }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --ink: #1c1917;
-    --bg: #faf9f7;
-    --surface: #ffffff;
-    --accent: #1a5c2a;
-    --accent-light: #fff2ed;
-    --free: #14532d;
-    --free-bg: #dcfce7;
-    --sale: #92400e;
-    --sale-bg: #fef3c7;
-    --wire: #e2e0dc;
-    --muted: #78716c;
-    --subtle: #f5f4f1;
-  }
-
-  body {
-    font-family: 'Outfit', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    font-size: 14px;
-    min-height: 100vh;
-  }
-
-  /* ── NAV ── */
-  nav {
-    background: var(--ink);
-    padding: 0 48px;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-  .logo-mark {
-    width: 30px; height: 30px;
-    background: var(--green);
-    border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 12px; letter-spacing: -0.5px;
-  }
-  .logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px;
-    color: white;
-  }
-  .logo-text span { color: var(--green); }
-  .nav-links { display: flex; gap: 28px; align-items: center; }
-  .nav-links a { color: rgba(255,255,255,0.55); font-size: 13px; text-decoration: none; transition: color 0.2s; }
-  .nav-links a:hover { color: white; }
-  .nav-links a.active { color: white; font-weight: 500; }
-  .nav-post {
-    background: var(--green);
-    color: white !important;
-    padding: 7px 16px;
-    border-radius: 6px;
-    font-weight: 500 !important;
-    font-size: 13px;
-  }
-
-  /* ── HERO BAND ── */
-  .page-hero {
-    background: var(--ink);
-    padding: 52px 48px 44px;
-    position: relative;
-    overflow: hidden;
-  }
-  .page-hero::after {
-    content: '';
-    position: absolute;
-    right: -80px; top: -80px;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,80,26,0.12) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .hero-eyebrow {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 14px;
-  }
-  .page-hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    color: white;
-    line-height: 1.1;
-    margin-bottom: 12px;
-    max-width: 560px;
-  }
-  .page-hero h1 em { font-style: italic; color: rgba(255,255,255,0.5); }
-  .page-hero p {
-    color: rgba(255,255,255,0.55);
-    font-size: 15px;
-    line-height: 1.7;
-    max-width: 480px;
-    margin-bottom: 28px;
-  }
-  .hero-stats {
-    display: flex;
-    gap: 32px;
-  }
-  .hero-stat { }
-  .hero-stat .n {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    color: white;
-    line-height: 1;
-  }
-  .hero-stat .l {
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: 3px;
-  }
-
-  /* ── FILTER BAR ── */
-  .filter-bar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--wire);
-    padding: 14px 48px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  /* Filter bar overrides */
+  .mp-filter-bar {
+    background: white;
+    border-bottom: 2px solid var(--wire);
+    padding: 12px 48px;
+    display: flex; gap: 8px; align-items: center;
     flex-wrap: wrap;
-    position: sticky;
-    top: 58px;
-    z-index: 90;
+    position: sticky; top: 62px; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   }
-  .filter-group { display: flex; gap: 6px; align-items: center; }
-  .filter-divider { width: 1px; height: 24px; background: var(--wire); margin: 0 4px; }
-  .pill {
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    border: 1px solid var(--wire);
-    background: var(--bg);
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .pill:hover { border-color: var(--ink); }
-  .pill.active { background: var(--ink); color: white; border-color: var(--ink); }
-  .pill.free-pill { background: var(--free-bg); color: var(--free); border-color: transparent; font-weight: 600; }
-  .pill.free-pill.active { background: var(--free); color: white; }
-  .pill.sale-pill { background: var(--sale-bg); color: var(--sale); border-color: transparent; font-weight: 600; }
-  .pill.sale-pill.active { background: var(--sale); color: white; }
+  .mp-filter-bar .pill.free-pill { background: var(--free-bg); color: var(--free); border-color: transparent; font-weight: 700; }
+  .mp-filter-bar .pill.free-pill.active { background: var(--free); color: white; }
+  .mp-filter-bar .pill.sale-pill { background: var(--sale-bg); color: var(--sale); border-color: transparent; font-weight: 700; }
+  .mp-filter-bar .pill.sale-pill.active { background: var(--sale); color: white; }
   .sort-select {
-    margin-left: auto;
-    border: 1px solid var(--wire);
-    border-radius: 6px;
-    padding: 7px 12px;
-    font-size: 12px;
-    font-family: 'Outfit', sans-serif;
-    background: var(--bg);
-    color: var(--muted);
-    cursor: pointer;
+    margin-left: auto; border: 1.5px solid var(--wire); border-radius: 6px;
+    padding: 7px 12px; font-size: 12px; font-family: 'Open Sans', sans-serif;
+    background: var(--bg); color: var(--muted); cursor: pointer;
   }
 
-  /* ── MAIN LAYOUT ── */
-  .page-body {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 48px 80px;
-  }
-  .results-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-  }
-  .results-count {
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .results-count strong { color: var(--ink); }
+  /* Results header */
+  .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .results-count { font-size: 13px; color: var(--muted); }
+  .results-count strong { color: var(--navy); }
 
-  /* ── LISTING GRID ── */
-  .listing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
+  /* Listings grid */
+  .listings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
+  /* Listing card */
   .listing-card {
-    background: var(--surface);
-    border: 1px solid var(--wire);
-    border-radius: 12px;
-    overflow: hidden;
+    background: white; border: 1.5px solid var(--wire);
+    border-radius: 12px; overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     cursor: pointer;
   }
-  .listing-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    border-color: var(--green);
-  }
-
+  .listing-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,31,60,0.1); border-color: var(--green); }
   .card-img {
-    height: 140px;
-    background: var(--subtle);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 44px;
-    position: relative;
+    height: 140px; display: flex; align-items: center;
+    justify-content: center; font-size: 44px; position: relative;
   }
   .card-img.warm { background: #fef3c7; }
   .card-img.cool { background: #e0f2fe; }
   .card-img.soft { background: #fce7f3; }
   .card-img.green-bg { background: #dcfce7; }
-
+  .card-img.neutral { background: var(--subtle); }
   .card-badge {
-    position: absolute;
-    top: 10px; left: 10px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    padding: 4px 9px;
-    border-radius: 4px;
+    position: absolute; top: 10px; left: 10px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; padding: 4px 9px; border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
   }
   .badge-free { background: var(--free-bg); color: var(--free); }
   .badge-sale { background: var(--sale-bg); color: var(--sale); }
-
   .card-cat-badge {
-    position: absolute;
-    top: 10px; right: 10px;
-    font-size: 10px;
-    color: var(--muted);
-    background: rgba(255,255,255,0.85);
-    border-radius: 4px;
-    padding: 3px 8px;
-    backdrop-filter: blur(4px);
+    position: absolute; top: 10px; right: 10px;
+    font-size: 10px; color: var(--muted);
+    background: rgba(255,255,255,0.9); border-radius: 4px;
+    padding: 3px 8px; font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
   }
-
   .card-body { padding: 16px; }
-  .card-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-    line-height: 1.3;
-  }
-  .card-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.55;
-    margin-bottom: 14px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid var(--wire);
-  }
-  .card-price {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--ink);
-  }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 6px; line-height: 1.3; font-family: 'Montserrat', sans-serif; }
+  .card-desc { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--wire); }
+  .card-price { font-size: 16px; font-weight: 800; color: var(--navy); font-family: 'Montserrat', sans-serif; }
   .card-price.free { color: var(--free); }
-  .card-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-  }
-  .card-city {
-    font-size: 11px;
-    color: var(--muted);
-  }
-  .card-age {
-    font-size: 10px;
-    color: rgba(120,113,108,0.6);
-  }
+  .card-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .card-city { font-size: 11px; color: var(--muted); }
+  .card-age { font-size: 10px; color: rgba(107,117,133,0.6); }
 
-  /* ── EMPTY / LOAD MORE ── */
-  .load-more-row {
-    text-align: center;
-    margin-top: 40px;
-  }
+  /* Load more */
+  .load-more-row { text-align: center; margin-top: 40px; }
   .btn-load {
-    background: var(--surface);
-    border: 1px solid var(--wire);
-    color: var(--ink);
-    padding: 12px 32px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: 'Outfit', sans-serif;
-    cursor: pointer;
-    transition: all 0.15s;
+    background: white; border: 1.5px solid var(--wire); color: var(--navy);
+    padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.15s;
   }
-  .btn-load:hover { background: var(--ink); color: white; border-color: var(--ink); }
+  .btn-load:hover { background: var(--navy); color: white; border-color: var(--navy); }
 
-  /* ── POST CTA BAND ── */
+  /* Post CTA */
   .post-cta {
-    background: var(--ink);
-    margin: 0 48px 0;
-    border-radius: 14px;
-    padding: 40px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 24px;
-    position: relative;
-    overflow: hidden;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    border-top: 4px solid var(--green);
+    margin: 0; padding: 44px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 24px; position: relative; overflow: hidden;
   }
-  .post-cta::before {
-    content: '';
-    position: absolute;
-    right: -40px; top: -40px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,80,26,0.15) 0%, transparent 70%);
-  }
-  .post-cta h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    color: white;
-    margin-bottom: 6px;
-  }
+  .post-cta::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(26,92,42,0.2) 0%, transparent 70%); }
+  .post-cta h3 { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: white; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.02em; }
   .post-cta p { color: rgba(255,255,255,0.55); font-size: 14px; }
-  .btn-post {
-    background: var(--green);
-    color: white;
-    padding: 13px 28px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'Outfit', sans-serif;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-    flex-shrink: 0;
-    text-decoration: none;
-    display: inline-block;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--ink);
-    margin-top: 64px;
-    padding: 24px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: rgba(255,255,255,0.35);
-  }
-  footer a { color: rgba(255,255,255,0.5); text-decoration: none; font-weight: 500; }
-
-  /* ── ACTIVE FILTER INDICATOR ── */
-  .active-filters {
-    padding: 10px 48px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    background: var(--green-bg);
-    border-bottom: 1px solid #fdddd0;
-    font-size: 12px;
-    color: var(--green);
-    font-weight: 500;
-  }
-  .clear-filter {
-    margin-left: auto;
-    font-size: 12px;
-    color: var(--green);
-    cursor: pointer;
-    font-weight: 600;
-  }
+  .btn-post { background: var(--green); color: white; padding: 13px 28px; border-radius: 6px; font-size: 14px; font-weight: 700; font-family: 'Montserrat', sans-serif; border: 2px solid var(--green); cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; letter-spacing: 0.04em; transition: all 0.15s; }
+  .btn-post:hover { background: transparent; color: var(--green); }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="site-nav">
-  <a class="nav-logo" href="index.html">
+  <a href="index.html" class="nav-logo">
     <div class="nav-logo-mark">SAH</div>
     <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
   </a>
   <div class="nav-links">
     <a href="directory.html">Directory</a>
     <a href="events.html">Events</a>
-    <a href="#" class="active">Markplaats</a>
+    <a href="markplaats.html" class="active">Markplaats</a>
     <a href="#">Resources</a>
     <a href="markplaats-post.html" class="nav-cta">+ Post a Listing</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<div class="page-hero">
-  <div class="hero-eyebrow">SA Community Marketplace</div>
-  <h1>Help each other<br><em>settle in</em></h1>
-  <p>New to the Netherlands? Find furniture, appliances, and essentials from fellow South Africans — free or affordable. Got stuff to pass on? Pay it forward.</p>
+<div class="page-hero-band">
+  <div class="section-eyebrow">SA Community Marketplace</div>
+  <h1>Help each other <em>settle in</em></h1>
+  <p>New to the Netherlands? Find furniture, appliances and essentials from fellow South Africans — free or affordable. Got stuff to pass on? Pay it forward.</p>
   <div class="hero-stats">
     <div class="hero-stat"><div class="n">48</div><div class="l">Active listings</div></div>
     <div class="hero-stat"><div class="n">23</div><div class="l">Free items</div></div>
@@ -431,206 +133,112 @@
 </div>
 
 <!-- FILTER BAR -->
-<div class="filter-bar">
-  <div class="filter-group">
-    <div class="pill active" onclick="setFilter(this)">All</div>
-    <div class="pill free-pill" onclick="setFilter(this)">🎁 Free</div>
-    <div class="pill sale-pill" onclick="setFilter(this)">💰 For Sale</div>
-  </div>
-  <div class="filter-divider"></div>
-  <div class="filter-group">
-    <div class="pill" onclick="setFilter(this)">Furniture</div>
-    <div class="pill" onclick="setFilter(this)">Appliances</div>
-    <div class="pill" onclick="setFilter(this)">Baby & Kids</div>
-    <div class="pill" onclick="setFilter(this)">Bikes</div>
-    <div class="pill" onclick="setFilter(this)">Books & Study</div>
-    <div class="pill" onclick="setFilter(this)">Kitchen</div>
-    <div class="pill" onclick="setFilter(this)">Other</div>
-  </div>
-  <select class="sort-select">
+<div class="mp-filter-bar">
+  <button class="pill active" data-filter="all">All</button>
+  <button class="pill free-pill" data-filter="free">🎁 Free</button>
+  <button class="pill sale-pill" data-filter="sale">💰 For Sale</button>
+  <div style="width:1px;height:22px;background:var(--wire);margin:0 4px;flex-shrink:0"></div>
+  <button class="pill" data-cat="Furniture">Furniture</button>
+  <button class="pill" data-cat="Appliances">Appliances</button>
+  <button class="pill" data-cat="Baby &amp; Kids">Baby &amp; Kids</button>
+  <button class="pill" data-cat="Bikes">Bikes</button>
+  <button class="pill" data-cat="Books &amp; Study">Books &amp; Study</button>
+  <button class="pill" data-cat="Kitchen">Kitchen</button>
+  <button class="pill" data-cat="Other">Other</button>
+  <select class="sort-select" id="sort-select">
     <option>Newest first</option>
     <option>Price: low to high</option>
     <option>Price: high to low</option>
-    <option>Near me</option>
   </select>
 </div>
 
 <!-- BODY -->
 <div class="page-body">
   <div class="results-header">
-    <div class="results-count">Showing <strong>48</strong> listings</div>
+    <div class="results-count">Showing <strong id="result-count">9</strong> listings</div>
+    <a href="markplaats-post.html" class="view-all-link">+ Post your item</a>
   </div>
 
-  <div class="listing-grid">
+  <div class="listings-grid" id="listings-grid">
 
-    <!-- 1 -->
-    <div class="listing-card">
-      <div class="card-img warm">🛋️
-        <span class="card-badge badge-free">Free</span>
-        <span class="card-cat-badge">Furniture</span>
-      </div>
+    <div class="listing-card" data-type="free" data-cat="Furniture">
+      <div class="card-img warm">🛋️<span class="card-badge badge-free">Free</span><span class="card-cat-badge">Furniture</span></div>
       <div class="card-body">
         <div class="card-title">IKEA 3-seater sofa — grey</div>
         <div class="card-desc">Good condition, light grey fabric. No stains. You arrange collection and transport.</div>
-        <div class="card-footer">
-          <span class="card-price free">Free</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Amsterdam</span>
-            <span class="card-age">Posted 2 days ago</span>
-          </div>
-        </div>
+        <div class="card-footer"><span class="card-price free">Free</span><div class="card-meta"><span class="card-city">📍 Amsterdam</span><span class="card-age">2 days ago</span></div></div>
       </div>
     </div>
 
-    <!-- 2 -->
-    <div class="listing-card">
-      <div class="card-img cool">🍳
-        <span class="card-badge badge-sale">For Sale</span>
-        <span class="card-cat-badge">Kitchen</span>
-      </div>
+    <div class="listing-card" data-type="sale" data-cat="Kitchen">
+      <div class="card-img cool">🍳<span class="card-badge badge-sale">For Sale</span><span class="card-cat-badge">Kitchen</span></div>
       <div class="card-body">
-        <div class="card-title">Pots & pans set — barely used</div>
+        <div class="card-title">Pots &amp; pans set — barely used</div>
         <div class="card-desc">Full 5-piece set. Moving back to SA — everything must go. Great condition.</div>
-        <div class="card-footer">
-          <span class="card-price">€25</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Almere</span>
-            <span class="card-age">Posted 3 days ago</span>
-          </div>
-        </div>
+        <div class="card-footer"><span class="card-price">€25</span><div class="card-meta"><span class="card-city">📍 Almere</span><span class="card-age">3 days ago</span></div></div>
       </div>
     </div>
 
-    <!-- 3 -->
-    <div class="listing-card">
-      <div class="card-img">🚲
-        <span class="card-badge badge-sale">For Sale</span>
-        <span class="card-cat-badge">Bikes</span>
-      </div>
+    <div class="listing-card" data-type="sale" data-cat="Bikes">
+      <div class="card-img neutral">🚲<span class="card-badge badge-sale">For Sale</span><span class="card-cat-badge">Bikes</span></div>
       <div class="card-body">
         <div class="card-title">City bike — ladies, 3-speed</div>
         <div class="card-desc">Front basket, lock included. Slight surface rust but rides perfectly. Serviced last year.</div>
-        <div class="card-footer">
-          <span class="card-price">€45</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Utrecht</span>
-            <span class="card-age">Posted 5 days ago</span>
-          </div>
-        </div>
+        <div class="card-footer"><span class="card-price">€45</span><div class="card-meta"><span class="card-city">📍 Utrecht</span><span class="card-age">5 days ago</span></div></div>
       </div>
     </div>
 
-    <!-- 4 -->
-    <div class="listing-card">
-      <div class="card-img soft">👶
-        <span class="card-badge badge-free">Free</span>
-        <span class="card-cat-badge">Baby & Kids</span>
-      </div>
+    <div class="listing-card" data-type="free" data-cat="Baby &amp; Kids">
+      <div class="card-img soft">👶<span class="card-badge badge-free">Free</span><span class="card-cat-badge">Baby &amp; Kids</span></div>
       <div class="card-body">
         <div class="card-title">Baby clothes bundle — 0 to 12 months</div>
-        <div class="card-desc">Mixed brands, all clean and good condition. Happy to pass on to a new SA family arriving.</div>
-        <div class="card-footer">
-          <span class="card-price free">Free</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Rotterdam</span>
-            <span class="card-age">Posted 1 week ago</span>
-          </div>
-        </div>
+        <div class="card-desc">Mixed brands, all clean and good condition. Happy to pass on to a new SA family.</div>
+        <div class="card-footer"><span class="card-price free">Free</span><div class="card-meta"><span class="card-city">📍 Rotterdam</span><span class="card-age">1 week ago</span></div></div>
       </div>
     </div>
 
-    <!-- 5 -->
-    <div class="listing-card">
-      <div class="card-img cool">📚
-        <span class="card-badge badge-free">Free</span>
-        <span class="card-cat-badge">Books & Study</span>
-      </div>
+    <div class="listing-card" data-type="free" data-cat="Books &amp; Study">
+      <div class="card-img cool">📚<span class="card-badge badge-free">Free</span><span class="card-cat-badge">Books &amp; Study</span></div>
       <div class="card-body">
-        <div class="card-title">Dutch language learning books (B1 level)</div>
+        <div class="card-title">Dutch language books — B1 level</div>
         <div class="card-desc">3 books — Taal Vitaal + 2 grammar guides. Already passed my NT2 exam, no longer need these.</div>
-        <div class="card-footer">
-          <span class="card-price free">Free</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Den Haag</span>
-            <span class="card-age">Posted 1 week ago</span>
-          </div>
-        </div>
+        <div class="card-footer"><span class="card-price free">Free</span><div class="card-meta"><span class="card-city">📍 Den Haag</span><span class="card-age">1 week ago</span></div></div>
       </div>
     </div>
 
-    <!-- 6 -->
-    <div class="listing-card">
-      <div class="card-img warm">🪑
-        <span class="card-badge badge-sale">For Sale</span>
-        <span class="card-cat-badge">Furniture</span>
-      </div>
+    <div class="listing-card" data-type="sale" data-cat="Furniture">
+      <div class="card-img warm">🪑<span class="card-badge badge-sale">For Sale</span><span class="card-cat-badge">Furniture</span></div>
       <div class="card-body">
         <div class="card-title">Dining table + 4 chairs</div>
         <div class="card-desc">Solid wood table, seats 4. Light wear on tabletop. Chairs fully intact. Great starter set.</div>
-        <div class="card-footer">
-          <span class="card-price">€80</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Eindhoven</span>
-            <span class="card-age">Posted 2 weeks ago</span>
-          </div>
-        </div>
+        <div class="card-footer"><span class="card-price">€80</span><div class="card-meta"><span class="card-city">📍 Eindhoven</span><span class="card-age">2 weeks ago</span></div></div>
       </div>
     </div>
 
-    <!-- 7 -->
-    <div class="listing-card">
-      <div class="card-img green-bg">🧺
-        <span class="card-badge badge-sale">For Sale</span>
-        <span class="card-cat-badge">Appliances</span>
-      </div>
+    <div class="listing-card" data-type="sale" data-cat="Appliances">
+      <div class="card-img green-bg">🧺<span class="card-badge badge-sale">For Sale</span><span class="card-cat-badge">Appliances</span></div>
       <div class="card-body">
         <div class="card-title">Bosch washing machine — 7kg</div>
         <div class="card-desc">Works perfectly. Upgrading to a bigger model. Includes hose set. Collection from ground floor.</div>
-        <div class="card-footer">
-          <span class="card-price">€120</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Amsterdam</span>
-            <span class="card-age">Posted 2 weeks ago</span>
-          </div>
-        </div>
+        <div class="card-footer"><span class="card-price">€120</span><div class="card-meta"><span class="card-city">📍 Amsterdam</span><span class="card-age">2 weeks ago</span></div></div>
       </div>
     </div>
 
-    <!-- 8 -->
-    <div class="listing-card">
-      <div class="card-img soft">🪆
-        <span class="card-badge badge-free">Free</span>
-        <span class="card-cat-badge">Baby & Kids</span>
-      </div>
+    <div class="listing-card" data-type="free" data-cat="Baby &amp; Kids">
+      <div class="card-img soft">🪆<span class="card-badge badge-free">Free</span><span class="card-cat-badge">Baby &amp; Kids</span></div>
       <div class="card-body">
-        <div class="card-title">IKEA Kallax kids toy organiser</div>
-        <div class="card-desc">White, 4-cube. Some light scuffs. Kids have outgrown it — would suit a new family perfectly.</div>
-        <div class="card-footer">
-          <span class="card-price free">Free</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Utrecht</span>
-            <span class="card-age">Posted 3 weeks ago</span>
-          </div>
-        </div>
+        <div class="card-title">IKEA Kallax toy organiser — white</div>
+        <div class="card-desc">4-cube. Some light scuffs. Kids have outgrown it — perfect for a new family.</div>
+        <div class="card-footer"><span class="card-price free">Free</span><div class="card-meta"><span class="card-city">📍 Utrecht</span><span class="card-age">3 weeks ago</span></div></div>
       </div>
     </div>
 
-    <!-- 9 -->
-    <div class="listing-card">
-      <div class="card-img cool">🖥️
-        <span class="card-badge badge-sale">For Sale</span>
-        <span class="card-cat-badge">Other</span>
-      </div>
+    <div class="listing-card" data-type="sale" data-cat="Other">
+      <div class="card-img cool">🖥️<span class="card-badge badge-sale">For Sale</span><span class="card-cat-badge">Other</span></div>
       <div class="card-body">
         <div class="card-title">Dell 24" monitor — Full HD</div>
-        <div class="card-desc">HDMI + DisplayPort. Work from home upgrade. In perfect working order, original box included.</div>
-        <div class="card-footer">
-          <span class="card-price">€65</span>
-          <div class="card-meta">
-            <span class="card-city">📍 Almere</span>
-            <span class="card-age">Posted 3 weeks ago</span>
-          </div>
-        </div>
+        <div class="card-desc">HDMI + DisplayPort. Work from home upgrade. Perfect working order, original box included.</div>
+        <div class="card-footer"><span class="card-price">€65</span><div class="card-meta"><span class="card-city">📍 Almere</span><span class="card-age">3 weeks ago</span></div></div>
       </div>
     </div>
 
@@ -641,7 +249,7 @@
   </div>
 </div>
 
-<!-- POST CTA BAND -->
+<!-- POST CTA -->
 <div class="post-cta">
   <div>
     <h3>Got something to give away or sell?</h3>
@@ -655,8 +263,9 @@
   <div class="footer-left">
     <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
     <div class="footer-tagline">For South Africans in the Netherlands</div>
-    <div class="footer-links" style="margin-top:8px;">
-      <a href="directory.html">Directory</a><a href="events.html">Events</a><a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
+    <div class="footer-links" style="margin-top:8px">
+      <a href="directory.html">Directory</a><a href="events.html">Events</a>
+      <a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
     </div>
   </div>
   <div class="footer-right">
@@ -666,10 +275,42 @@
 </footer>
 
 <script>
-  function setFilter(el) {
-    el.closest('.filter-group') && el.closest('.filter-group').querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
+  var activeType = 'all';
+  var activeCat  = 'all';
+
+  function applyFilters() {
+    var cards = document.querySelectorAll('.listing-card');
+    var count = 0;
+    cards.forEach(function(c) {
+      var type = c.getAttribute('data-type');
+      var cat  = c.getAttribute('data-cat');
+      var typeMatch = activeType === 'all' || type === activeType;
+      var catMatch  = activeCat  === 'all' || cat  === activeCat;
+      c.style.display = (typeMatch && catMatch) ? 'block' : 'none';
+      if (typeMatch && catMatch) count++;
+    });
+    document.getElementById('result-count').textContent = count;
   }
+
+  // Type filters (All / Free / For Sale)
+  document.querySelectorAll('[data-filter]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('[data-filter]').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      activeType = this.getAttribute('data-filter');
+      applyFilters();
+    });
+  });
+
+  // Category filters
+  document.querySelectorAll('[data-cat]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('[data-cat]').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      activeCat = this.getAttribute('data-cat');
+      applyFilters();
+    });
+  });
 </script>
 </body>
 </html>
