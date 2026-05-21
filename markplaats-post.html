@@ -334,167 +334,27 @@
   <p>Free to post · Community moderated · Live within 24 hours</p>
 </div>
 
-<!-- LAYOUT -->
-<div class="page-layout">
-
-  <!-- FORM -->
-  <div>
-    <div class="form-card">
-
-      <!-- SECTION 1: ITEM DETAILS -->
-      <div class="form-section">
-        <div class="form-section-title"><span class="num">1</span> Item details</div>
-
-        <div class="field">
-          <label>Title <span class="req">*</span> <span class="hint">Keep it short and clear</span></label>
-          <input type="text" placeholder="e.g. IKEA 3-seater sofa, grey">
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label>Category <span class="req">*</span></label>
-            <select>
-              <option value="">Select…</option>
-              <option>Furniture</option>
-              <option>Appliances</option>
-              <option>Baby & Kids</option>
-              <option>Bikes</option>
-              <option>Books & Study</option>
-              <option>Kitchen</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Condition <span class="req">*</span></label>
-            <select>
-              <option value="">Select…</option>
-              <option>Like new</option>
-              <option>Good condition</option>
-              <option>Used — some wear</option>
-              <option>Needs repair</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Description <span class="req">*</span> <span class="hint">Be honest about condition</span></label>
-          <textarea placeholder="Describe the item — dimensions, colour, any defects, collection notes…" maxlength="400"></textarea>
-          <div class="char-count">0 / 400</div>
-        </div>
-      </div>
-
-      <!-- SECTION 2: PRICE -->
-      <div class="form-section">
-        <div class="form-section-title"><span class="num">2</span> Pricing</div>
-
-        <div class="price-toggle">
-          <div class="price-option selected-free" id="opt-free" onclick="selectPrice('free')">
-            <span class="po-icon">🎁</span>
-            <span class="po-label">Give for Free</span>
-            <span class="po-desc">Pay it forward to a new family</span>
-          </div>
-          <div class="price-option" id="opt-sale" onclick="selectPrice('sale')">
-            <span class="po-icon">💰</span>
-            <span class="po-label">For Sale</span>
-            <span class="po-desc">Set your own price</span>
-          </div>
-        </div>
-
-        <div class="price-amount-field" id="price-field">
-          <div class="field" style="margin:0">
-            <label>Asking price (€) <span class="req">*</span></label>
-            <input type="number" placeholder="e.g. 25" min="1">
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 3: LOCATION & CONTACT -->
-      <div class="form-section">
-        <div class="form-section-title"><span class="num">3</span> Location & contact</div>
-
-        <div class="field-row">
-          <div class="field">
-            <label>City <span class="req">*</span></label>
-            <input type="text" placeholder="e.g. Amsterdam">
-          </div>
-          <div class="field">
-            <label>Collection / delivery</label>
-            <select>
-              <option>Collection only</option>
-              <option>Delivery possible (extra cost)</option>
-              <option>Post / verzenden</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Your name <span class="req">*</span></label>
-          <input type="text" placeholder="First name or full name">
-        </div>
-
-        <div class="field">
-          <label>Contact email <span class="req">*</span> <span class="hint">Not shown publicly — we forward enquiries</span></label>
-          <input type="email" placeholder="you@email.com">
-        </div>
-      </div>
-
-      <!-- SECTION 4: PHOTO -->
-      <div class="form-section">
-        <div class="form-section-title"><span class="num">4</span> Photo <span style="font-weight:400;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;">(optional but recommended)</span></div>
-        <div class="photo-upload">
-          <span class="pu-icon">📷</span>
-          <span class="pu-label">Click to upload a photo</span>
-          <span class="pu-hint">JPG or PNG · Max 5MB · 1 photo per listing</span>
-        </div>
-      </div>
-
-      <!-- SUBMIT -->
-      <div class="form-submit-section">
-        <p class="submit-note">Your listing will be reviewed before going live — usually within 24 hours. We'll email you once it's published.</p>
-        <button class="btn-submit" onclick="submitMarkplaats(event)">Submit Listing →</button>
-      </div>
-
-    </div>
+<!-- TALLY FORM -->
+<div style="max-width:860px;margin:0 auto;padding:40px 32px 80px">
+  <div style="margin-bottom:28px">
+    <div class="section-eyebrow">Post a Listing</div>
+    <div class="section-title" style="font-size:22px">List your item on Markplaats</div>
+    <p style="color:var(--muted);font-size:14px;margin-top:6px">Free to post · Community moderated · Live within 24 hours after review</p>
   </div>
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-
-    <div class="preview-card">
-      <div class="preview-card-header">Preview</div>
-      <div class="preview-inner">
-        <div class="preview-img">📦</div>
-        <div class="preview-title">Your listing will appear here…</div>
-        <div class="preview-hint">Fill in the form to see a preview</div>
-      </div>
-    </div>
-
-    <div class="tip-card">
-      <h4>Tips for a great listing</h4>
-      <div class="tip-list">
-        <div class="tip-item"><span class="ti">📸</span> A clear photo gets 3× more responses</div>
-        <div class="tip-item"><span class="ti">📏</span> Include dimensions for furniture</div>
-        <div class="tip-item"><span class="ti">✅</span> Be honest about wear — it builds trust</div>
-        <div class="tip-item"><span class="ti">🚗</span> State clearly if collection only</div>
-        <div class="tip-item"><span class="ti">💬</span> We'll forward all enquiries to your email</div>
-      </div>
-    </div>
-
-    <div class="rule-card">
-      <h4>Community guidelines</h4>
-      <div class="rule-list">
-        <div class="rule-item">SA community members only</div>
-        <div class="rule-item">Household items, bikes, books — no cars or electronics over €500</div>
-        <div class="rule-item">No commercial reselling</div>
-        <div class="rule-item">One listing per item</div>
-        <div class="rule-item">Mark as sold when gone</div>
-      </div>
-    </div>
-
-  </div>
+  <iframe
+    data-tally-src="https://tally.so/embed/EkNk6L?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+    loading="lazy"
+    width="100%"
+    height="800"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    title="Markplaats Posting"
+    style="border:none;background:transparent"
+  ></iframe>
 </div>
 
-<!-- FOOTER -->
+<!-- FOOTER --><!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-left">
     <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
@@ -510,27 +370,109 @@
 </footer>
 
 <script>
+  // ── PRICE TOGGLE ──
   function selectPrice(type) {
-    const optFree = document.getElementById('opt-free');
-    const optSale = document.getElementById('opt-sale');
-    const priceField = document.getElementById('price-field');
-
+    var optFree   = document.getElementById('opt-free');
+    var optSale   = document.getElementById('opt-sale');
+    var priceField = document.getElementById('price-field');
     optFree.className = 'price-option';
     optSale.className = 'price-option';
-
     if (type === 'free') {
       optFree.classList.add('selected-free');
-      priceField.classList.remove('visible');
+      priceField.style.display = 'none';
     } else {
       optSale.classList.add('selected-sale');
-      priceField.classList.add('visible');
+      priceField.style.display = 'block';
     }
   }
+  // Hide price field on load
+  document.getElementById('price-field').style.display = 'none';
 
-  // Live char counter
-  document.querySelector('textarea').addEventListener('input', function() {
-    this.nextElementSibling.textContent = this.value.length + ' / 400';
+  // ── CHAR COUNTER ──
+  document.getElementById('mp-desc').addEventListener('input', function() {
+    document.getElementById('char-count').textContent = this.value.length + ' / 400';
   });
+
+  // ── PHOTO PREVIEW ──
+  function previewPhoto(input) {
+    if (!input.files || !input.files[0]) return;
+    var file = input.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('preview-img').src = e.target.result;
+      document.getElementById('photo-preview').style.display = 'block';
+      document.getElementById('photo-label').textContent = 'Photo selected ✓';
+      document.getElementById('photo-icon').textContent = '✅';
+      document.getElementById('photo-name').textContent = file.name;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── FORMSPREE SUBMIT ──
+  async function sendToFormspree(id, data) {
+    try {
+      var res = await fetch('https://formspree.io/f/' + id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return res.ok;
+    } catch(e) { return false; }
+  }
+
+  async function submitMarkplaats(e) {
+    e.preventDefault();
+    var title    = document.getElementById('mp-title').value.trim();
+    var cat      = document.getElementById('mp-cat').value;
+    var cond     = document.getElementById('mp-cond').value;
+    var desc     = document.getElementById('mp-desc').value.trim();
+    var city     = document.getElementById('mp-city').value.trim();
+    var delivery = document.getElementById('mp-delivery').value;
+    var name     = document.getElementById('mp-name').value.trim();
+    var email    = document.getElementById('mp-email').value.trim();
+    var isFree   = document.getElementById('opt-free').classList.contains('selected-free');
+    var priceVal = document.getElementById('mp-price') ? document.getElementById('mp-price').value : '';
+    var price    = isFree ? 'Free' : ('€' + priceVal);
+
+    // Validate
+    if (!title)  { alert('Please enter an item title.'); document.getElementById('mp-title').focus(); return; }
+    if (!cat)    { alert('Please select a category.'); return; }
+    if (!cond)   { alert('Please select the condition.'); return; }
+    if (!desc)   { alert('Please add a description.'); document.getElementById('mp-desc').focus(); return; }
+    if (!city)   { alert('Please enter your city.'); document.getElementById('mp-city').focus(); return; }
+    if (!name)   { alert('Please enter your name.'); document.getElementById('mp-name').focus(); return; }
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); document.getElementById('mp-email').focus(); return; }
+    if (!isFree && !priceVal) { alert('Please enter your asking price.'); document.getElementById('mp-price').focus(); return; }
+
+    var btn = document.getElementById('mp-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    var ok = await sendToFormspree('xqejqzjn', {
+      _subject: 'Markplaats Listing — ' + title,
+      item:        title,
+      category:    cat,
+      condition:   cond,
+      description: desc,
+      price:       price,
+      city:        city,
+      delivery:    delivery,
+      seller_name: name,
+      seller_email: email,
+      _replyto:    email
+    });
+
+    if (ok) {
+      btn.textContent = '✅ Submitted!';
+      btn.style.background = 'var(--green)';
+      document.querySelector('.submit-note').innerHTML = 
+        '🎉 Your listing has been submitted! We'll review it and get back to you within 24 hours at <strong>' + email + '</strong>.';
+    } else {
+      btn.textContent = 'Submit Listing →';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or email info@southafricanhub.nl directly.');
+    }
+  }
 </script>
 
 <script>
@@ -581,7 +523,7 @@
       showToast('\u26a0\ufe0f Please fill in all required fields.'); return;
     }
     const btn = e.target; btn.textContent = 'Sending\u2026'; btn.disabled = true;
-    const ok = await sendToFormspree('FORMSPREE_MARKPLAATS_ID', {
+    const ok = await sendToFormspree('xqejqzjn', {
       _subject: `Markplaats Listing \u2014 ${titleVal}`,
       item: titleVal, category: cat, condition: cond,
       price, delivery, city, description: desc,
@@ -596,7 +538,7 @@
     }
   }
     const btn2 = e.target; btn2.textContent = 'Sending\u2026'; btn2.disabled = true;
-    const ok = await sendToFormspree('FORMSPREE_MARKPLAATS_ID', {
+    const ok = await sendToFormspree('xqejqzjn', {
       _subject: 'Markplaats Listing \u2014 ' + titleVal,
       item: titleVal, category: cat, condition: cond, price,
       delivery, city, description: desc,
@@ -620,5 +562,6 @@
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 <\/script>
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
 </body>
 </html>
