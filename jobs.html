@@ -157,7 +157,7 @@
     <span></span><span></span><span></span>
   </button>
 </nav>
-<div class="mobile-menu" id="mobile-menu">
+<div class="mobile-menu" id="mobile-menu" style="display:none">
   <a href="directory.html">Directory</a>
   <a href="jobs.html" class="active">Jobs</a>
   <a href="events.html">Events</a>
@@ -440,21 +440,23 @@
     fd.append('contact_name', name);
     fd.append('contact_email', email);
     fd.append('whatsapp', wa || 'Not provided');
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://formspree.io/f/xnjrdayb');
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.onload = function() {
+    fetch('https://formspree.io/f/xredqpee', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: fd
+    }).then(function(res) {
       btn.textContent = 'Post Job →'; btn.disabled = false;
-      if (xhr.status === 200 || xhr.status === 201) {
+      if (res.ok) {
         closePostJob();
         showToast('Job posted! We will add it within 24 hours.');
         ['j-title','j-company','j-city','j-salary','j-desc','j-name','j-email','j-wa'].forEach(function(id){ document.getElementById(id).value=''; });
       } else {
-        alert('Something went wrong. Please email info@southafricanhub.nl directly.');
+        res.json().then(function(d) { alert('Error: ' + (d.error||'Unknown error') + '. Email info@southafricanhub.nl'); });
       }
-    };
-    xhr.onerror = function() { btn.textContent = 'Post Job →'; btn.disabled = false; alert('Network error. Please try again.'); };
-    xhr.send(fd);
+    }).catch(function() {
+      btn.textContent = 'Post Job →'; btn.disabled = false;
+      alert('Network error. Please email info@southafricanhub.nl directly.');
+    });
   }
 
   // ── TOAST ──
@@ -470,9 +472,10 @@
   function toggleMobileMenu() {
     var menu = document.getElementById('mobile-menu');
     var btn = document.getElementById('nav-hamburger');
-    menu.classList.toggle('open');
+    var isOpen = menu.style.display === 'block';
+    menu.style.display = isOpen ? 'none' : 'block';
     var spans = btn.querySelectorAll('span');
-    if (menu.classList.contains('open')) {
+    if (!isOpen) {
       spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
       spans[1].style.opacity = '0';
       spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
