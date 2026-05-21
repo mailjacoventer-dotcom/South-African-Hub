@@ -710,16 +710,24 @@
 
   // ── LIST / MAP TOGGLE ──
   function showList() {
-    document.getElementById('list-view').classList.remove('hidden');
-    document.getElementById('map-view').style.display = 'none';
-    document.getElementById('btn-list').classList.add('on'); document.getElementById('btn-list').classList.remove('off');
-    document.getElementById('btn-map').classList.add('off'); document.getElementById('btn-map').classList.remove('on');
+    const lv = document.getElementById('list-view');
+    const mv = document.getElementById('map-view');
+    const bl = document.getElementById('btn-list');
+    const bm = document.getElementById('btn-map');
+    if (lv) { lv.style.display = 'grid'; lv.classList.remove('hidden'); }
+    if (mv) { mv.style.display = 'none'; }
+    if (bl) { bl.className = 'toggle-btn on'; }
+    if (bm) { bm.className = 'toggle-btn off'; }
   }
   function showMap() {
-    document.getElementById('map-view').style.display = 'block';
-    document.getElementById('list-view').classList.add('hidden');
-    document.getElementById('btn-map').classList.add('on'); document.getElementById('btn-map').classList.remove('off');
-    document.getElementById('btn-list').classList.add('off'); document.getElementById('btn-list').classList.remove('on');
+    const lv = document.getElementById('list-view');
+    const mv = document.getElementById('map-view');
+    const bl = document.getElementById('btn-list');
+    const bm = document.getElementById('btn-map');
+    if (mv) { mv.style.display = 'block'; }
+    if (lv) { lv.style.display = 'none'; lv.classList.add('hidden'); }
+    if (bm) { bm.className = 'toggle-btn on'; }
+    if (bl) { bl.className = 'toggle-btn off'; }
   }
 
   // ── CAROUSEL ──

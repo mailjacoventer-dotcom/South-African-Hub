@@ -285,16 +285,24 @@
     el.classList.add('active');
   }
   function showList() {
-    document.getElementById('dir-list-view').classList.remove('hidden');
-    document.getElementById('dir-map-view').classList.remove('visible');
-    document.getElementById('btn-list').classList.replace('off','on');
-    document.getElementById('btn-map').classList.replace('on','off');
+    const lv = document.getElementById('dir-list-view');
+    const mv = document.getElementById('dir-map-view');
+    const bl = document.getElementById('btn-list');
+    const bm = document.getElementById('btn-map');
+    if (lv) { lv.style.display = 'grid'; lv.classList.remove('hidden'); }
+    if (mv) { mv.style.display = 'none'; mv.classList.remove('visible'); }
+    if (bl) { bl.className = 'toggle-btn on'; }
+    if (bm) { bm.className = 'toggle-btn off'; }
   }
   function showMap() {
-    document.getElementById('dir-map-view').classList.add('visible');
-    document.getElementById('dir-list-view').classList.add('hidden');
-    document.getElementById('btn-map').classList.replace('off','on');
-    document.getElementById('btn-list').classList.replace('on','off');
+    const lv = document.getElementById('dir-list-view');
+    const mv = document.getElementById('dir-map-view');
+    const bl = document.getElementById('btn-list');
+    const bm = document.getElementById('btn-map');
+    if (mv) { mv.style.display = 'block'; mv.classList.add('visible'); }
+    if (lv) { lv.style.display = 'none'; lv.classList.add('hidden'); }
+    if (bm) { bm.className = 'toggle-btn on'; }
+    if (bl) { bl.className = 'toggle-btn off'; }
   }
   async function sendToFormspree(endpointId, data) {
     try {
