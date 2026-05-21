@@ -183,22 +183,26 @@
         <label class="f-label" for="f-email">Contact email <span class="req">*</span> <span class="hint">Not shown publicly</span></label>
         <input class="f-input" id="f-email" type="email" placeholder="you@email.com">
       </div>
+      <div class="f-field">
+        <label class="f-label" for="f-whatsapp">WhatsApp number <span class="req">*</span> <span class="hint">Include country code e.g. +31612345678</span></label>
+        <input class="f-input" id="f-whatsapp" type="tel" placeholder="+31 6 12 34 56 78">
+      </div>
     </div>
 
     <!-- 4. Photo -->
     <div class="form-sec">
       <div class="sec-title"><span class="sec-num">4</span> Photo <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(optional but recommended)</span></div>
-      <input type="file" id="f-photo" accept="image/*" style="display:none">
+      <input type="file" id="f-photo" accept="image/*" multiple style="display:none">
       <div class="photo-box" id="photo-box" onclick="document.getElementById('f-photo').click()">
         <div id="photo-empty">
           <span class="pb-icon">📷</span>
-          <div class="pb-title">Click to upload a photo</div>
-          <div class="pb-hint">JPG or PNG · Max 5MB</div>
+          <div class="pb-title">Click to upload photos</div>
+          <div class="pb-hint">JPG or PNG · Max 5MB each · Up to 5 photos</div>
         </div>
         <div id="photo-preview-wrap">
-          <img id="photo-img" src="" alt="Preview">
+          <div id="photo-thumbs" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:8px"></div>
           <div class="pb-name" id="photo-name"></div>
-          <div class="pb-change">Click to change</div>
+          <div class="pb-change">Click to add/change photos</div>
         </div>
       </div>
     </div>
@@ -265,22 +269,33 @@
 
   // ── PHOTO UPLOAD ──
   document.getElementById('f-photo').addEventListener('change', function() {
-    var file = this.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Photo must be under 5MB.');
-      this.value = '';
-      return;
-    }
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      document.getElementById('photo-img').src = ev.target.result;
-      document.getElementById('photo-name').textContent = file.name + ' (' + Math.round(file.size/1024) + ' KB)';
-      document.getElementById('photo-empty').style.display = 'none';
-      document.getElementById('photo-preview-wrap').style.display = 'block';
-      document.getElementById('photo-box').classList.add('has-photo');
-    };
-    reader.readAsDataURL(file);
+    var files = Array.from(this.files);
+    if (!files.length) return;
+    if (files.length > 5) { alert('Maximum 5 photos allowed.'); this.value = ''; return; }
+    var oversized = files.filter(function(f) { return f.size > 5 * 1024 * 1024; });
+    if (oversized.length) { alert('Each photo must be under 5MB. Please resize: ' + oversized.map(function(f){return f.name;}).join(', ')); this.value = ''; return; }
+
+    var thumbsDiv = document.getElementById('photo-thumbs');
+    thumbsDiv.innerHTML = '';
+    var loaded = 0;
+
+    files.forEach(function(file) {
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var img = document.createElement('img');
+        img.src = ev.target.result;
+        img.style.cssText = 'width:70px;height:70px;object-fit:cover;border-radius:6px;border:1.5px solid var(--wire)';
+        thumbsDiv.appendChild(img);
+        loaded++;
+        if (loaded === files.length) {
+          document.getElementById('photo-name').textContent = files.length + ' photo' + (files.length > 1 ? 's' : '') + ' selected';
+          document.getElementById('photo-empty').style.display = 'none';
+          document.getElementById('photo-preview-wrap').style.display = 'block';
+          document.getElementById('photo-box').classList.add('has-photo');
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   });
 
   // ── SUBMIT ──
@@ -303,6 +318,8 @@
     if (!city)                 { alert('Please enter your city.');         return; }
     if (!name)                 { alert('Please enter your name.');         return; }
     if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+    var whatsapp = document.getElementById('f-whatsapp').value.trim().replace(/\s/g, '');
+    if (!whatsapp) { alert('Please enter your WhatsApp number.'); return; }
     if (priceType === 'sale' && !document.getElementById('f-price').value) {
       alert('Please enter your asking price.'); return;
     }
@@ -324,8 +341,11 @@
     fd.append('delivery', delivery);
     fd.append('seller_name', name);
     fd.append('seller_email', email);
-    if (photo.files && photo.files[0]) {
-      fd.append('photo', photo.files[0], photo.files[0].name);
+    fd.append('whatsapp', whatsapp);
+    if (photo.files && photo.files.length > 0) {
+      Array.from(photo.files).forEach(function(file, i) {
+        fd.append('photo_' + (i + 1), file, file.name);
+      });
     }
 
     try {
