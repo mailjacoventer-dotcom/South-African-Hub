@@ -27,8 +27,8 @@
   .hero-content {
     position: relative; z-index: 1;
     text-align: left;
-    padding: 60px 48px 48px 60px;
-    width: 55%;
+    padding: 52px 48px 48px 60px;
+    width: 58%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,8 +60,8 @@
     font-family: 'Open Sans', sans-serif;
   }
   .hero-btns {
-    display: flex; gap: 10px;
-    flex-wrap: nowrap; justify-content: flex-start;
+    display: flex; gap: 8px;
+    flex-wrap: wrap; justify-content: flex-start;
     margin-bottom: 0;
     align-items: center;
   }
@@ -89,20 +89,20 @@
     display: flex; gap: 0;
     justify-content: flex-start;
     border-top: 1px solid rgba(13,31,60,0.12);
-    padding-top: 20px;
-    margin-top: 20px;
+    padding-top: 22px;
+    margin-top: 22px;
     flex-wrap: nowrap;
     width: 100%;
   }
   .hero-pillar {
     display: flex; align-items: flex-start; gap: 12px;
-    padding: 0 24px 0 0;
-    margin-right: 24px;
+    padding: 0 28px 0 0;
     border-right: 1px solid rgba(13,31,60,0.12);
     cursor: pointer; transition: opacity 0.15s;
     text-align: left;
+    flex: 1;
   }
-  .hero-pillar:last-child { border-right: none; margin-right: 0; }
+  .hero-pillar:last-child { border-right: none; padding-right: 0; }
   .hero-pillar:hover { opacity: 0.85; }
   .hero-pillar .p-icon-circle {
     width: 40px; height: 40px; border-radius: 50%;
@@ -704,71 +704,37 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-text">
-      <div class="hero-eyebrow">southafricanhub.nl</div>
-      <h1>
-        South African
-        <span class="line2">Business &amp; Services</span>
-        <span class="line3">Netherlands</span>
-      </h1>
-      <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
-    </div>
+    <div class="hero-eyebrow">southafricanhub.nl</div>
+    <h1>
+      South African
+      <span class="line2">Business &amp; Services</span>
+      <span class="line3">Netherlands</span>
+    </h1>
+    <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
     <div class="hero-btns">
-        <a href="directory.html" class="hero-btn hero-btn-primary">
-          <span class="hero-btn-icon">🔍</span> Browse Businesses
-        </a>
-        <a href="events.html" class="hero-btn hero-btn-navy">
-          <span class="hero-btn-icon">📅</span> Events
-        </a>
-        <a href="jobs.html" class="hero-btn" style="background:#6d28d9;color:white;box-shadow:0 4px 16px rgba(109,40,217,0.25)">
-          <span class="hero-btn-icon">💼</span> Jobs
-        </a>
-        <a href="markplaats.html" class="hero-btn hero-btn-orange">
-          <span class="hero-btn-icon">🛒</span> Markplaats
-        </a>
-        <a href="directory.html#list-business" class="hero-btn hero-btn-red">
-          <span class="hero-btn-icon">➕</span> List Your Business
-        </a>
-      </div>
+      <a href="directory.html" class="hero-btn hero-btn-primary"><span class="hero-btn-icon">🔍</span> Browse Businesses</a>
+      <a href="events.html" class="hero-btn hero-btn-navy"><span class="hero-btn-icon">📅</span> Events</a>
+      <a href="jobs.html" class="hero-btn" style="background:#6d28d9;color:white"><span class="hero-btn-icon">💼</span> Jobs</a>
+      <a href="markplaats.html" class="hero-btn hero-btn-orange"><span class="hero-btn-icon">🛒</span> Markplaats</a>
+      <a href="directory.html#list-business" class="hero-btn hero-btn-red"><span class="hero-btn-icon">➕</span> List Your Business</a>
     </div>
     <div class="hero-pillars">
       <div class="hero-pillar" onclick="window.location='events.html'">
         <div class="p-icon-circle">🤝</div>
-        <div class="p-text">
-          <div class="p-title">Connect</div>
-          <div class="p-desc">Build meaningful connections and grow your network</div>
-        </div>
+        <div class="p-text"><div class="p-title">Connect</div><div class="p-desc">Build meaningful connections and grow your network</div></div>
       </div>
       <div class="hero-pillar" onclick="window.location='markplaats.html'">
         <div class="p-icon-circle">❤️</div>
-        <div class="p-text">
-          <div class="p-title">Support</div>
-          <div class="p-desc">Support local SA businesses and uplift our community</div>
-        </div>
+        <div class="p-text"><div class="p-title">Support</div><div class="p-desc">Support local SA businesses and uplift our community</div></div>
       </div>
       <div class="hero-pillar" onclick="window.location='directory.html'">
         <div class="p-icon-circle">📈</div>
-        <div class="p-text">
-          <div class="p-title">Grow</div>
-          <div class="p-desc">Share opportunities, collaborate and grow together</div>
-        </div>
+        <div class="p-text"><div class="p-title">Grow</div><div class="p-desc">Share opportunities, collaborate and grow together</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TAGLINE BAR -->
-<div class="tagline-bar">
-  <a href="directory.html" class="tagline-item" style="text-decoration:none;color:white">🔍 Find</a>
-  <span class="tagline-sep">|</span>
-  <a href="events.html" class="tagline-item" style="text-decoration:none;color:white">🤝 Connect</a>
-  <span class="tagline-sep">|</span>
-  <a href="markplaats.html" class="tagline-item" style="text-decoration:none;color:white">❤️ Support</a>
-  <span class="tagline-sep">|</span>
-  <a href="jobs.html" class="tagline-item" style="text-decoration:none;color:white">💼 Jobs</a>
-  <span class="tagline-sep">|</span>
-  <a href="directory.html" class="tagline-item" style="text-decoration:none;color:white">📈 Grow Together</a>
-</div>
 
 <!-- CAT BAR -->
 <div class="cat-bar">
