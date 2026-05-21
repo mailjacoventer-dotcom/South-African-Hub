@@ -580,119 +580,89 @@ body {
 .toast-icon { font-size: 16px; }
 
 
+
 /* ══════════════════════════════════════
-   RESPONSIVE — MOBILE FIRST
-   Breakpoints: 768px (tablet), 480px (phone)
+   RESPONSIVE — MOBILE
 ══════════════════════════════════════ */
 
 @media (max-width: 768px) {
 
-  /* ── NAV ── */
-  .site-nav {
-    padding: 0 20px;
-    height: 56px;
-  }
-  .nav-links {
-    display: none; /* replaced by hamburger below */
-  }
-  .nav-logo-text { font-size: 14px; }
+  /* Nav */
+  .site-nav { padding: 0 16px; height: 56px; }
+  .nav-links { display: none !important; }
+  .nav-logo-text { font-size: 13px; }
 
-  /* Hamburger menu */
+  /* Hamburger */
   .nav-hamburger {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    padding: 6px;
-    background: none;
-    border: none;
+    gap: 5px; cursor: pointer;
+    padding: 6px; background: none; border: none;
   }
   .nav-hamburger span {
-    display: block;
-    width: 22px; height: 2px;
-    background: white;
-    border-radius: 2px;
-    transition: all 0.2s;
+    display: block; width: 22px; height: 2px;
+    background: white; border-radius: 2px; transition: all 0.2s;
   }
+
+  /* Mobile menu */
   .mobile-menu {
     display: none;
     position: fixed;
     top: 56px; left: 0; right: 0;
     background: var(--navy);
     border-bottom: 3px solid var(--green);
-    z-index: 199;
-    padding: 12px 0;
+    z-index: 199; padding: 8px 0;
     box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
   .mobile-menu.open { display: block; }
   .mobile-menu a {
-    display: block;
-    padding: 13px 24px;
+    display: block; padding: 13px 20px;
     color: rgba(255,255,255,0.75);
     text-decoration: none;
     font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px; font-weight: 600;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  .mobile-menu a:last-child { border-bottom: none; }
   .mobile-menu a.nav-cta {
-    margin: 12px 20px 4px;
-    background: var(--green);
-    color: white;
-    border-radius: 6px;
-    text-align: center;
-    padding: 12px;
-    border-bottom: none;
+    margin: 10px 16px 8px;
+    background: var(--green); color: white;
+    border-radius: 6px; text-align: center;
+    padding: 12px; border-bottom: none;
+    display: block;
   }
 
-  /* ── PAGE HERO BAND ── */
-  .page-hero-band { padding: 32px 20px 28px; }
-  .page-hero-band h1 { font-size: 26px; }
+  /* Page hero */
+  .page-hero-band { padding: 28px 20px 24px; }
+  .page-hero-band h1 { font-size: 24px; }
   .page-hero-band p { font-size: 13px; }
-  .hero-stats { gap: 20px; flex-wrap: wrap; }
-  .hero-stat .n { font-size: 20px; }
+  .hero-stats { gap: 20px; }
+  .hero-stat .n { font-size: 22px; }
 
-  /* ── FILTER BAR ── */
+  /* Filter bar */
   .filter-bar {
-    padding: 10px 16px;
-    top: 56px;
-    overflow-x: auto;
-    flex-wrap: nowrap;
+    padding: 10px 16px; top: 56px;
+    overflow-x: auto; flex-wrap: nowrap;
     -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
   .filter-bar::-webkit-scrollbar { display: none; }
-  .view-toggle { display: none; }
+  .view-toggle { display: none !important; }
 
-  /* ── FOOTER ── */
-  .site-footer {
-    flex-direction: column;
-    padding: 28px 20px;
-    gap: 20px;
-  }
+  /* Footer */
+  .site-footer { flex-direction: column; padding: 24px 20px; gap: 20px; }
   .footer-right { text-align: left; }
 
-  /* ── SIGNUP BANNER ── */
-  .signup-inner {
-    grid-template-columns: 1fr;
-    padding: 32px 20px;
-    gap: 24px;
-  }
-  .signup-name-row { grid-template-columns: 1fr; }
+  /* Signup banner */
+  .signup-inner { grid-template-columns: 1fr !important; padding: 28px 20px; gap: 20px; }
+  .signup-name-row { grid-template-columns: 1fr !important; }
   .signup-form-row { flex-direction: column; }
 
-  /* ── BUTTONS ── */
-  .btn-primary, .btn-secondary, .btn-ghost {
-    padding: 11px 20px;
-    font-size: 13px;
-  }
+  /* Section title */
+  .section-title { font-size: 20px; }
 }
 
 @media (max-width: 480px) {
-  .site-nav { padding: 0 16px; }
-  .page-hero-band { padding: 28px 16px 24px; }
-  .page-hero-band h1 { font-size: 22px; }
-  .hero-stats { gap: 16px; }
-  .site-footer { padding: 24px 16px; }
-  .filter-bar { padding: 10px 12px; }
+  .page-hero-band h1 { font-size: 20px; }
+  .site-nav { padding: 0 12px; }
+  .page-hero-band { padding: 24px 16px 20px; }
 }
