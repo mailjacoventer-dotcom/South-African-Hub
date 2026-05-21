@@ -83,12 +83,25 @@
   .btn-navy:hover { background: var(--navy-mid); }
 
 @media (max-width: 768px) {
-  .events-grid { grid-template-columns: 1fr !important; }
-  .page-body { padding: 24px 16px 60px !important; }
-  .submit-event-band { flex-direction: column !important; padding: 24px 20px !important; gap: 16px !important; }
-  .modal-box { max-width: 100% !important; margin: 0 10px !important; }
-  .m-row { grid-template-columns: 1fr !important; }
-  .lm-photos { height: 220px !important; }
+  .page-body { padding: 20px 16px 60px !important; }
+  .events-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+  .event-banner { height: 160px !important; }
+  .submit-event-band { flex-direction: column !important; padding: 24px 16px !important; gap: 16px !important; text-align: center !important; }
+  .modal-overlay { padding: 10px !important; align-items: flex-end !important; }
+  .modal-box { max-width: 100% !important; max-height: 90vh !important; overflow-y: auto !important; border-radius: 14px 14px 0 0 !important; }
+  .modal-body { padding: 16px 20px !important; gap: 10px !important; }
+  .m-row { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .m-input { font-size: 16px !important; }
+  .modal-footer { padding: 14px 20px !important; flex-direction: column !important; align-items: stretch !important; }
+  .btn-green, .btn-navy, .btn-wa { width: 100% !important; justify-content: center !important; }
+  .lm-photos { height: 200px !important; }
+  #lm-dots { bottom: 8px !important; }
+}
+@media (max-width: 480px) {
+  .event-top { padding: 10px 12px !important; }
+  .event-date .day { font-size: 24px !important; }
+  .event-body { padding: 12px !important; }
+  .event-title { font-size: 14px !important; }
 }
 </style>
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>

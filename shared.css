@@ -581,23 +581,22 @@ body {
 
 
 
+
 /* ══════════════════════════════════════
-   RESPONSIVE — MOBILE
+   RESPONSIVE
 ══════════════════════════════════════ */
 
-@media (max-width: 768px) {
+/* Hide hamburger on desktop */
+.nav-hamburger { display: none; }
 
+@media (max-width: 768px) {
   /* Nav */
   .site-nav { padding: 0 16px; height: 56px; }
   .nav-links { display: none !important; }
-  .nav-logo-text { font-size: 13px; }
-
-  /* Hamburger */
   .nav-hamburger {
-    display: flex !important;
-    flex-direction: column;
-    gap: 5px; cursor: pointer;
-    padding: 6px; background: none; border: none;
+    display: flex !important; flex-direction: column;
+    gap: 5px; cursor: pointer; padding: 6px;
+    background: none; border: none; margin-left: auto;
   }
   .nav-hamburger span {
     display: block; width: 22px; height: 2px;
@@ -606,63 +605,67 @@ body {
 
   /* Mobile menu */
   .mobile-menu {
-    display: none;
-    position: fixed;
+    display: none; position: fixed;
     top: 56px; left: 0; right: 0;
-    background: var(--navy);
-    border-bottom: 3px solid var(--green);
-    z-index: 199; padding: 8px 0;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    background: var(--navy); border-bottom: 3px solid var(--green);
+    z-index: 199; padding: 6px 0;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
   }
   .mobile-menu.open { display: block; }
   .mobile-menu a {
-    display: block; padding: 13px 20px;
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px; font-weight: 600;
+    display: block; padding: 14px 20px;
+    color: rgba(255,255,255,0.8); text-decoration: none;
+    font-family: "Montserrat", sans-serif; font-size: 15px; font-weight: 600;
     border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.15s;
   }
+  .mobile-menu a:hover { background: rgba(255,255,255,0.06); }
   .mobile-menu a.nav-cta {
-    margin: 10px 16px 8px;
-    background: var(--green); color: white;
-    border-radius: 6px; text-align: center;
-    padding: 12px; border-bottom: none;
-    display: block;
+    margin: 10px 16px 8px; background: var(--green); color: white;
+    border-radius: 6px; text-align: center; padding: 13px;
+    border-bottom: none; display: block; font-size: 14px;
   }
 
   /* Page hero */
-  .page-hero-band { padding: 28px 20px 24px; }
+  .page-hero-band { padding: 28px 16px 24px; }
   .page-hero-band h1 { font-size: 24px; }
   .page-hero-band p { font-size: 13px; }
   .hero-stats { gap: 20px; }
-  .hero-stat .n { font-size: 22px; }
+  .hero-stat .n { font-size: 20px; }
+  .hero-stat .l { font-size: 9px; }
 
-  /* Filter bar */
+  /* Filter bar — horizontal scroll */
   .filter-bar {
-    padding: 10px 16px; top: 56px;
-    overflow-x: auto; flex-wrap: nowrap;
+    padding: 10px 16px; top: 56px !important;
+    overflow-x: auto; flex-wrap: nowrap !important;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    scrollbar-width: none; gap: 6px;
   }
   .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-divider { display: none; }
   .view-toggle { display: none !important; }
-
-  /* Footer */
-  .site-footer { flex-direction: column; padding: 24px 20px; gap: 20px; }
-  .footer-right { text-align: left; }
-
-  /* Signup banner */
-  .signup-inner { grid-template-columns: 1fr !important; padding: 28px 20px; gap: 20px; }
-  .signup-name-row { grid-template-columns: 1fr !important; }
-  .signup-form-row { flex-direction: column; }
+  .pill { white-space: nowrap; font-size: 12px; padding: 6px 12px; }
 
   /* Section title */
   .section-title { font-size: 20px; }
+
+  /* Footer */
+  .site-footer { flex-direction: column; padding: 24px 16px; gap: 16px; }
+  .footer-right { text-align: left; }
+  .footer-links { flex-wrap: wrap; gap: 12px; }
+
+  /* Signup banner */
+  .signup-inner { grid-template-columns: 1fr !important; padding: 28px 16px; gap: 20px; }
+  .signup-name-row { grid-template-columns: 1fr !important; }
+  .signup-form-row { flex-direction: column; }
+  .signup-btn { width: 100%; padding: 12px; }
+  .signup-input { font-size: 16px; }
+
+  /* Breadcrumb */
+  .breadcrumb { font-size: 11px; }
 }
 
 @media (max-width: 480px) {
   .page-hero-band h1 { font-size: 20px; }
-  .site-nav { padding: 0 12px; }
-  .page-hero-band { padding: 24px 16px 20px; }
+  .page-hero-band { padding: 22px 14px 20px; }
 }

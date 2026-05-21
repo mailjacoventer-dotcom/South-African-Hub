@@ -156,15 +156,24 @@
   .btn-post:hover { background: transparent; color: var(--green); }
 
 @media (max-width: 768px) {
+  .mp-filter-bar { padding: 10px 12px !important; overflow-x: auto !important; flex-wrap: nowrap !important; -webkit-overflow-scrolling: touch !important; }
+  .sort-select { display: none !important; }
+  .page-body { padding: 16px 12px 60px !important; }
   .listings-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
-  .page-body { padding: 20px 16px 60px !important; }
-  .post-cta { flex-direction: column !important; padding: 28px 20px !important; }
-  .listing-modal { max-width: 100% !important; }
-  .lm-photos { height: 220px !important; }
-  .mp-filter-bar { padding: 10px 12px !important; overflow-x: auto !important; flex-wrap: nowrap !important; }
+  .card-title { font-size: 13px !important; }
+  .card-desc { font-size: 11px !important; -webkit-line-clamp: 2 !important; }
+  .post-cta { flex-direction: column !important; padding: 24px 16px !important; text-align: center !important; }
+  .listing-modal-overlay { padding: 10px !important; align-items: flex-end !important; }
+  .listing-modal { max-width: 100% !important; border-radius: 14px 14px 0 0 !important; max-height: 90vh !important; overflow-y: auto !important; }
+  .lm-photos { height: 200px !important; }
+  .lm-body { padding: 16px !important; }
+  .lm-title { font-size: 17px !important; }
+  .lm-meta-row { gap: 12px !important; padding: 10px !important; }
+  .wa-btn { font-size: 13px !important; padding: 11px !important; }
 }
 @media (max-width: 480px) {
   .listings-grid { grid-template-columns: 1fr !important; }
+  .card-img-carousel, .card-img { height: 160px !important; }
 }
 </style>
 </head>

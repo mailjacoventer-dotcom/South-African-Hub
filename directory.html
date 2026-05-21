@@ -112,10 +112,24 @@
 
 @media (max-width: 768px) {
   .biz-grid { grid-template-columns: 1fr !important; padding: 16px !important; gap: 12px !important; }
-  .page-layout { grid-template-columns: 1fr !important; }
-  .listing-form-panel { border-left: none !important; border-top: 1px solid var(--wire); }
-  .biz-modal-inner { flex-direction: column !important; }
-  .modal-left { width: 100% !important; }
+  .listing-grid { grid-template-columns: 1fr !important; }
+  .listing-left { padding: 24px 16px !important; }
+  .listing-right { padding: 24px 16px !important; }
+  .f-row { grid-template-columns: 1fr !important; }
+  .listing-right input, .listing-right select, .listing-right textarea { font-size: 16px !important; }
+  .biz-modal-wrap { padding: 12px !important; }
+  .biz-modal { flex-direction: column !important; max-height: 90vh !important; overflow-y: auto !important; }
+  .modal-head { padding: 20px !important; }
+  .modal-head h2 { font-size: 18px !important; }
+  .modal-body { padding: 16px 20px !important; }
+  .modal-footer { padding: 16px 20px !important; flex-direction: column !important; gap: 8px !important; }
+  .modal-btn-primary, .modal-btn-secondary { width: 100% !important; justify-content: center !important; }
+  .city-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .filter-bar { overflow-x: auto !important; flex-wrap: nowrap !important; }
+}
+@media (max-width: 480px) {
+  .city-grid { grid-template-columns: 1fr !important; }
+  .biz-grid { padding: 12px !important; }
 }
 </style>
 </head>
