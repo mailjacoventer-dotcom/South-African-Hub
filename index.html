@@ -40,6 +40,7 @@
     font-size: 11px; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase;
     color: #1a5c2a; margin-bottom: 12px;
+    text-align: center;
   }
   .hero h1 {
     font-family: 'Montserrat', sans-serif;
@@ -48,6 +49,7 @@
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: -0.01em;
+    text-align: center;
   }
   .hero h1 .line2 { font-size: 46px; color: #1a5c2a; display: block; }
   .hero h1 .line3 {
@@ -57,8 +59,9 @@
   .hero-tagline {
     font-size: 15px; line-height: 1.7;
     color: #3a4a5c;
-    max-width: 440px; margin: 18px 0 28px;
+    max-width: 520px; margin: 10px auto 0;
     font-family: 'Open Sans', sans-serif;
+    text-align: center;
   }
   .hero-btns {
     display: flex; gap: 12px;
@@ -704,6 +707,15 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
+    <div class="hero-text" style="margin-bottom:24px">
+      <div class="hero-eyebrow">southafricanhub.nl</div>
+      <h1>
+        South African
+        <span class="line2">Business &amp; Services</span>
+        <span class="line3">Netherlands</span>
+      </h1>
+      <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
+    </div>
     <div class="hero-btns">
         <a href="directory.html" class="hero-btn hero-btn-primary">
           <span class="hero-btn-icon">🔍</span> Browse Businesses
@@ -721,6 +733,7 @@
           <span class="hero-btn-icon">➕</span> List Your Business
         </a>
       </div>
+    </div>
     <div class="hero-pillars">
       <div class="hero-pillar" onclick="window.location='events.html'">
         <div class="p-icon-circle">🤝</div>
