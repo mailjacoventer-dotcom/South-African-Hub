@@ -4,478 +4,242 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post a Listing — Markplaats · southafricanhub.nl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
 <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .page-wrap { max-width: 900px; margin: 0 auto; padding: 40px 32px 80px; display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: start; }
+  .form-card { background: white; border: 1.5px solid var(--wire); border-radius: 14px; overflow: hidden; }
+  .form-sec { padding: 24px 28px; border-bottom: 1px solid var(--wire); }
+  .sec-title { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .sec-num { background: var(--green); color: white; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .f-label { display: block; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .f-label .req { color: #c8102e; }
+  .f-label .hint { font-weight: 400; color: var(--muted); font-size: 11px; margin-left: 4px; }
+  .f-input { width: 100%; border: 1.5px solid var(--wire); border-radius: 6px; padding: 10px 13px; font-size: 13px; font-family: 'Open Sans', sans-serif; outline: none; transition: border-color .15s; background: white; color: var(--navy); }
+  .f-input:focus { border-color: var(--green); }
+  .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .f-field { margin-bottom: 14px; }
+  .f-field:last-child { margin-bottom: 0; }
+  textarea.f-input { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .char-hint { font-size: 11px; color: var(--muted); text-align: right; margin-top: 3px; }
 
-  :root {
-    --ink: #1c1917;
-    --bg: #faf9f7;
-    --surface: #ffffff;
-    --accent: #1a5c2a;
-    --accent-light: #fff2ed;
-    --free: #14532d;
-    --free-bg: #dcfce7;
-    --sale: #92400e;
-    --sale-bg: #fef3c7;
-    --wire: #e2e0dc;
-    --muted: #78716c;
-    --subtle: #f5f4f1;
-    --focus: #1a5c2a;
-  }
+  /* Price toggle */
+  .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .price-opt { border: 2px solid var(--wire); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; transition: all .15s; }
+  .price-opt.active { border-color: var(--green); background: #e8f4ec; }
+  .price-opt .po-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .price-opt .po-title { font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--navy); }
+  .price-opt.active .po-title { color: var(--green); }
+  .price-opt .po-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  #price-wrap { display: none; }
 
-  body {
-    font-family: 'Open Sans', sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    font-size: 14px;
-    min-height: 100vh;
-  }
+  /* Photo */
+  .photo-box { border: 2px dashed var(--wire); border-radius: 10px; padding: 32px; text-align: center; cursor: pointer; transition: all .15s; background: var(--bg); user-select: none; }
+  .photo-box:hover { border-color: var(--green); background: #e8f4ec; }
+  .photo-box.has-photo { border-color: var(--green); background: #e8f4ec; border-style: solid; }
+  .photo-box .pb-icon { font-size: 28px; display: block; margin-bottom: 8px; }
+  .photo-box .pb-title { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .photo-box .pb-hint { font-size: 11px; color: var(--muted); }
+  #photo-preview-wrap { display: none; }
+  #photo-preview-wrap img { max-height: 140px; border-radius: 8px; margin-bottom: 8px; }
+  #photo-preview-wrap .pb-name { font-size: 12px; color: var(--green); font-weight: 600; }
+  #photo-preview-wrap .pb-change { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
-  /* ── NAV ── */
-  nav {
-    background: var(--ink);
-    padding: 0 48px;
-    height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .logo-mark { width: 30px; height: 30px; background: var(--green); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 12px; }
-  .logo-text { font-family: 'Montserrat', sans-serif; font-size: 16px; color: white; }
-  .logo-text span { color: var(--green); }
-  .nav-links { display: flex; gap: 28px; align-items: center; }
-  .nav-links a { color: rgba(255,255,255,0.55); font-size: 13px; text-decoration: none; }
-  .nav-links a.active { color: white; font-weight: 500; }
-
-  /* ── PAGE HEADER ── */
-  .page-header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--wire);
-    padding: 32px 48px 28px;
-  }
-  .breadcrumb {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .breadcrumb a { color: var(--green); text-decoration: none; }
-  .breadcrumb span { color: var(--wire); }
-  .page-header h1 {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 32px;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .page-header p { color: var(--muted); font-size: 14px; }
-
-  /* ── MAIN LAYOUT ── */
-  .page-layout {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 48px;
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 40px;
-    align-items: start;
-  }
-
-  /* ── FORM ── */
-  .form-card {
-    background: var(--surface);
-    border: 1px solid var(--wire);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-  .form-section {
-    padding: 28px 32px;
-    border-bottom: 1px solid var(--wire);
-  }
-  .form-section:last-child { border-bottom: none; }
-  .form-section-title {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .form-section-title .num {
-    width: 20px; height: 20px;
-    background: var(--green);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 10px; font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .field { margin-bottom: 18px; }
-  .field:last-child { margin-bottom: 0; }
-  .field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .field label .req { color: var(--green); margin-left: 2px; }
-  .field label .hint { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
-
-  .field input, .field select, .field textarea {
-    width: 100%;
-    border: 1.5px solid var(--wire);
-    border-radius: 8px;
-    padding: 11px 14px;
-    font-size: 14px;
-    font-family: 'Open Sans', sans-serif;
-    color: var(--ink);
-    background: var(--bg);
-    transition: border-color 0.15s, background 0.15s;
-    outline: none;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    border-color: var(--focus);
-    background: var(--surface);
-  }
-  .field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
-  .field select { cursor: pointer; }
-  .field .char-count { font-size: 11px; color: var(--muted); margin-top: 4px; text-align: right; }
-
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-  /* ── PRICE TYPE TOGGLE ── */
-  .price-toggle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-  .price-option {
-    border: 2px solid var(--wire);
-    border-radius: 10px;
-    padding: 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    text-align: center;
-  }
-  .price-option:hover { border-color: var(--ink); }
-  .price-option.selected-free { border-color: var(--free); background: var(--free-bg); }
-  .price-option.selected-sale { border-color: var(--green); background: var(--green-bg); }
-  .price-option .po-icon { font-size: 22px; display: block; margin-bottom: 6px; }
-  .price-option .po-label { font-size: 13px; font-weight: 600; color: var(--ink); display: block; }
-  .price-option .po-desc { font-size: 11px; color: var(--muted); margin-top: 2px; display: block; }
-  .price-option.selected-free .po-label { color: var(--free); }
-  .price-option.selected-sale .po-label { color: var(--green); }
-
-  .price-amount-field { display: none; }
-  .price-amount-field.visible { display: block; }
-
-  /* ── PHOTO UPLOAD ── */
-  .photo-upload {
-    border: 2px dashed var(--wire);
-    border-radius: 10px;
-    padding: 32px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    background: var(--bg);
-  }
-  .photo-upload:hover { border-color: var(--green); background: var(--green-bg); }
-  .photo-upload .pu-icon { font-size: 28px; display: block; margin-bottom: 10px; }
-  .photo-upload .pu-label { font-size: 13px; font-weight: 600; color: var(--ink); display: block; margin-bottom: 4px; }
-  .photo-upload .pu-hint { font-size: 11px; color: var(--muted); }
-
-  /* ── SUBMIT ── */
-  .form-submit-section {
-    padding: 24px 32px;
-    background: var(--subtle);
-    border-top: 1px solid var(--wire);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .submit-note { font-size: 12px; color: var(--muted); line-height: 1.5; max-width: 300px; }
-  .btn-submit {
-    background: var(--green);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 13px 32px;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: 'Open Sans', sans-serif;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.15s;
-  }
+  /* Submit bar */
+  .submit-bar { padding: 20px 28px; background: var(--subtle); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .submit-note { font-size: 12px; color: var(--muted); line-height: 1.5; margin: 0; max-width: 260px; }
+  .btn-submit { background: var(--green); color: white; border: none; border-radius: 6px; padding: 12px 28px; font-size: 14px; font-weight: 700; font-family: 'Montserrat', sans-serif; cursor: pointer; letter-spacing: 0.04em; white-space: nowrap; transition: background .15s; }
   .btn-submit:hover { background: #22743a; }
+  .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
 
-  /* ── SIDEBAR ── */
+  /* Sidebar */
   .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .side-card { background: white; border: 1.5px solid var(--wire); border-radius: 12px; padding: 20px; }
+  .side-card h4 { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 14px; }
+  .tip-item { font-size: 13px; color: var(--navy); line-height: 1.45; margin-bottom: 10px; }
+  .tip-item:last-child { margin-bottom: 0; }
+  .rule-card { background: #e8f4ec; border: 1px solid #b8dcc4; border-radius: 12px; padding: 20px; }
+  .rule-card h4 { color: var(--green); }
+  .rule-item { font-size: 12px; color: var(--navy); line-height: 1.45; margin-bottom: 8px; }
+  .rule-item:last-child { margin-bottom: 0; }
 
-  .tip-card {
-    background: var(--surface);
-    border: 1px solid var(--wire);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .tip-card h4 {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 14px;
-  }
-  .tip-list { display: flex; flex-direction: column; gap: 10px; }
-  .tip-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    font-size: 13px;
-    color: var(--ink);
-    line-height: 1.45;
-  }
-  .tip-item .ti { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
-
-  .rule-card {
-    background: var(--green-bg);
-    border: 1px solid #fdddd0;
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .rule-card h4 {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--green);
-    margin-bottom: 12px;
-  }
-  .rule-list { display: flex; flex-direction: column; gap: 8px; }
-  .rule-item {
-    display: flex;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--ink);
-    line-height: 1.45;
-  }
-  .rule-item::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-
-  .preview-card {
-    background: var(--surface);
-    border: 1px solid var(--wire);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .preview-card-header {
-    padding: 12px 16px;
-    background: var(--subtle);
-    border-bottom: 1px solid var(--wire);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .preview-inner { padding: 16px; }
-  .preview-img { height: 80px; background: var(--subtle); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px; }
-  .preview-title { font-size: 14px; font-weight: 600; color: var(--muted); font-style: italic; }
-  .preview-hint { font-size: 11px; color: rgba(120,113,108,0.6); margin-top: 4px; }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--ink);
-    margin-top: 64px;
-    padding: 24px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: rgba(255,255,255,0.35);
-  }
-  footer a { color: rgba(255,255,255,0.5); text-decoration: none; font-weight: 500; }
+  /* Breadcrumb */
+  .page-header { background: white; border-bottom: 1px solid var(--wire); padding: 20px 32px; }
+  .page-header h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 900; color: var(--navy); text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .page-header p { font-size: 13px; color: var(--muted); }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav class="site-nav">
-  <a class="logo" href="#">
-    <div class="logo-mark">SAH</div>
-    <span class="logo-text">southafricanhub<span>.nl</span></span>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">SAH</div>
+    <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
   </a>
   <div class="nav-links">
     <a href="directory.html">Directory</a>
     <a href="events.html">Events</a>
     <a href="markplaats.html" class="active">Markplaats</a>
     <a href="#">Resources</a>
+    <a href="directory.html#list-business" class="nav-cta">List Your Business →</a>
   </div>
 </nav>
 
-<!-- PAGE HEADER -->
 <div class="page-header">
-  <div class="breadcrumb">
-    <a href="markplaats.html">Markplaats</a>
-    <span>›</span>
-    <span>Post a Listing</span>
-  </div>
+  <div class="breadcrumb"><a href="markplaats.html">Markplaats</a> › Post a Listing</div>
   <h1>Post a Listing</h1>
   <p>Free to post · Community moderated · Live within 24 hours</p>
 </div>
 
-<!-- FORM -->
-<div style="max-width:860px;margin:0 auto;padding:40px 32px 80px;display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start">
+<div class="page-wrap">
 
-  <!-- LEFT: FORM CARD -->
-  <div style="background:white;border:1.5px solid var(--wire);border-radius:14px;overflow:hidden">
+  <!-- FORM -->
+  <div class="form-card">
 
-    <!-- Section 1 -->
-    <div style="padding:28px 32px;border-bottom:1px solid var(--wire)">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="background:var(--green);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px">1</span> Item details</div>
-      <div style="margin-bottom:14px">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Title <span style="color:var(--red)">*</span></label>
-        <input id="mp-title" type="text" placeholder="e.g. IKEA sofa, city bike, baby clothes…" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='#1a5c2a'" onblur="this.style.borderColor=''">
+    <!-- 1. Item details -->
+    <div class="form-sec">
+      <div class="sec-title"><span class="sec-num">1</span> Item details</div>
+      <div class="f-field">
+        <label class="f-label" for="f-title">Title <span class="req">*</span></label>
+        <input class="f-input" id="f-title" type="text" placeholder="e.g. IKEA sofa, city bike, baby clothes…">
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-        <div>
-          <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Category <span style="color:var(--red)">*</span></label>
-          <select id="mp-cat" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;background:white">
+      <div class="f-row">
+        <div class="f-field">
+          <label class="f-label" for="f-cat">Category <span class="req">*</span></label>
+          <select class="f-input" id="f-cat">
             <option value="">Select…</option>
-            <option>Furniture</option><option>Appliances</option><option>Baby &amp; Kids</option>
-            <option>Bikes</option><option>Books &amp; Study</option><option>Kitchen</option><option>Other</option>
+            <option>Furniture</option>
+            <option>Appliances</option>
+            <option>Baby &amp; Kids</option>
+            <option>Bikes</option>
+            <option>Books &amp; Study</option>
+            <option>Kitchen</option>
+            <option>Other</option>
           </select>
         </div>
-        <div>
-          <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Condition <span style="color:var(--red)">*</span></label>
-          <select id="mp-cond" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;background:white">
+        <div class="f-field">
+          <label class="f-label" for="f-cond">Condition <span class="req">*</span></label>
+          <select class="f-input" id="f-cond">
             <option value="">Select…</option>
-            <option>Like new</option><option>Good condition</option><option>Used — some wear</option><option>Needs repair</option>
+            <option>Like new</option>
+            <option>Good condition</option>
+            <option>Used — some wear</option>
+            <option>Needs repair</option>
           </select>
         </div>
       </div>
-      <div>
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Description <span style="color:var(--red)">*</span></label>
-        <textarea id="mp-desc" maxlength="400" placeholder="Describe the item — dimensions, colour, defects, collection notes…" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;resize:vertical;min-height:90px;line-height:1.6" onfocus="this.style.borderColor='#1a5c2a'" onblur="this.style.borderColor=''"></textarea>
-        <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:3px"><span id="char-count">0</span> / 400</div>
+      <div class="f-field">
+        <label class="f-label" for="f-desc">Description <span class="req">*</span></label>
+        <textarea class="f-input" id="f-desc" maxlength="400" placeholder="Describe the item — dimensions, colour, defects, collection notes…"></textarea>
+        <div class="char-hint"><span id="f-chars">0</span> / 400</div>
       </div>
     </div>
 
-    <!-- Section 2 -->
-    <div style="padding:28px 32px;border-bottom:1px solid var(--wire)">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="background:var(--green);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px">2</span> Pricing</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-        <div id="btn-free" onclick="setPrice('free')" style="border:2px solid var(--green);background:#e8f4ec;border-radius:10px;padding:16px;text-align:center;cursor:pointer">
-          <div style="font-size:22px;margin-bottom:6px">🎁</div>
-          <div style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--green)">Give for Free</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:3px">Pay it forward</div>
+    <!-- 2. Pricing -->
+    <div class="form-sec">
+      <div class="sec-title"><span class="sec-num">2</span> Pricing</div>
+      <div class="price-grid">
+        <div class="price-opt active" id="opt-free" onclick="setPrice('free')">
+          <span class="po-icon">🎁</span>
+          <div class="po-title">Give for Free</div>
+          <div class="po-sub">Pay it forward</div>
         </div>
-        <div id="btn-sale" onclick="setPrice('sale')" style="border:2px solid var(--wire);background:white;border-radius:10px;padding:16px;text-align:center;cursor:pointer">
-          <div style="font-size:22px;margin-bottom:6px">💰</div>
-          <div style="font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:var(--navy)">For Sale</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:3px">Set your price</div>
+        <div class="price-opt" id="opt-sale" onclick="setPrice('sale')">
+          <span class="po-icon">💰</span>
+          <div class="po-title">For Sale</div>
+          <div class="po-sub">Set your price</div>
         </div>
       </div>
-      <div id="price-wrap" style="display:none">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Asking price (€) <span style="color:var(--red)">*</span></label>
-        <input id="mp-price" type="number" min="1" placeholder="e.g. 25" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none" onfocus="this.style.borderColor='#1a5c2a'" onblur="this.style.borderColor=''">
+      <div id="price-wrap">
+        <label class="f-label" for="f-price">Asking price (€) <span class="req">*</span></label>
+        <input class="f-input" id="f-price" type="number" min="1" placeholder="e.g. 25">
       </div>
     </div>
 
-    <!-- Section 3 -->
-    <div style="padding:28px 32px;border-bottom:1px solid var(--wire)">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="background:var(--green);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px">3</span> Location &amp; contact</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
-        <div>
-          <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">City <span style="color:var(--red)">*</span></label>
-          <input id="mp-city" type="text" placeholder="e.g. Amsterdam" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none" onfocus="this.style.borderColor='#1a5c2a'" onblur="this.style.borderColor=''">
+    <!-- 3. Location & contact -->
+    <div class="form-sec">
+      <div class="sec-title"><span class="sec-num">3</span> Location &amp; contact</div>
+      <div class="f-row">
+        <div class="f-field">
+          <label class="f-label" for="f-city">City <span class="req">*</span></label>
+          <input class="f-input" id="f-city" type="text" placeholder="e.g. Amsterdam">
         </div>
-        <div>
-          <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Collection / delivery</label>
-          <select id="mp-delivery" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;background:white">
-            <option>Collection only</option><option>Delivery possible</option><option>Post / verzenden</option>
+        <div class="f-field">
+          <label class="f-label" for="f-delivery">Collection / delivery</label>
+          <select class="f-input" id="f-delivery">
+            <option>Collection only</option>
+            <option>Delivery possible</option>
+            <option>Post / verzenden</option>
           </select>
         </div>
       </div>
-      <div style="margin-bottom:14px">
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Your name <span style="color:var(--red)">*</span></label>
-        <input id="mp-name" type="text" placeholder="First name or full name" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none" onfocus="this.style.borderColor='#1a5c2a'" onblur="this.style.borderColor=''">
+      <div class="f-field">
+        <label class="f-label" for="f-name">Your name <span class="req">*</span></label>
+        <input class="f-input" id="f-name" type="text" placeholder="First name or full name">
       </div>
-      <div>
-        <label style="display:block;font-size:12px;font-weight:600;color:var(--navy);margin-bottom:5px">Contact email <span style="color:var(--red)">*</span> <span style="font-weight:400;color:var(--muted);font-size:11px">Not shown publicly</span></label>
-        <input id="mp-email" type="email" placeholder="you@email.com" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none" onfocus="this.style.borderColor='#1a5c2a'" onblur="this.style.borderColor=''">
+      <div class="f-field">
+        <label class="f-label" for="f-email">Contact email <span class="req">*</span> <span class="hint">Not shown publicly</span></label>
+        <input class="f-input" id="f-email" type="email" placeholder="you@email.com">
       </div>
     </div>
 
-    <!-- Section 4: Photo -->
-    <div style="padding:28px 32px;border-bottom:1px solid var(--wire)">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="background:var(--green);color:white;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px">4</span> Photo <span style="font-weight:400;font-size:10px;text-transform:none;letter-spacing:0">(optional but recommended)</span></div>
-      <input type="file" id="mp-photo" accept="image/jpeg,image/png,image/jpg,image/webp" style="display:none">
-      <div id="photo-drop" onclick="document.getElementById('mp-photo').click()" style="display:block;border:2px dashed var(--wire);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all .15s;background:var(--bg)" onmouseover="this.style.borderColor='#1a5c2a';this.style.background='#e8f4ec'" onmouseout="this.style.borderColor='';this.style.background='var(--bg)'">
-        <div id="photo-placeholder">
-          <div style="font-size:28px;margin-bottom:8px">📷</div>
-          <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px">Click to upload a photo</div>
-          <div style="font-size:11px;color:var(--muted)">JPG or PNG · Max 5MB</div>
+    <!-- 4. Photo -->
+    <div class="form-sec">
+      <div class="sec-title"><span class="sec-num">4</span> Photo <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(optional but recommended)</span></div>
+      <input type="file" id="f-photo" accept="image/*" style="display:none">
+      <div class="photo-box" id="photo-box" onclick="document.getElementById('f-photo').click()">
+        <div id="photo-empty">
+          <span class="pb-icon">📷</span>
+          <div class="pb-title">Click to upload a photo</div>
+          <div class="pb-hint">JPG or PNG · Max 5MB</div>
         </div>
-        <div id="photo-selected" style="display:none">
-          <img id="photo-preview-img" style="max-height:140px;border-radius:8px;margin-bottom:8px" alt="Preview">
-          <div style="font-size:12px;color:var(--green);font-weight:600" id="photo-filename"></div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">Click to change photo</div>
+        <div id="photo-preview-wrap">
+          <img id="photo-img" src="" alt="Preview">
+          <div class="pb-name" id="photo-name"></div>
+          <div class="pb-change">Click to change</div>
         </div>
       </div>
     </div>
 
     <!-- Submit -->
-    <div style="padding:24px 32px;background:var(--subtle);display:flex;align-items:center;justify-content:space-between;gap:16px">
-      <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.5;margin:0">Sent to <strong>info@southafricanhub.nl</strong> · reviewed within 24 hours</p>
-      <button id="mp-submit" onclick="submitListing(event)" style="background:var(--green);color:white;border:none;border-radius:6px;padding:13px 28px;font-size:14px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:0.04em;white-space:nowrap;transition:background .15s">Submit Listing →</button>
+    <div class="submit-bar">
+      <p class="submit-note">Sent to <strong>info@southafricanhub.nl</strong> — reviewed within 24 hours.</p>
+      <button class="btn-submit" id="btn-submit">Submit Listing →</button>
     </div>
 
-  </div><!-- end form card -->
+  </div><!-- end form-card -->
 
-  <!-- RIGHT: SIDEBAR -->
-  <div style="display:flex;flex-direction:column;gap:16px">
-    <div style="background:white;border:1.5px solid var(--wire);border-radius:12px;padding:20px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:14px">Tips for a great listing</div>
-      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--navy);line-height:1.45">
-        <div>📸 A clear photo gets 3× more responses</div>
-        <div>📏 Include dimensions for furniture</div>
-        <div>✅ Be honest about condition — it builds trust</div>
-        <div>🚗 State clearly if collection only</div>
-        <div>💬 We forward all enquiries to your email</div>
-      </div>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="side-card">
+      <h4>Tips for a great listing</h4>
+      <div class="tip-item">📸 A clear photo gets 3× more responses</div>
+      <div class="tip-item">📏 Include dimensions for furniture</div>
+      <div class="tip-item">✅ Be honest about condition — it builds trust</div>
+      <div class="tip-item">🚗 State clearly if collection only</div>
+      <div class="tip-item">💬 We forward all enquiries to your email</div>
     </div>
-    <div style="background:#e8f4ec;border:1px solid #b8dcc4;border-radius:12px;padding:20px">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:12px">Community guidelines</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--navy);line-height:1.45">
-        <div>✓ SA community members only</div>
-        <div>✓ Household items, bikes, books</div>
-        <div>✓ No commercial reselling</div>
-        <div>✓ One listing per item</div>
-        <div>✓ Mark as sold when gone</div>
-      </div>
+    <div class="rule-card">
+      <h4>Community guidelines</h4>
+      <div class="rule-item">✓ SA community members only</div>
+      <div class="rule-item">✓ Household items, bikes, books</div>
+      <div class="rule-item">✓ No commercial reselling</div>
+      <div class="rule-item">✓ One listing per item</div>
+      <div class="rule-item">✓ Mark as sold when gone</div>
     </div>
   </div>
 
-</div>
+</div><!-- end page-wrap -->
 
-<!-- FOOTER --><!-- FOOTER --><!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-left">
     <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
     <div class="footer-tagline">For South Africans in the Netherlands</div>
-    <div class="footer-links" style="margin-top:8px;">
-      <a href="directory.html">Directory</a><a href="events.html">Events</a><a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
+    <div class="footer-links" style="margin-top:8px">
+      <a href="directory.html">Directory</a><a href="events.html">Events</a>
+      <a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
     </div>
   </div>
   <div class="footer-right">
@@ -485,218 +249,106 @@
 </footer>
 
 <script>
-  var priceType = 'free';
+  // ── CHAR COUNTER ──
+  document.getElementById('f-desc').addEventListener('input', function() {
+    document.getElementById('f-chars').textContent = this.value.length;
+  });
 
+  // ── PRICE TOGGLE ──
+  var priceType = 'free';
   function setPrice(type) {
     priceType = type;
-    var btnFree = document.getElementById('btn-free');
-    var btnSale = document.getElementById('btn-sale');
-    var priceWrap = document.getElementById('price-wrap');
-    if (type === 'free') {
-      btnFree.style.cssText = 'border:2px solid var(--green);background:#e8f4ec;border-radius:10px;padding:16px;text-align:center;cursor:pointer';
-      btnFree.querySelector('div:nth-child(2)').style.color = 'var(--green)';
-      btnSale.style.cssText = 'border:2px solid var(--wire);background:white;border-radius:10px;padding:16px;text-align:center;cursor:pointer';
-      btnSale.querySelector('div:nth-child(2)').style.color = 'var(--navy)';
-      priceWrap.style.display = 'none';
-    } else {
-      btnSale.style.cssText = 'border:2px solid var(--green);background:#e8f4ec;border-radius:10px;padding:16px;text-align:center;cursor:pointer';
-      btnSale.querySelector('div:nth-child(2)').style.color = 'var(--green)';
-      btnFree.style.cssText = 'border:2px solid var(--wire);background:white;border-radius:10px;padding:16px;text-align:center;cursor:pointer';
-      btnFree.querySelector('div:nth-child(2)').style.color = 'var(--navy)';
-      priceWrap.style.display = 'block';
-    }
+    document.getElementById('opt-free').className = 'price-opt' + (type === 'free' ? ' active' : '');
+    document.getElementById('opt-sale').className = 'price-opt' + (type === 'sale' ? ' active' : '');
+    document.getElementById('price-wrap').style.display = type === 'sale' ? 'block' : 'none';
   }
-
-  document.getElementById('mp-desc').addEventListener('input', function() {
-    document.getElementById('char-count').textContent = this.value.length;
-  });
 
   // ── PHOTO UPLOAD ──
-  document.addEventListener('DOMContentLoaded', function() {
-    var photoInput = document.getElementById('mp-photo');
-    if (photoInput) {
-      photoInput.addEventListener('change', function() {
-        if (!this.files || !this.files[0]) return;
-        var file = this.files[0];
-        if (file.size > 5 * 1024 * 1024) {
-          alert('Photo must be under 5MB. Please choose a smaller image.');
-          this.value = '';
-          return;
-        }
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('photo-preview-img').src = e.target.result;
-          document.getElementById('photo-filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
-          document.getElementById('photo-placeholder').style.display = 'none';
-          document.getElementById('photo-selected').style.display = 'block';
-          document.getElementById('photo-drop').style.borderColor = '#1a5c2a';
-          document.getElementById('photo-drop').style.background = '#e8f4ec';
-        };
-        reader.readAsDataURL(file);
-      });
+  document.getElementById('f-photo').addEventListener('change', function() {
+    var file = this.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Photo must be under 5MB.');
+      this.value = '';
+      return;
     }
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      document.getElementById('photo-img').src = ev.target.result;
+      document.getElementById('photo-name').textContent = file.name + ' (' + Math.round(file.size/1024) + ' KB)';
+      document.getElementById('photo-empty').style.display = 'none';
+      document.getElementById('photo-preview-wrap').style.display = 'block';
+      document.getElementById('photo-box').classList.add('has-photo');
+    };
+    reader.readAsDataURL(file);
   });
 
-  function handlePhoto(input) {
-    // legacy fallback — do nothing, handled by addEventListener above
-  }
+  // ── SUBMIT ──
+  document.getElementById('btn-submit').addEventListener('click', async function() {
+    var title    = document.getElementById('f-title').value.trim();
+    var cat      = document.getElementById('f-cat').value;
+    var cond     = document.getElementById('f-cond').value;
+    var desc     = document.getElementById('f-desc').value.trim();
+    var city     = document.getElementById('f-city').value.trim();
+    var delivery = document.getElementById('f-delivery').value;
+    var name     = document.getElementById('f-name').value.trim();
+    var email    = document.getElementById('f-email').value.trim();
+    var price    = priceType === 'free' ? 'Free' : ('€' + document.getElementById('f-price').value);
+    var photo    = document.getElementById('f-photo');
 
-  async function submitListing(e) {
-    e.preventDefault();
-    var title    = document.getElementById('mp-title').value.trim();
-    var cat      = document.getElementById('mp-cat').value;
-    var cond     = document.getElementById('mp-cond').value;
-    var desc     = document.getElementById('mp-desc').value.trim();
-    var city     = document.getElementById('mp-city').value.trim();
-    var delivery = document.getElementById('mp-delivery').value;
-    var name     = document.getElementById('mp-name').value.trim();
-    var email    = document.getElementById('mp-email').value.trim();
-    var price    = priceType === 'free' ? 'Free' : ('\u20ac' + (document.getElementById('mp-price').value || ''));
-    var photoInput = document.getElementById('mp-photo');
-
-    if (!title)  { alert('Please enter an item title.'); return; }
-    if (!cat)    { alert('Please select a category.'); return; }
-    if (!cond)   { alert('Please select the condition.'); return; }
-    if (!desc)   { alert('Please add a description.'); return; }
-    if (!city)   { alert('Please enter your city.'); return; }
-    if (!name)   { alert('Please enter your name.'); return; }
+    if (!title)                { alert('Please enter a title.');           return; }
+    if (!cat)                  { alert('Please select a category.');       return; }
+    if (!cond)                 { alert('Please select the condition.');    return; }
+    if (!desc)                 { alert('Please add a description.');       return; }
+    if (!city)                 { alert('Please enter your city.');         return; }
+    if (!name)                 { alert('Please enter your name.');         return; }
     if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
-    if (priceType === 'sale' && !document.getElementById('mp-price').value) { alert('Please enter your asking price.'); return; }
+    if (priceType === 'sale' && !document.getElementById('f-price').value) {
+      alert('Please enter your asking price.'); return;
+    }
 
-    var btn = document.getElementById('mp-submit');
-    btn.textContent = 'Sending\u2026';
+    var btn = this;
+    btn.textContent = 'Sending…';
     btn.disabled = true;
 
+    // Use FormData for file upload support (Formspree Personal)
+    var fd = new FormData();
+    fd.append('_subject', 'Markplaats Listing — ' + title);
+    fd.append('_replyto', email);
+    fd.append('item', title);
+    fd.append('category', cat);
+    fd.append('condition', cond);
+    fd.append('description', desc);
+    fd.append('price', price);
+    fd.append('city', city);
+    fd.append('delivery', delivery);
+    fd.append('seller_name', name);
+    fd.append('seller_email', email);
+    if (photo.files && photo.files[0]) {
+      fd.append('photo', photo.files[0], photo.files[0].name);
+    }
+
     try {
-      // Use FormData so photo attaches as a real file
-      var fd = new FormData();
-      fd.append('_subject', 'Markplaats Listing \u2014 ' + title);
-      fd.append('_replyto', email);
-      fd.append('item', title);
-      fd.append('category', cat);
-      fd.append('condition', cond);
-      fd.append('description', desc);
-      fd.append('price', price);
-      fd.append('city', city);
-      fd.append('delivery', delivery);
-      fd.append('seller_name', name);
-      fd.append('seller_email', email);
-
-      // Attach photo if selected
-      if (photoInput.files && photoInput.files[0]) {
-        fd.append('photo', photoInput.files[0]);
-      }
-
       var res = await fetch('https://formspree.io/f/xqejqzjn', {
         method: 'POST',
-        headers: { 'Accept': 'application/json' }, // NO Content-Type — browser sets multipart boundary
+        headers: { 'Accept': 'application/json' },
         body: fd
       });
-
       if (res.ok) {
-        btn.textContent = '\u2705 Submitted!';
+        btn.textContent = '✅ Submitted!';
         btn.style.background = '#22743a';
-        document.querySelector('[style*="Sent to"]').innerHTML =
-          '\uD83C\uDF89 Listing submitted! We'll review it within 24 hours and confirm at <strong>' + email + '</strong>.';
+        document.querySelector('.submit-note').innerHTML =
+          '🎉 Submitted! We\'ll review it within 24 hours and confirm at <strong>' + email + '</strong>.';
       } else {
-        var data = await res.json();
-        throw new Error(data.error || 'Failed');
+        var data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Server error');
       }
     } catch(err) {
-      btn.textContent = 'Submit Listing \u2192';
+      btn.textContent = 'Submit Listing →';
       btn.disabled = false;
-      alert('Something went wrong: ' + err.message + '. Please email info@southafricanhub.nl directly.');
+      alert('Something went wrong (' + err.message + '). Please try again or email info@southafricanhub.nl.');
     }
-  }
-</script>
-
-<script>
-  function selectPrice(type) {
-    const optFree = document.getElementById('opt-free');
-    const optSale = document.getElementById('opt-sale');
-    const priceField = document.getElementById('price-field');
-    optFree.className = 'price-option';
-    optSale.className = 'price-option';
-    if (type === 'free') { optFree.classList.add('selected-free'); priceField.classList.remove('visible'); }
-    else { optSale.classList.add('selected-sale'); priceField.classList.add('visible'); }
-  }
-  document.addEventListener('DOMContentLoaded', () => {
-    const ta = document.querySelector('textarea');
-    if (ta) ta.addEventListener('input', function() { this.nextElementSibling.textContent = this.value.length + ' / 400'; });
   });
-
-  async function sendToFormspree(endpointId, data) {
-    try {
-      const res = await fetch(`https://formspree.io/f/${endpointId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      return res.ok;
-    } catch(e) { return false; }
-  }
-
-  async function submitMarkplaats(e) {
-    e.preventDefault();
-    const titleInput = document.querySelectorAll('.form-section input[type=text]')[0];
-    const titleVal   = titleInput ? titleInput.value.trim() : '';
-    const selects    = document.querySelectorAll('.form-section select');
-    const cat        = selects[0] ? selects[0].value : '';
-    const cond       = selects[1] ? selects[1].value : '';
-    const ta         = document.querySelector('textarea');
-    const desc       = ta ? ta.value.trim() : '';
-    const isFree     = document.getElementById('opt-free').classList.contains('selected-free');
-    const priceInp   = document.querySelector('#price-field input');
-    const price      = isFree ? 'Free' : (priceInp ? '\u20ac' + priceInp.value : 'N/A');
-    const delivery   = selects[2] ? selects[2].value : '';
-    const allInputs  = document.querySelectorAll('.form-section input[type=text], .form-section input[type=email]');
-    const city       = allInputs[allInputs.length - 2] ? allInputs[allInputs.length - 2].value.trim() : '';
-    const name       = allInputs[allInputs.length - 3] ? allInputs[allInputs.length - 3].value.trim() : '';
-    const emailInp   = document.querySelector('input[type=email]');
-    const email      = emailInp ? emailInp.value.trim() : '';
-    if (!titleVal || !cat || !desc || !city || !name || !email) {
-      showToast('\u26a0\ufe0f Please fill in all required fields.'); return;
-    }
-    const btn = e.target; btn.textContent = 'Sending\u2026'; btn.disabled = true;
-    const ok = await sendToFormspree('xqejqzjn', {
-      _subject: `Markplaats Listing \u2014 ${titleVal}`,
-      item: titleVal, category: cat, condition: cond,
-      price, delivery, city, description: desc,
-      seller_name: name, seller_email: email
-    });
-    if (ok) {
-      btn.textContent = '\u2705 Submitted!';
-      showToast('\u2705 Listing submitted \u2014 goes live within 24 hours.');
-    } else {
-      btn.textContent = 'Submit Listing \u2192'; btn.disabled = false;
-      showToast('\u26a0\ufe0f Something went wrong. Please try again.');
-    }
-  }
-    const btn2 = e.target; btn2.textContent = 'Sending\u2026'; btn2.disabled = true;
-    const ok = await sendToFormspree('xqejqzjn', {
-      _subject: 'Markplaats Listing \u2014 ' + titleVal,
-      item: titleVal, category: cat, condition: cond, price,
-      delivery, city, description: desc,
-      seller_name: name, seller_email: email
-    });
-    if (ok) {
-      btn2.textContent = '\u2705 Submitted!';
-      showToast('\u2705 Listing submitted \u2014 goes live within 24 hours.');
-    } else {
-      btn2.textContent = 'Submit Listing \u2192'; btn2.disabled = false;
-      showToast('\u26a0\ufe0f Something went wrong. Please try again.');
-    }
-  }
-
-  function showToast(msg) {
-    let t = document.getElementById('site-toast');
-    if (!t) { t = document.createElement('div'); t.id = 'site-toast'; t.className = 'toast'; t.innerHTML = '<span class="toast-icon"></span><span class="toast-msg"></span>'; document.body.appendChild(t); }
-    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}\u2705\u26a0\ufe0f]\s*/u, '');
-    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}\u2705\u26a0\ufe0f])/u)?.[1] || '';
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-<\/script>
-
+</script>
 </body>
 </html>
