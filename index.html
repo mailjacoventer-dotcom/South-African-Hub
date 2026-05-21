@@ -26,13 +26,12 @@
   }
   .hero-content {
     position: relative; z-index: 1;
-    text-align: center;
-    padding: 40px 48px 36px;
-    width: 65%;
+    text-align: left;
+    padding: 60px 48px 48px 60px;
+    width: 55%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     min-height: 520px;
   }
   .hero-eyebrow {
@@ -40,7 +39,6 @@
     font-size: 11px; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase;
     color: #1a5c2a; margin-bottom: 12px;
-    text-align: center;
   }
   .hero h1 {
     font-family: 'Montserrat', sans-serif;
@@ -49,7 +47,6 @@
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: -0.01em;
-    text-align: center;
   }
   .hero h1 .line2 { font-size: 46px; color: #1a5c2a; display: block; }
   .hero h1 .line3 {
@@ -59,20 +56,19 @@
   .hero-tagline {
     font-size: 15px; line-height: 1.7;
     color: #3a4a5c;
-    max-width: 520px; margin: 10px auto 0;
+    max-width: 440px; margin: 18px 0 28px;
     font-family: 'Open Sans', sans-serif;
-    text-align: center;
   }
   .hero-btns {
-    display: flex; gap: 8px;
-    flex-wrap: nowrap; justify-content: center;
+    display: flex; gap: 10px;
+    flex-wrap: nowrap; justify-content: flex-start;
     margin-bottom: 0;
     align-items: center;
   }
   .hero-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 11px 16px; border-radius: 6px;
-    font-size: 11px; font-weight: 800;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 12px 18px; border-radius: 6px;
+    font-size: 12px; font-weight: 800;
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 0.05em; text-transform: uppercase;
     text-decoration: none; cursor: pointer; border: none;
@@ -91,22 +87,21 @@
   /* Hero pillars */
   .hero-pillars {
     display: flex; gap: 0;
-    justify-content: center;
+    justify-content: flex-start;
     border-top: 1px solid rgba(13,31,60,0.12);
-    padding-top: 20px;
-    margin-top: 20px;
+    padding-top: 24px;
+    margin-top: 24px;
     flex-wrap: nowrap;
-    width: 100%;
   }
   .hero-pillar {
-    display: flex; align-items: flex-start; gap: 10px;
-    padding: 0 20px;
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 0 24px 0 0;
+    margin-right: 24px;
     border-right: 1px solid rgba(13,31,60,0.12);
     cursor: pointer; transition: opacity 0.15s;
     text-align: left;
-    flex: 1;
   }
-  .hero-pillar:last-child { border-right: none; }
+  .hero-pillar:last-child { border-right: none; margin-right: 0; }
   .hero-pillar:hover { opacity: 0.85; }
   .hero-pillar .p-icon-circle {
     width: 40px; height: 40px; border-radius: 50%;
@@ -708,7 +703,7 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-text" style="margin-bottom:24px">
+    <div class="hero-text">
       <div class="hero-eyebrow">southafricanhub.nl</div>
       <h1>
         South African
