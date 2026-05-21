@@ -154,6 +154,18 @@
   .post-cta p { color: rgba(255,255,255,0.55); font-size: 14px; }
   .btn-post { background: var(--green); color: white; padding: 13px 28px; border-radius: 6px; font-size: 14px; font-weight: 700; font-family: 'Montserrat', sans-serif; border: 2px solid var(--green); cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: none; display: inline-block; letter-spacing: 0.04em; transition: all 0.15s; }
   .btn-post:hover { background: transparent; color: var(--green); }
+
+@media (max-width: 768px) {
+  .listings-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  .page-body { padding: 20px 16px 60px !important; }
+  .post-cta { flex-direction: column !important; padding: 28px 20px !important; }
+  .listing-modal { max-width: 100% !important; }
+  .lm-photos { height: 220px !important; }
+  .mp-filter-bar { padding: 10px 12px !important; overflow-x: auto !important; flex-wrap: nowrap !important; }
+}
+@media (max-width: 480px) {
+  .listings-grid { grid-template-columns: 1fr !important; }
+}
 </style>
 </head>
 <body>
@@ -165,6 +177,17 @@
     <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
   </a>
   <div class="nav-links">
+    <a href="directory.html">Directory</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html" class="active">Markplaats</a>
+    <a href="resources.html">Resources</a>
+    <a href="markplaats-post.html" class="nav-cta">+ Post a Listing</a>
+  </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="mobile-menu" id="mobile-menu">
     <a href="directory.html">Directory</a>
     <a href="events.html">Events</a>
     <a href="markplaats.html" class="active">Markplaats</a>

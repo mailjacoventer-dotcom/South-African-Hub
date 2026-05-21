@@ -109,6 +109,14 @@
   .f-submit { width:100%; background:var(--ink); color:white; border:none; border-radius:6px; padding:12px; font-size:14px; font-weight:600; font-family:"Open Sans",sans-serif; cursor:pointer; margin-top:6px; transition:background .15s; }
   .f-submit:hover { background:#2e2a28; }
   .f-note { font-size:11px; color:var(--muted); margin-top:8px; }
+
+@media (max-width: 768px) {
+  .biz-grid { grid-template-columns: 1fr !important; padding: 16px !important; gap: 12px !important; }
+  .page-layout { grid-template-columns: 1fr !important; }
+  .listing-form-panel { border-left: none !important; border-top: 1px solid var(--wire); }
+  .biz-modal-inner { flex-direction: column !important; }
+  .modal-left { width: 100% !important; }
+}
 </style>
 </head>
 <body>
@@ -119,6 +127,17 @@
     <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
   </a>
   <div class="nav-links">
+    <a href="directory.html" class="active">Directory</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html">Markplaats</a>
+    <a href="resources.html">Resources</a>
+    <a href="#list-business" class="nav-cta">List Your Business →</a>
+  </div>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="mobile-menu" id="mobile-menu">
     <a href="directory.html" class="active">Directory</a>
     <a href="events.html">Events</a>
     <a href="markplaats.html">Markplaats</a>
