@@ -105,9 +105,9 @@
   <h1>Upcoming <em>Events</em></h1>
   <p>Braais, networking drinks, workshops, and more — get together with the SA community across the Netherlands.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="n">8</div><div class="l">Events this month</div></div>
-    <div class="hero-stat"><div class="n">6</div><div class="l">Cities</div></div>
-    <div class="hero-stat"><div class="n">Free</div><div class="l">Most events</div></div>
+    <div class="hero-stat"><div class="n">1</div><div class="l">Event this month</div></div>
+    <div class="hero-stat"><div class="n">1</div><div class="l">City</div></div>
+    <div class="hero-stat"><div class="n">Free</div><div class="l">To submit</div></div>
   </div>
 </div>
 
@@ -126,11 +126,32 @@
 
 <div class="page-body">
 
-  <div style="text-align:center;padding:60px 20px;color:var(--muted)">
-    <div style="font-size:48px;margin-bottom:16px">📅</div>
-    <div style="font-family:'Montserrat',sans-serif;font-size:18px;font-weight:800;color:var(--navy);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.02em">No events yet</div>
-    <p style="font-size:14px;line-height:1.7;max-width:400px;margin:0 auto 24px">Be the first to submit an event for the SA community in the Netherlands.</p>
-    <button class="btn-green" onclick="openEventSubmit()">Submit an Event</button>
+  <div class="section-divider">May 2026</div>
+  <div class="events-grid">
+
+    <div class="event-card" data-type="own" data-kaartjies="https://kaartjies.nl/country-is-for-me/" data-organiser="wian@marketingzoo.net">
+      <div class="event-banner">
+        <img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779364295/CIFM_1_popeix.jpg" alt="Netherlands Goes Nashville" class="loaded" style="object-position:top">
+        <div class="event-banner-hover"><span>🎟️ Get Tickets</span></div>
+      </div>
+      <div class="event-top">
+        <div class="event-date"><div class="day">31</div><div class="month">May</div></div>
+        <div class="event-divider"></div>
+        <div><div class="event-city">Haarlem</div><div class="event-time">13:00 – 16:00</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-community">Live Music</span>
+        <div class="event-title">Netherlands Goes Nashville</div>
+        <div class="event-desc">Country Is For Me LIVE — Demi Lee Moore & Roan Ash perform an exclusive, intimate acoustic show at Haarlem Rugby Club. Limited tickets!</div>
+        <div class="event-details">
+          <div class="event-detail">📍 Haarlem Rugby Club</div>
+          <div class="event-detail">🚪 Doors 13:00 · Show 14:00</div>
+          <div class="event-detail">🎟️ Limited tickets · countryisforme.nl</div>
+        </div>
+        <button class="btn-rsvp" onclick="openRsvp(this)">Get Tickets →</button>
+      </div>
+    </div>
+
   </div>
 
   <div style="margin-top:48px">
@@ -413,6 +434,11 @@
     t.classList.add('show');
     setTimeout(function() { t.classList.remove('show'); }, 3500);
   }
+
+  // Style own-event buttons
+  document.querySelectorAll('.event-card[data-type="own"] .btn-rsvp').forEach(function(b) {
+    b.style.background = '#c8102e';
+  });
 
   document.getElementById('rsvp-modal').addEventListener('click', function(e) { if (e.target===this) closeRsvp(); });
   document.getElementById('event-modal').addEventListener('click', function(e) { if (e.target===this) closeEventSubmit(); });
