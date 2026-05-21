@@ -81,9 +81,10 @@
     gap: 24px; margin-bottom: 48px;
     position: relative; overflow: hidden;
   }
-  .post-job-band::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(26,92,42,0.2) 0%, transparent 70%); }
-  .post-job-band h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; color: white; margin-bottom: 6px; text-transform: uppercase; }
-  .post-job-band p { color: rgba(255,255,255,0.5); font-size: 13px; }
+  .post-job-band::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(26,92,42,0.2) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+  .post-job-band h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; color: white; margin-bottom: 6px; text-transform: uppercase; position: relative; z-index: 1; }
+  .post-job-band p { color: rgba(255,255,255,0.5); font-size: 13px; position: relative; z-index: 1; }
+  .post-job-band .btn-green { position: relative; z-index: 1; }
 
   /* Empty state */
   .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
