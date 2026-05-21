@@ -6,78 +6,106 @@
 <title>Business Directory — southafricanhub.nl</title>
 <link rel="stylesheet" href="shared.css">
 <style>
-  .page-body { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+  /* ── PAGE STYLES ── */
+  .page-body { max-width: 1140px; margin: 0 auto; padding: 32px 32px 80px; }
 
-  /* SEARCH */
-  .search-row { display: flex; gap: 10px; margin-bottom: 28px; }
-  .search-row input { flex: 1; border: 1.5px solid var(--wire); border-radius: var(--radius-sm); padding: 11px 16px; font-size: 14px; font-family: 'Outfit', sans-serif; outline: none; background: var(--surface); transition: border-color 0.15s; }
-  .search-row input:focus { border-color: var(--accent); }
-  .search-row button { background: var(--ink); color: white; border: none; border-radius: var(--radius-sm); padding: 11px 22px; font-size: 14px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; }
+  /* Search */
+  .search-row { display:flex; gap:10px; margin-bottom:28px; }
+  .search-row input { flex:1; border:1.5px solid var(--wire); border-radius:var(--radius-sm); padding:11px 16px; font-size:14px; font-family:"Outfit",sans-serif; outline:none; background:var(--surface); transition:border-color .15s; }
+  .search-row input:focus { border-color:var(--accent); }
+  .search-row button { background:var(--ink); color:white; border:none; border-radius:var(--radius-sm); padding:11px 22px; font-size:14px; font-weight:600; font-family:"Outfit",sans-serif; cursor:pointer; }
 
-  /* DIRECTORY GRID */
-  .dir-full-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .dir-full-card {
-    background: var(--surface); border: 1px solid var(--wire);
-    border-radius: var(--radius-md); padding: 20px;
-    text-decoration: none; color: inherit;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    display: flex; flex-direction: column; gap: 12px;
+  /* Result count */
+  .result-count { font-size:13px; color:var(--muted); margin-bottom:20px; }
+  .result-count strong { color:var(--ink); }
+
+  /* Cards grid */
+  .biz-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .biz-card {
+    background:var(--surface); border:1px solid var(--wire);
+    border-radius:12px; padding:20px;
+    display:flex; flex-direction:column; gap:12px;
+    cursor:pointer;
+    transition:transform .18s, box-shadow .18s, border-color .18s;
   }
-  .dir-full-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); border-color: var(--accent); }
-  .dir-card-top { display: flex; gap: 14px; align-items: flex-start; }
-  .dir-icon-lg { width: 44px; height: 44px; background: var(--subtle); border-radius: var(--radius-sm); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-  .dir-name { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
-  .dir-cat-tag { display: inline-block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; background: var(--subtle); color: var(--muted); border-radius: 3px; padding: 2px 7px; }
-  .dir-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .dir-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--wire); }
-  .dir-loc { font-size: 12px; color: var(--green); }
-  .dir-web { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 500; } a.dir-web:hover { text-decoration: underline; }
+  .biz-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.08); border-color:var(--accent); }
+  .biz-card-top { display:flex; gap:14px; align-items:flex-start; }
+  .biz-icon { width:44px; height:44px; background:var(--subtle); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .biz-name { font-weight:700; font-size:15px; margin-bottom:4px; color:var(--ink); }
+  .biz-cat { display:inline-block; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.07em; background:var(--subtle); color:var(--muted); border-radius:3px; padding:2px 7px; }
+  .biz-desc { font-size:13px; color:var(--muted); line-height:1.6; flex:1; }
+  .biz-foot { display:flex; justify-content:space-between; align-items:center; padding-top:12px; border-top:1px solid var(--wire); margin-top:auto; }
+  .biz-city { font-size:12px; color:var(--green); }
+  .biz-link { font-size:12px; color:var(--accent); font-weight:500; }
 
-  /* MAP VIEW */
-  #dir-map-view { display: none !important; }
-  #dir-map-view.visible { display: block !important; }
-  #dir-list-view { display: grid; }
-  #dir-list-view.hidden { display: none !important; }
-  .map-full { display: grid; grid-template-columns: 1fr 320px; gap: 16px; height: 520px; }
-  .map-canvas { background: #dde8d0; border: 1px solid var(--wire); border-radius: var(--radius-md); position: relative; overflow: hidden; }
-  .map-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 44px 44px; }
-  .map-pin { position: absolute; transform: translate(-50%,-100%); cursor: pointer; }
-  .map-pin-dot { width: 26px; height: 26px; background: var(--accent); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: transform 0.15s; }
-  .map-pin:hover .map-pin-dot { transform: rotate(-45deg) scale(1.2); }
-  .map-pin-label { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white; font-size: 10px; white-space: nowrap; padding: 3px 7px; border-radius: 4px; font-weight: 600; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
-  .map-pin:hover .map-pin-label { opacity: 1; }
-  .map-city-lbl { position: absolute; font-size: 10px; color: rgba(0,0,0,0.28); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
-  .map-legend-box { position: absolute; bottom: 12px; left: 12px; background: white; border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 11px; display: flex; gap: 12px; }
-  .leg-item { display: flex; align-items: center; gap: 5px; color: var(--muted); }
-  .leg-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .map-sidebar-dir { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-  .map-side-item { background: var(--surface); border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 12px; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: border-color 0.15s; }
-  .map-side-item:hover { border-color: var(--accent); }
-  .map-side-item .n { font-weight: 600; font-size: 13px; }
-  .map-side-item .c { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .map-side-item .l { font-size: 11px; color: var(--green); margin-top: 4px; }
+  /* City view */
+  .city-section { padding:8px 0 32px; }
+  .city-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+  .city-pill {
+    padding:6px 14px; border-radius:20px; font-size:12px; font-weight:500;
+    border:1px solid var(--wire); background:var(--bg); color:var(--ink);
+    cursor:pointer; font-family:"Outfit",sans-serif; transition:all .15s;
+  }
+  .city-pill:hover { border-color:var(--ink); }
+  .city-pill.active { background:var(--ink); color:white; border-color:var(--ink); }
 
-  /* LISTING FORM */
-  .listing-section { margin-top: 60px; padding-top: 48px; border-top: 2px solid var(--wire); }
-  .listing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--wire); border-radius: var(--radius-lg); overflow: hidden; margin-top: 24px; }
-  .listing-left { background: var(--accent); padding: 40px; }
-  .listing-left h3 { font-family: 'Playfair Display', serif; font-size: 26px; color: white; margin-bottom: 10px; }
-  .listing-left p { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.65; }
-  .perks-box { margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.12); }
-  .perks-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
-  .perks-list { display: flex; flex-direction: column; gap: 7px; }
-  .perks-list li { list-style: none; font-size: 13px; color: rgba(255,255,255,0.85); }
-  .listing-right { background: var(--subtle); padding: 40px; }
-  .listing-right h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-bottom: 20px; }
-  .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
-  .f-field { display: flex; flex-direction: column; gap: 5px; }
-  .f-field label { font-size: 12px; font-weight: 600; color: var(--ink); }
-  .f-field input, .f-field select, .f-field textarea { width: 100%; border: 1.5px solid var(--wire); border-radius: var(--radius-sm); padding: 10px 13px; font-size: 13px; font-family: 'Outfit', sans-serif; background: var(--surface); color: var(--ink); outline: none; transition: border-color 0.15s; }
-  .f-field input:focus, .f-field select:focus, .f-field textarea:focus { border-color: var(--accent); }
-  .f-field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
-  .f-submit { width: 100%; background: var(--ink); color: white; border: none; border-radius: var(--radius-sm); padding: 12px; font-size: 14px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; margin-top: 6px; transition: background 0.15s; }
-  .f-submit:hover { background: #2e2a28; }
-  .f-note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+  /* Modal */
+  .modal-bg {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,.55); z-index:999;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-bg.open { display:flex; }
+  .modal-box {
+    background:white; border-radius:16px; width:100%; max-width:460px;
+    overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,.22);
+    animation:popIn .2s ease;
+  }
+  @keyframes popIn { from { transform:scale(.95); opacity:0 } to { transform:scale(1); opacity:1 } }
+  .modal-head { background:var(--ink); padding:28px; position:relative; }
+  .modal-close {
+    position:absolute; top:14px; right:14px; background:rgba(255,255,255,.12);
+    border:none; color:white; width:30px; height:30px; border-radius:50%;
+    font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover { background:rgba(255,255,255,.22); }
+  .modal-emo { font-size:34px; display:block; margin-bottom:10px; }
+  .modal-name { font-family:"Playfair Display",serif; font-size:22px; color:white; margin-bottom:8px; }
+  .modal-cat-badge { display:inline-block; background:var(--accent); color:white; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; padding:3px 10px; border-radius:3px; }
+  .modal-body { padding:24px; }
+  .modal-desc { font-size:14px; color:var(--ink); line-height:1.7; margin-bottom:18px; }
+  .modal-meta { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .modal-row { font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center; }
+  .modal-row strong { color:var(--ink); }
+  .modal-actions { display:flex; gap:10px; }
+  .modal-btn-primary { flex:1; background:var(--accent); color:white; border:none; border-radius:6px; padding:12px; font-size:14px; font-weight:600; font-family:"Outfit",sans-serif; cursor:pointer; text-decoration:none; text-align:center; display:block; }
+  .modal-btn-primary:hover { background:var(--accent-hover); }
+  .modal-btn-secondary { flex:1; background:var(--subtle); color:var(--ink); border:1px solid var(--wire); border-radius:6px; padding:12px; font-size:14px; font-weight:500; font-family:"Outfit",sans-serif; cursor:pointer; }
+
+  /* List / City toggle */
+  #city-section { display:none; }
+
+  /* Listing form */
+  .listing-section { margin-top:60px; padding-top:48px; border-top:2px solid var(--wire); }
+  .listing-grid { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--wire); border-radius:14px; overflow:hidden; margin-top:24px; }
+  .listing-left { background:var(--accent); padding:40px; }
+  .listing-left h3 { font-family:"Playfair Display",serif; font-size:26px; color:white; margin-bottom:10px; }
+  .listing-left p { color:rgba(255,255,255,.75); font-size:14px; line-height:1.65; }
+  .perks-box { margin-top:20px; padding:16px; background:rgba(255,255,255,.1); border-radius:6px; border:1px solid rgba(255,255,255,.12); }
+  .perks-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:rgba(255,255,255,.5); margin-bottom:10px; }
+  .perks-list { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .perks-list li { font-size:13px; color:rgba(255,255,255,.85); }
+  .listing-right { background:var(--subtle); padding:40px; }
+  .listing-right h4 { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); margin-bottom:20px; }
+  .f-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+  .f-field { display:flex; flex-direction:column; gap:5px; }
+  .f-field label { font-size:12px; font-weight:600; color:var(--ink); }
+  .f-field input, .f-field select, .f-field textarea { width:100%; border:1.5px solid var(--wire); border-radius:6px; padding:10px 13px; font-size:13px; font-family:"Outfit",sans-serif; background:var(--surface); color:var(--ink); outline:none; transition:border-color .15s; }
+  .f-field input:focus, .f-field select:focus, .f-field textarea:focus { border-color:var(--accent); }
+  .f-field textarea { resize:vertical; min-height:80px; line-height:1.6; }
+  .f-submit { width:100%; background:var(--ink); color:white; border:none; border-radius:6px; padding:12px; font-size:14px; font-weight:600; font-family:"Outfit",sans-serif; cursor:pointer; margin-top:6px; transition:background .15s; }
+  .f-submit:hover { background:#2e2a28; }
+  .f-note { font-size:11px; color:var(--muted); margin-top:8px; }
 </style>
 </head>
 <body>
@@ -96,424 +124,469 @@
   </div>
 </nav>
 
+<!-- HERO -->
 <div class="page-hero-band">
   <div class="section-eyebrow">SA Business Directory</div>
   <h1>Find trusted<br><em>SA businesses</em></h1>
-  <p>South African professionals and entrepreneurs across the Netherlands — vetted by the community.</p>
+  <p>South African professionals and entrepreneurs across the Netherlands.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="n">23</div><div class="l">Businesses listed</div></div>
+    <div class="hero-stat"><div class="n">23</div><div class="l">Businesses</div></div>
     <div class="hero-stat"><div class="n">8</div><div class="l">Categories</div></div>
-    <div class="hero-stat"><div class="n">12</div><div class="l">Cities</div></div>
+    <div class="hero-stat"><div class="n">15</div><div class="l">Cities</div></div>
   </div>
 </div>
 
+<!-- FILTER BAR -->
 <div class="filter-bar">
-  <div class="pill active" onclick="filterCat(this)">All</div>
-  <div class="pill" onclick="filterCat(this)">Property & Housing</div>
-  <div class="pill" onclick="filterCat(this)">Tax & Accounting</div>
-  <div class="pill" onclick="filterCat(this)">Legal</div>
-  <div class="pill" onclick="filterCat(this)">Health & Wellness</div>
-  <div class="pill" onclick="filterCat(this)">Marketing & Creative</div>
-  <div class="pill" onclick="filterCat(this)">Recruitment</div>
-  <div class="pill" onclick="filterCat(this)">Food & Retail</div>
-  <div class="pill" onclick="filterCat(this)">Professional Services</div>
+  <button class="pill active" id="cat-all">All</button>
+  <button class="pill" data-cat="Property &amp; Housing">Property &amp; Housing</button>
+  <button class="pill" data-cat="Tax &amp; Accounting">Tax &amp; Accounting</button>
+  <button class="pill" data-cat="Legal">Legal</button>
+  <button class="pill" data-cat="Health &amp; Wellness">Health &amp; Wellness</button>
+  <button class="pill" data-cat="Marketing &amp; Creative">Marketing &amp; Creative</button>
+  <button class="pill" data-cat="Recruitment">Recruitment</button>
+  <button class="pill" data-cat="Food &amp; Retail">Food &amp; Retail</button>
+  <button class="pill" data-cat="Professional Services">Professional Services</button>
   <div class="view-toggle">
-    <button class="toggle-btn on" id="btn-list" onclick="showList()">≡ List</button>
-    <button class="toggle-btn off" id="btn-map" onclick="showMap()">⊕ City</button>
+    <button class="toggle-btn on" id="btn-list">&#9776; List</button>
+    <button class="toggle-btn off" id="btn-city">&#8984; City</button>
   </div>
 </div>
 
+<!-- MAIN BODY -->
 <div class="page-body">
   <div class="search-row">
-    <input type="text" placeholder="Search businesses, services, or city…" id="dir-search">
-    <button>Search</button>
+    <input type="text" id="search-input" placeholder="Search businesses, services, or city…">
+    <button id="search-btn">Search</button>
   </div>
+  <div class="result-count">Showing <strong id="result-num">23</strong> businesses</div>
 
   <!-- LIST VIEW -->
-  <div id="dir-list-view">
-    <div class="dir-full-grid" id="dir-full-grid">
-      <div class="dir-full-card" data-cat="Tax & Accounting" onclick="openBiz(0)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">📊</div>
-          <div>
-            <div class="dir-name">Advisory Group</div>
-            <span class="dir-cat-tag">Tax & Accounting</span>
-          </div>
-        </div>
-        <div class="dir-desc">Accounting, tax, VAT, payroll and financial advisory for growing SMEs and ZZP'ers</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Almere</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Professional Services" onclick="openBiz(1)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🏡</div>
-          <div>
-            <div class="dir-name">Ruimte en Rust</div>
-            <span class="dir-cat-tag">Professional Services</span>
-          </div>
-        </div>
-        <div class="dir-desc">Home organisation and deep cleaning services for a clean, organised and stress-free home</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Netherlands</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Health & Wellness" onclick="openBiz(2)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🧠</div>
-          <div>
-            <div class="dir-name">Sanet van Tonder Counselling</div>
-            <span class="dir-cat-tag">Health & Wellness</span>
-          </div>
-        </div>
-        <div class="dir-desc">Counselling for individuals, couples and families focused on mental health, relationships and life transitions</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Netherlands</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Health & Wellness" onclick="openBiz(3)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">💪</div>
-          <div>
-            <div class="dir-name">LuusFit</div>
-            <span class="dir-cat-tag">Health & Wellness</span>
-          </div>
-        </div>
-        <div class="dir-desc">Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Leiden</span>
-          <span class="dir-web" style="color:var(--muted)">No website</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Professional Services" onclick="openBiz(4)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🪵</div>
-          <div>
-            <div class="dir-name">Hardehout</div>
-            <span class="dir-cat-tag">Professional Services</span>
-          </div>
-        </div>
-        <div class="dir-desc">Supply of premium hardwood for braai, fireplace and home heating in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Bitgummole</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Marketing & Creative" onclick="openBiz(5)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🎨</div>
-          <div>
-            <div class="dir-name">Marketing Zoo</div>
-            <span class="dir-cat-tag">Marketing & Creative</span>
-          </div>
-        </div>
-        <div class="dir-desc">Full-service marketing agency offering branding, digital marketing, social media, design, websites and event activations</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Almere</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Property & Housing" onclick="openBiz(6)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🏠</div>
-          <div>
-            <div class="dir-name">Expat Things</div>
-            <span class="dir-cat-tag">Property & Housing</span>
-          </div>
-        </div>
-        <div class="dir-desc">Independent rental and buying agent supporting expats with housing search and relocation in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Hilversum</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(7)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🎁</div>
-          <div>
-            <div class="dir-name">Make-It-Special</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">Curated gift boxes and personalised gifting with a South African touch for special occasions</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Heemskerk</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(8)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🛒</div>
-          <div>
-            <div class="dir-name">The Lekker Store</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">Online and in-store South African food products and treats in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Utrecht</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Property & Housing" onclick="openBiz(9)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🔑</div>
-          <div>
-            <div class="dir-name">Expat Rental Solutions</div>
-            <span class="dir-cat-tag">Property & Housing</span>
-          </div>
-        </div>
-        <div class="dir-desc">Independent rental search and relocation specialists supporting expats with housing, moving and settling-in services</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Utrecht</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(10)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🍰</div>
-          <div>
-            <div class="dir-name">Thuisgebak</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">Homemade rusks, fudge and traditional South African baked goods available for delivery across the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Apeldoorn</span>
-          <span class="dir-web" style="color:var(--muted)">No website</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(11)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">☕</div>
-          <div>
-            <div class="dir-name">Amstel Koffie</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">Specialty coffee roastery supplying high-quality roasted coffee beans for home use and B2B supply to cafes and businesses</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Netherlands</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Marketing & Creative" onclick="openBiz(12)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🎬</div>
-          <div>
-            <div class="dir-name">Van Rock Media</div>
-            <span class="dir-cat-tag">Marketing & Creative</span>
-          </div>
-        </div>
-        <div class="dir-desc">Professional video and media production helping businesses create high-quality content, tell their story and grow their brand</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Zaandam</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Property & Housing" onclick="openBiz(13)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🏘️</div>
-          <div>
-            <div class="dir-name">Homes for Expats</div>
-            <span class="dir-cat-tag">Property & Housing</span>
-          </div>
-        </div>
-        <div class="dir-desc">Assists with international moves and relocation support for expats in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Netherlands</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Professional Services" onclick="openBiz(14)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🎭</div>
-          <div>
-            <div class="dir-name">Kiln & Kettle</div>
-            <span class="dir-cat-tag">Professional Services</span>
-          </div>
-        </div>
-        <div class="dir-desc">Ceramic painting cafe offering creative, hands-on experiences for individuals, groups and events</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Heemstede</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(15)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🍽️</div>
-          <div>
-            <div class="dir-name">De Bees Hive</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">Family-run restaurant offering a warm, welcoming dining experience</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Utrecht</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(16)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🛍️</div>
-          <div>
-            <div class="dir-name">Uit Afrika</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">South African online store offering food products, snacks and speciality items in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Meerssen</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Property & Housing" onclick="openBiz(17)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🏠</div>
-          <div>
-            <div class="dir-name">J&amp;B Makelaars</div>
-            <span class="dir-cat-tag">Property & Housing</span>
-          </div>
-        </div>
-        <div class="dir-desc">Real estate agency assisting with property sales, purchases and housing guidance in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Woerden</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Food & Retail" onclick="openBiz(18)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🧁</div>
-          <div>
-            <div class="dir-name">Whisk and Bake</div>
-            <span class="dir-cat-tag">Food & Retail</span>
-          </div>
-        </div>
-        <div class="dir-desc">Bakery offering cupcakes, cakes, wedding cakes and delicious South African bakes</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Gouda</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Health & Wellness" onclick="openBiz(19)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">✂️</div>
-          <div>
-            <div class="dir-name">Bella Donna Hairstylists</div>
-            <span class="dir-cat-tag">Health & Wellness</span>
-          </div>
-        </div>
-        <div class="dir-desc">South African hairstylist situated in Utrecht</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Utrecht</span>
-          <span class="dir-web" style="color:var(--muted)">No website</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Health & Wellness" onclick="openBiz(20)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🦷</div>
-          <div>
-            <div class="dir-name">Tandartspraktijk Bitgummole</div>
-            <span class="dir-cat-tag">Health & Wellness</span>
-          </div>
-        </div>
-        <div class="dir-desc">Dental practice in Friesland providing professional dental care services</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Bitgummole</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Property & Housing" onclick="openBiz(21)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🗝️</div>
-          <div>
-            <div class="dir-name">The Dutch Key</div>
-            <span class="dir-cat-tag">Property & Housing</span>
-          </div>
-        </div>
-        <div class="dir-desc">Helping expats find and secure rental homes in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 South Holland</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-      <div class="dir-full-card" data-cat="Health & Wellness" onclick="openBiz(22)">
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">🌱</div>
-          <div>
-            <div class="dir-name">Grow Nova</div>
-            <span class="dir-cat-tag">Health & Wellness</span>
-          </div>
-        </div>
-        <div class="dir-desc">Leadership and life coaching for expats navigating personal and professional growth in the Netherlands</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 Den Haag</span>
-          <span class="dir-web">Visit website →</span>
-        </div>
-      </div>
-    </div>
+  <div id="list-section">
+    <div class="biz-grid" id="biz-grid">
 
-  <!-- MAP -->
-  <div id="dir-map-view" style="display:none !important">
-  <div style="padding:32px 48px">
-    <div style="margin-bottom:20px">
-      <div class="section-eyebrow">Browse by City</div>
-      <div class="section-title">Find businesses near you</div>
+      <div class="biz-card" data-cat="Tax & Accounting" data-city="Almere" data-idx="0">
+        <div class="biz-card-top">
+          <div class="biz-icon">📊</div>
+          <div>
+            <div class="biz-name">Advisory Group</div>
+            <span class="biz-cat">Tax & Accounting</span>
+          </div>
+        </div>
+        <div class="biz-desc">Accounting, tax, VAT, payroll and financial advisory for growing SMEs and ZZP'ers</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Almere</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Professional Services" data-city="Netherlands" data-idx="1">
+        <div class="biz-card-top">
+          <div class="biz-icon">🏡</div>
+          <div>
+            <div class="biz-name">Ruimte en Rust</div>
+            <span class="biz-cat">Professional Services</span>
+          </div>
+        </div>
+        <div class="biz-desc">Home organisation and deep cleaning services for a clean, organised and stress-free home</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Netherlands</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Health & Wellness" data-city="Netherlands" data-idx="2">
+        <div class="biz-card-top">
+          <div class="biz-icon">🧠</div>
+          <div>
+            <div class="biz-name">Sanet van Tonder Counselling</div>
+            <span class="biz-cat">Health & Wellness</span>
+          </div>
+        </div>
+        <div class="biz-desc">Counselling for individuals, couples and families focused on mental health, relationships and life transitions</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Netherlands</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Health & Wellness" data-city="Leiden" data-idx="3">
+        <div class="biz-card-top">
+          <div class="biz-icon">💪</div>
+          <div>
+            <div class="biz-name">LuusFit</div>
+            <span class="biz-cat">Health & Wellness</span>
+          </div>
+        </div>
+        <div class="biz-desc">Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Leiden</span>
+          <span class="biz-link">No website</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Professional Services" data-city="Bitgummole" data-idx="4">
+        <div class="biz-card-top">
+          <div class="biz-icon">🪵</div>
+          <div>
+            <div class="biz-name">Hardehout</div>
+            <span class="biz-cat">Professional Services</span>
+          </div>
+        </div>
+        <div class="biz-desc">Supply of premium hardwood for braai, fireplace and home heating in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Bitgummole</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Marketing & Creative" data-city="Almere" data-idx="5">
+        <div class="biz-card-top">
+          <div class="biz-icon">🎨</div>
+          <div>
+            <div class="biz-name">Marketing Zoo</div>
+            <span class="biz-cat">Marketing & Creative</span>
+          </div>
+        </div>
+        <div class="biz-desc">Full-service marketing agency offering branding, digital marketing, social media, design, websites and event activations</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Almere</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Property & Housing" data-city="Hilversum" data-idx="6">
+        <div class="biz-card-top">
+          <div class="biz-icon">🏠</div>
+          <div>
+            <div class="biz-name">Expat Things</div>
+            <span class="biz-cat">Property & Housing</span>
+          </div>
+        </div>
+        <div class="biz-desc">Independent rental and buying agent supporting expats with housing search and relocation in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Hilversum</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Heemskerk" data-idx="7">
+        <div class="biz-card-top">
+          <div class="biz-icon">🎁</div>
+          <div>
+            <div class="biz-name">Make-It-Special</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">Curated gift boxes and personalised gifting with a South African touch for special occasions</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Heemskerk</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Utrecht" data-idx="8">
+        <div class="biz-card-top">
+          <div class="biz-icon">🛒</div>
+          <div>
+            <div class="biz-name">The Lekker Store</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">Online and in-store South African food products and treats in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Utrecht</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Property & Housing" data-city="Utrecht" data-idx="9">
+        <div class="biz-card-top">
+          <div class="biz-icon">🔑</div>
+          <div>
+            <div class="biz-name">Expat Rental Solutions</div>
+            <span class="biz-cat">Property & Housing</span>
+          </div>
+        </div>
+        <div class="biz-desc">Independent rental search and relocation specialists supporting expats with housing, moving and settling-in services</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Utrecht</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Apeldoorn" data-idx="10">
+        <div class="biz-card-top">
+          <div class="biz-icon">🍰</div>
+          <div>
+            <div class="biz-name">Thuisgebak</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">Homemade rusks, fudge and traditional South African baked goods available for delivery across the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Apeldoorn</span>
+          <span class="biz-link">No website</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Netherlands" data-idx="11">
+        <div class="biz-card-top">
+          <div class="biz-icon">☕</div>
+          <div>
+            <div class="biz-name">Amstel Koffie</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">Specialty coffee roastery supplying high-quality roasted coffee beans for home use and B2B supply to cafes and businesses</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Netherlands</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Marketing & Creative" data-city="Zaandam" data-idx="12">
+        <div class="biz-card-top">
+          <div class="biz-icon">🎬</div>
+          <div>
+            <div class="biz-name">Van Rock Media</div>
+            <span class="biz-cat">Marketing & Creative</span>
+          </div>
+        </div>
+        <div class="biz-desc">Professional video and media production helping businesses create high-quality content and grow their brand</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Zaandam</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Property & Housing" data-city="Netherlands" data-idx="13">
+        <div class="biz-card-top">
+          <div class="biz-icon">🏘️</div>
+          <div>
+            <div class="biz-name">Homes for Expats</div>
+            <span class="biz-cat">Property & Housing</span>
+          </div>
+        </div>
+        <div class="biz-desc">Assists with international moves and relocation support for expats in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Netherlands</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Professional Services" data-city="Heemstede" data-idx="14">
+        <div class="biz-card-top">
+          <div class="biz-icon">🎭</div>
+          <div>
+            <div class="biz-name">Kiln and Kettle</div>
+            <span class="biz-cat">Professional Services</span>
+          </div>
+        </div>
+        <div class="biz-desc">Ceramic painting cafe offering creative, hands-on experiences for individuals, groups and events</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Heemstede</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Utrecht" data-idx="15">
+        <div class="biz-card-top">
+          <div class="biz-icon">🍽️</div>
+          <div>
+            <div class="biz-name">De Bees Hive</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">Family-run restaurant offering a warm, welcoming dining experience</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Utrecht</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Meerssen" data-idx="16">
+        <div class="biz-card-top">
+          <div class="biz-icon">🛍️</div>
+          <div>
+            <div class="biz-name">Uit Afrika</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">South African online store offering food products, snacks and speciality items in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Meerssen</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Property & Housing" data-city="Woerden" data-idx="17">
+        <div class="biz-card-top">
+          <div class="biz-icon">🏠</div>
+          <div>
+            <div class="biz-name">J and B Makelaars</div>
+            <span class="biz-cat">Property & Housing</span>
+          </div>
+        </div>
+        <div class="biz-desc">Real estate agency assisting with property sales, purchases and housing guidance in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Woerden</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Food & Retail" data-city="Gouda" data-idx="18">
+        <div class="biz-card-top">
+          <div class="biz-icon">🧁</div>
+          <div>
+            <div class="biz-name">Whisk and Bake</div>
+            <span class="biz-cat">Food & Retail</span>
+          </div>
+        </div>
+        <div class="biz-desc">Bakery offering cupcakes, cakes, wedding cakes and delicious South African bakes</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Gouda</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Health & Wellness" data-city="Utrecht" data-idx="19">
+        <div class="biz-card-top">
+          <div class="biz-icon">✂️</div>
+          <div>
+            <div class="biz-name">Bella Donna Hairstylists</div>
+            <span class="biz-cat">Health & Wellness</span>
+          </div>
+        </div>
+        <div class="biz-desc">South African hairstylist situated in Utrecht</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Utrecht</span>
+          <span class="biz-link">No website</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Health & Wellness" data-city="Bitgummole" data-idx="20">
+        <div class="biz-card-top">
+          <div class="biz-icon">🦷</div>
+          <div>
+            <div class="biz-name">Tandartspraktijk Bitgummole</div>
+            <span class="biz-cat">Health & Wellness</span>
+          </div>
+        </div>
+        <div class="biz-desc">Dental practice in Friesland providing professional dental care services</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Bitgummole</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Property & Housing" data-city="South Holland" data-idx="21">
+        <div class="biz-card-top">
+          <div class="biz-icon">🗝️</div>
+          <div>
+            <div class="biz-name">The Dutch Key</div>
+            <span class="biz-cat">Property & Housing</span>
+          </div>
+        </div>
+        <div class="biz-desc">Helping expats find and secure rental homes in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 South Holland</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
+      <div class="biz-card" data-cat="Health & Wellness" data-city="Den Haag" data-idx="22">
+        <div class="biz-card-top">
+          <div class="biz-icon">🌱</div>
+          <div>
+            <div class="biz-name">Grow Nova</div>
+            <span class="biz-cat">Health & Wellness</span>
+          </div>
+        </div>
+        <div class="biz-desc">Leadership and life coaching for expats navigating personal and professional growth in the Netherlands</div>
+        <div class="biz-foot">
+          <span class="biz-city">📍 Den Haag</span>
+          <span class="biz-link">Visit website →</span>
+        </div>
+      </div>
     </div>
-    <div id="city-pills" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
-      <div class="pill active" style="cursor:pointer" onclick="filterCity(this,'all')">All cities</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Amsterdam')">Amsterdam</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Utrecht')">Utrecht</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Almere')">Almere</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Den Haag')">Den Haag</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Leiden')">Leiden</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Bitgummole')">Bitgummole</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Zaandam')">Zaandam</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Woerden')">Woerden</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Gouda')">Gouda</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Heemstede')">Heemstede</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Heemskerk')">Heemskerk</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Hilversum')">Hilversum</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Apeldoorn')">Apeldoorn</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Meerssen')">Meerssen</div>
-      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'South Holland')">South Holland</div>
-    </div>
-    <div class="dir-full-grid" id="city-grid"></div>
   </div>
-</div>
 
-<!-- LISTING<div class="listing-section" id="list-business">
+  <!-- CITY VIEW -->
+  <div id="city-section">
+    <div class="city-section">
+      <div class="section-eyebrow">Browse by City</div>
+      <div class="section-title" style="margin-bottom:20px">Find businesses near you</div>
+      <div class="city-pills" id="city-pills">
+        <button class="city-pill active" data-city="all">All cities</button>
+        <button class="city-pill" data-city="Almere">Almere</button>
+<button class="city-pill" data-city="Apeldoorn">Apeldoorn</button>
+<button class="city-pill" data-city="Bitgummole">Bitgummole</button>
+<button class="city-pill" data-city="Den Haag">Den Haag</button>
+<button class="city-pill" data-city="Gouda">Gouda</button>
+<button class="city-pill" data-city="Heemskerk">Heemskerk</button>
+<button class="city-pill" data-city="Heemstede">Heemstede</button>
+<button class="city-pill" data-city="Hilversum">Hilversum</button>
+<button class="city-pill" data-city="Leiden">Leiden</button>
+<button class="city-pill" data-city="Meerssen">Meerssen</button>
+<button class="city-pill" data-city="Netherlands">Netherlands</button>
+<button class="city-pill" data-city="South Holland">South Holland</button>
+<button class="city-pill" data-city="Utrecht">Utrecht</button>
+<button class="city-pill" data-city="Woerden">Woerden</button>
+<button class="city-pill" data-city="Zaandam">Zaandam</button>
+      </div>
+      <div class="biz-grid" id="city-grid"></div>
+    </div>
+  </div>
+
+  <!-- LISTING FORM -->
+  <div class="listing-section" id="list-business">
     <div class="section-eyebrow">Join the directory</div>
     <div class="section-title">List your SA business — free</div>
     <div class="listing-grid">
       <div class="listing-left">
         <h3>Get discovered by the SA community</h3>
-        <p>Submit your business and we'll review it within 2–3 days. Once live you'll appear in the directory, on the map, and in your category.</p>
+        <p>Submit your business and we'll review it within 2–3 days. Once live you'll appear in the directory and in your category.</p>
         <div class="perks-box">
           <div class="perks-label">What you get</div>
           <ul class="perks-list">
             <li>✓ &nbsp;Listed in the SA business directory</li>
-            <li>✓ &nbsp;Visible on the map view</li>
             <li>✓ &nbsp;Featured in your category</li>
-            <li>✓ &nbsp;Shared in SA Business & Services NL</li>
+            <li>✓ &nbsp;Shared in SA Business &amp; Services NL</li>
             <li>✓ &nbsp;100% free — always</li>
           </ul>
         </div>
       </div>
       <div class="listing-right">
         <h4>Submit your listing</h4>
-        <div class="f-row"><div class="f-field"><label>Business Name *</label><input type="text" placeholder="e.g. Smith Venter Advisory"></div><div class="f-field"><label>Contact Person *</label><input type="text" placeholder="Full name"></div></div>
-        <div class="f-row"><div class="f-field"><label>Website</label><input type="text" placeholder="https://yoursite.nl"></div><div class="f-field"><label>Email *</label><input type="email" placeholder="you@email.com"></div></div>
         <div class="f-row">
-          <div class="f-field"><label>Category *</label><select><option value="">Select…</option><option>Property & Housing</option><option>Tax & Accounting</option><option>Legal</option><option>Health & Wellness</option><option>Marketing & Creative</option><option>Recruitment</option><option>Food & Retail</option><option>Professional Services</option></select></div>
-          <div class="f-field"><label>City *</label><input type="text" placeholder="e.g. Almere"></div>
+          <div class="f-field"><label>Business Name *</label><input type="text" id="f-name" placeholder="e.g. Smith Venter Advisory"></div>
+          <div class="f-field"><label>Contact Person *</label><input type="text" id="f-contact" placeholder="Full name"></div>
         </div>
-        <div class="f-field" style="margin-bottom:14px;"><label>Short Description *</label><textarea placeholder="What you do — max 150 words"></textarea></div>
-        <button class="f-submit" onclick="submitDirListing(event)">Submit for Review →</button>
+        <div class="f-row">
+          <div class="f-field"><label>Website</label><input type="text" id="f-website" placeholder="https://yoursite.nl"></div>
+          <div class="f-field"><label>Email *</label><input type="email" id="f-email" placeholder="you@email.com"></div>
+        </div>
+        <div class="f-row">
+          <div class="f-field"><label>Category *</label>
+            <select id="f-cat">
+              <option value="">Select…</option>
+              <option>Property &amp; Housing</option>
+              <option>Tax &amp; Accounting</option>
+              <option>Legal</option>
+              <option>Health &amp; Wellness</option>
+              <option>Marketing &amp; Creative</option>
+              <option>Recruitment</option>
+              <option>Food &amp; Retail</option>
+              <option>Professional Services</option>
+            </select>
+          </div>
+          <div class="f-field"><label>City *</label><input type="text" id="f-city" placeholder="e.g. Amsterdam"></div>
+        </div>
+        <div class="f-field" style="margin-bottom:14px"><label>Short Description *</label><textarea id="f-desc" placeholder="What you do — max 150 words"></textarea></div>
+        <button class="f-submit" id="f-submit">Submit for Review →</button>
         <p class="f-note">Submissions go to <strong>info@southafricanhub.nl</strong> — reviewed within 2–3 business days.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <button class="modal-close" id="modal-close">✕</button>
+      <span class="modal-emo" id="m-icon"></span>
+      <div class="modal-name" id="m-name"></div>
+      <span class="modal-cat-badge" id="m-cat"></span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-desc" id="m-desc"></div>
+      <div class="modal-meta">
+        <div class="modal-row">📍 <strong id="m-city"></strong></div>
+        <div class="modal-row">👤 <strong id="m-contact"></strong></div>
+      </div>
+      <div class="modal-actions">
+        <a class="modal-btn-primary" id="m-website" href="#" target="_blank">Visit Website →</a>
+        <button class="modal-btn-secondary" id="modal-close-btn">Close</button>
       </div>
     </div>
   </div>
@@ -523,221 +596,188 @@
   <div class="footer-left">
     <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
     <div class="footer-tagline">For South Africans in the Netherlands</div>
-    <div class="footer-links" style="margin-top:8px;">
+    <div class="footer-links" style="margin-top:8px">
       <a href="directory.html">Directory</a><a href="events.html">Events</a><a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
     </div>
   </div>
   <div class="footer-right">
-    <div class="footer-powered">Accounting & tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-powered">Accounting &amp; tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
     <div class="footer-copy">© 2025 southafricanhub.nl</div>
   </div>
 </footer>
 
 <script>
-  function filterCat(el) {
-    document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
-    const cat = el.textContent.trim();
-    document.querySelectorAll('#dir-list-view .dir-full-card').forEach(card => {
-      const cardCat = card.getAttribute('data-cat') || '';
-      card.style.display = (cat === 'All' || cardCat === cat) ? 'flex' : 'none';
-    });
-    const visible = [...document.querySelectorAll('#dir-list-view .dir-full-card')].filter(c => c.style.display !== 'none').length;
-    const countEl = document.querySelector('.results-count strong');
-    if (countEl) countEl.textContent = visible;
-  }
-
-  // Search function
-  document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.querySelector('.search-row input');
-    const searchBtn   = document.querySelector('.search-row button');
-    if (!searchInput) return;
-    function doSearch() {
-      const q = searchInput.value.toLowerCase().trim();
-      document.querySelectorAll('.dir-full-card').forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
-      });
-      const visible = [...document.querySelectorAll('.dir-full-card')].filter(c => c.style.display !== 'none').length;
-      const countEl = document.querySelector('.results-count strong');
-      if (countEl) countEl.textContent = visible;
-    }
-    searchInput.addEventListener('input', doSearch);
-    if (searchBtn) searchBtn.addEventListener('click', doSearch);
-    searchInput.removeAttribute('disabled');
-    if (searchBtn) searchBtn.removeAttribute('disabled');
-  });
-  function showList() {
-    const lv = document.getElementById('dir-list-view');
-    const mv = document.getElementById('dir-map-view');
-    const bl = document.getElementById('btn-list');
-    const bm = document.getElementById('btn-map');
-    if (lv) { lv.style.cssText = 'display:grid !important'; lv.classList.remove('hidden'); }
-    if (mv) { mv.style.cssText = 'display:none !important'; mv.classList.remove('visible'); }
-    if (bl) { bl.className = 'toggle-btn on'; }
-    if (bm) { bm.className = 'toggle-btn off'; }
-  }
-  function showMap() {
-    const lv = document.getElementById('dir-list-view');
-    const mv = document.getElementById('dir-map-view');
-    const bl = document.getElementById('btn-list');
-    const bm = document.getElementById('btn-map');
-    if (mv) { mv.style.cssText = 'display:block !important'; mv.classList.add('visible'); }
-    if (lv) { lv.style.cssText = 'display:none !important'; lv.classList.add('hidden'); }
-    if (bm) { bm.className = 'toggle-btn on'; }
-    if (bl) { bl.className = 'toggle-btn off'; }
-  }
-  async function sendToFormspree(endpointId, data) {
-    try {
-      const res = await fetch(`https://formspree.io/f/${endpointId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      return res.ok;
-    } catch(e) { return false; }
-  }
-
-  async function submitDirListing(e) {
-    e.preventDefault();
-    const inputs = document.querySelectorAll('.listing-right input, .listing-right select, .listing-right textarea');
-    const name    = inputs[0].value.trim();
-    const contact = inputs[1].value.trim();
-    const website = inputs[2].value.trim();
-    const email   = inputs[3].value.trim();
-    const cat     = inputs[4].value;
-    const city    = inputs[5].value.trim();
-    const desc    = inputs[6].value.trim();
-    if (!name || !contact || !email || !cat || !city || !desc) { showToast('⚠️ Please fill in all required fields.'); return; }
-    const btn = e.target; btn.textContent = 'Sending…'; btn.disabled = true;
-    const ok = await sendToFormspree('FORMSPREE_DIRLISTING_ID', {
-      _subject: `Business Listing — ${name}`,
-      business_name: name, contact_person: contact,
-      website: website || 'N/A', email,
-      category: cat, city, description: desc
-    });
-    if (ok) {
-      btn.textContent = '✅ Submitted!';
-      showToast('✅ Listing submitted — we'll review it within 2–3 days.');
-    } else { btn.textContent = 'Submit for Review →'; btn.disabled = false; showToast('⚠️ Something went wrong. Please try again.'); }
-  }
-  function showToast(msg) {
-    let t = document.getElementById('site-toast');
-    if (!t) { t = document.createElement('div'); t.id = 'site-toast'; t.className = 'toast'; t.innerHTML = '<span class="toast-icon"></span><span class="toast-msg"></span>'; document.body.appendChild(t); }
-    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}✅⚠️]\s*/u, '');
-    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}✅⚠️])/u)?.[1] || '';
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-</script>
-
-<!-- BUSINESS POPUP MODAL -->
-<div class="biz-modal-overlay" id="bizModal" onclick="if(event.target===this)closeBiz()">
-  <div class="biz-modal">
-    <div class="biz-modal-header">
-      <button class="biz-modal-close" onclick="closeBiz()">✕</button>
-      <span class="biz-modal-icon" id="modalIcon"></span>
-      <div class="biz-modal-name" id="modalName"></div>
-      <span class="biz-modal-cat" id="modalCat"></span>
-    </div>
-    <div class="biz-modal-body">
-      <div class="biz-modal-desc" id="modalDesc"></div>
-      <div class="biz-modal-meta">
-        <div class="biz-modal-row">📍 <strong id="modalCity"></strong></div>
-        <div class="biz-modal-row" id="modalContactRow">👤 <strong id="modalContact"></strong></div>
-      </div>
-      <div class="biz-modal-actions">
-        <a class="biz-btn-primary" id="modalWebBtn" href="#" target="_blank">Visit Website →</a>
-        <button class="biz-btn-secondary" onclick="closeBiz()">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-  const BIZ_DATA = [
-  {name:'Advisory Group',icon:'📊',cat:'Tax & Accounting',city:'Almere',website:'https://www.theadvisorygroup.nl',contact:'Jaco Venter'},
-  {name:'Ruimte en Rust',icon:'🏡',cat:'Professional Services',city:'Netherlands',website:'https://www.ruimteenrustdoordina.nl',contact:'Nadine Potgieter'},
-  {name:'Sanet van Tonder Counselling',icon:'🧠',cat:'Health & Wellness',city:'Netherlands',website:'https://www.sanetvantonder.nl/',contact:'Sanet van Tonder'},
-  {name:'LuusFit',icon:'💪',cat:'Health & Wellness',city:'Leiden',website:'',contact:'Luhandre Luus'},
-  {name:'Hardehout',icon:'🪵',cat:'Professional Services',city:'Bitgummole',website:'https://www.hardehoutnl.com/',contact:'Wynand Vosser'},
-  {name:'Marketing Zoo',icon:'🎨',cat:'Marketing & Creative',city:'Almere',website:'https://www.marketingzoo.co.za',contact:'Wian Smith'},
-  {name:'Expat Things',icon:'🏠',cat:'Property & Housing',city:'Hilversum',website:'https://www.expatthings.nl/',contact:'Chante Lindes'},
-  {name:'Make-It-Special',icon:'🎁',cat:'Food & Retail',city:'Heemskerk',website:'https://www.make-it-special.nl/',contact:'Elana Majcher'},
-  {name:'The Lekker Store',icon:'🛒',cat:'Food & Retail',city:'Utrecht',website:'https://www.thelekkerstore.nl/',contact:'Emilio Skroce'},
-  {name:'Expat Rental Solutions',icon:'🔑',cat:'Property & Housing',city:'Utrecht',website:'https://www.expatrentalsolutions.nl',contact:'Jenny Bisset'},
-  {name:'Thuisgebak',icon:'🍰',cat:'Food & Retail',city:'Apeldoorn',website:'',contact:'Sanet Strydom Bam'},
-  {name:'Amstel Koffie',icon:'☕',cat:'Food & Retail',city:'Netherlands',website:'https://www.amstelkoffie.nl/',contact:'Jan Adriaan Dreyer'},
-  {name:'Van Rock Media',icon:'🎬',cat:'Marketing & Creative',city:'Zaandam',website:'https://www.youtube.com/@VanRockMedia',contact:'Homer van der Merwe'},
-  {name:'Homes for Expats',icon:'🏘️',cat:'Property & Housing',city:'Netherlands',website:'https://homesforexpats.nl/',contact:'Cherene Kruger'},
-  {name:'Kiln & Kettle',icon:'🎭',cat:'Professional Services',city:'Heemstede',website:'https://www.kilnandkettle.com/',contact:'Shireen Wessels'},
-  {name:'De Bees Hive',icon:'🍽️',cat:'Food & Retail',city:'Utrecht',website:'https://www.debeeshive.nl/',contact:'Sylvia Backstrom'},
-  {name:'Uit Afrika',icon:'🛍️',cat:'Food & Retail',city:'Meerssen',website:'https://www.uitafrika.nl/',contact:'Gerhard van Wyk'},
-  {name:'J&B Makelaars',icon:'🏠',cat:'Property & Housing',city:'Woerden',website:'https://www.jbmakelaars.nl/',contact:'Bridgette Ball'},
-  {name:'Whisk and Bake',icon:'🧁',cat:'Food & Retail',city:'Gouda',website:'https://www.facebook.com/WhiskandBakeNetherlands',contact:'Jarne Haasbroek'},
-  {name:'Bella Donna Hairstylists',icon:'✂️',cat:'Health & Wellness',city:'Utrecht',website:'',contact:'Daniella Van Loggerenberg'},
-  {name:'Tandartspraktijk Bitgummole',icon:'🦷',cat:'Health & Wellness',city:'Bitgummole',website:'https://www.tandartspraktijkbitgummole.nl',contact:'Ebert Steyn'},
-  {name:'The Dutch Key',icon:'🗝️',cat:'Property & Housing',city:'South Holland',website:'https://www.thedutchkey.nl',contact:'Christelle Le Roux'},
-  {name:'Grow Nova',icon:'🌱',cat:'Health & Wellness',city:'Den Haag',website:'https://grownova.nl',contact:'Wanda Winterboer'},
+var BIZ = [
+  {name:"Advisory Group",icon:"📊",cat:"Tax & Accounting",city:"Almere",website:"https://www.theadvisorygroup.nl",contact:"Jaco Venter",desc:"Accounting, tax, VAT, payroll and financial advisory for growing SMEs and ZZPers"},
+  {name:"Ruimte en Rust",icon:"🏡",cat:"Professional Services",city:"Netherlands",website:"https://www.ruimteenrustdoordina.nl",contact:"Nadine Potgieter",desc:"Home organisation and deep cleaning services for a clean, organised and stress-free home"},
+  {name:"Sanet van Tonder Counselling",icon:"🧠",cat:"Health & Wellness",city:"Netherlands",website:"https://www.sanetvantonder.nl/",contact:"Sanet van Tonder",desc:"Counselling for individuals, couples and families focused on mental health, relationships and life transitions"},
+  {name:"LuusFit",icon:"💪",cat:"Health & Wellness",city:"Leiden",website:"",contact:"Luhandre Luus",desc:"Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition"},
+  {name:"Hardehout",icon:"🪵",cat:"Professional Services",city:"Bitgummole",website:"https://www.hardehoutnl.com/",contact:"Wynand Vosser",desc:"Supply of premium hardwood for braai, fireplace and home heating in the Netherlands"},
+  {name:"Marketing Zoo",icon:"🎨",cat:"Marketing & Creative",city:"Almere",website:"https://www.marketingzoo.co.za",contact:"Wian Smith",desc:"Full-service marketing agency offering branding, digital marketing, social media, design, websites and event activations"},
+  {name:"Expat Things",icon:"🏠",cat:"Property & Housing",city:"Hilversum",website:"https://www.expatthings.nl/",contact:"Chante Lindes",desc:"Independent rental and buying agent supporting expats with housing search and relocation in the Netherlands"},
+  {name:"Make-It-Special",icon:"🎁",cat:"Food & Retail",city:"Heemskerk",website:"https://www.make-it-special.nl/",contact:"Elana Majcher",desc:"Curated gift boxes and personalised gifting with a South African touch for special occasions"},
+  {name:"The Lekker Store",icon:"🛒",cat:"Food & Retail",city:"Utrecht",website:"https://www.thelekkerstore.nl/",contact:"Emilio Skroce",desc:"Online and in-store South African food products and treats in the Netherlands"},
+  {name:"Expat Rental Solutions",icon:"🔑",cat:"Property & Housing",city:"Utrecht",website:"https://www.expatrentalsolutions.nl",contact:"Jenny Bisset",desc:"Independent rental search and relocation specialists supporting expats with housing, moving and settling-in services"},
+  {name:"Thuisgebak",icon:"🍰",cat:"Food & Retail",city:"Apeldoorn",website:"",contact:"Sanet Strydom Bam",desc:"Homemade rusks, fudge and traditional South African baked goods available for delivery across the Netherlands"},
+  {name:"Amstel Koffie",icon:"☕",cat:"Food & Retail",city:"Netherlands",website:"https://www.amstelkoffie.nl/",contact:"Jan Adriaan Dreyer",desc:"Specialty coffee roastery supplying high-quality roasted coffee beans for home use and B2B supply to cafes and businesses"},
+  {name:"Van Rock Media",icon:"🎬",cat:"Marketing & Creative",city:"Zaandam",website:"https://www.youtube.com/@VanRockMedia",contact:"Homer van der Merwe",desc:"Professional video and media production helping businesses create high-quality content and grow their brand"},
+  {name:"Homes for Expats",icon:"🏘️",cat:"Property & Housing",city:"Netherlands",website:"https://homesforexpats.nl/",contact:"Cherene Kruger",desc:"Assists with international moves and relocation support for expats in the Netherlands"},
+  {name:"Kiln and Kettle",icon:"🎭",cat:"Professional Services",city:"Heemstede",website:"https://www.kilnandkettle.com/",contact:"Shireen Wessels",desc:"Ceramic painting cafe offering creative, hands-on experiences for individuals, groups and events"},
+  {name:"De Bees Hive",icon:"🍽️",cat:"Food & Retail",city:"Utrecht",website:"https://www.debeeshive.nl/",contact:"Sylvia Backstrom",desc:"Family-run restaurant offering a warm, welcoming dining experience"},
+  {name:"Uit Afrika",icon:"🛍️",cat:"Food & Retail",city:"Meerssen",website:"https://www.uitafrika.nl/",contact:"Gerhard van Wyk",desc:"South African online store offering food products, snacks and speciality items in the Netherlands"},
+  {name:"J and B Makelaars",icon:"🏠",cat:"Property & Housing",city:"Woerden",website:"https://www.jbmakelaars.nl/",contact:"Bridgette Ball",desc:"Real estate agency assisting with property sales, purchases and housing guidance in the Netherlands"},
+  {name:"Whisk and Bake",icon:"🧁",cat:"Food & Retail",city:"Gouda",website:"https://www.facebook.com/WhiskandBakeNetherlands",contact:"Jarne Haasbroek",desc:"Bakery offering cupcakes, cakes, wedding cakes and delicious South African bakes"},
+  {name:"Bella Donna Hairstylists",icon:"✂️",cat:"Health & Wellness",city:"Utrecht",website:"",contact:"Daniella Van Loggerenberg",desc:"South African hairstylist situated in Utrecht"},
+  {name:"Tandartspraktijk Bitgummole",icon:"🦷",cat:"Health & Wellness",city:"Bitgummole",website:"https://www.tandartspraktijkbitgummole.nl",contact:"Ebert Steyn",desc:"Dental practice in Friesland providing professional dental care services"},
+  {name:"The Dutch Key",icon:"🗝️",cat:"Property & Housing",city:"South Holland",website:"https://www.thedutchkey.nl",contact:"Christelle Le Roux",desc:"Helping expats find and secure rental homes in the Netherlands"},
+  {name:"Grow Nova",icon:"🌱",cat:"Health & Wellness",city:"Den Haag",website:"https://grownova.nl",contact:"Wanda Winterboer",desc:"Leadership and life coaching for expats navigating personal and professional growth in the Netherlands"}
 ];
 
-  function filterCity(el, city) {
-    document.querySelectorAll('#city-pills .pill').forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
-    const grid = document.getElementById('city-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
-    BIZ_DATA.forEach((b, i) => {
-      if (city !== 'all' && b.city !== city) return;
-      const div = document.createElement('div');
-      div.className = 'dir-full-card';
-      div.setAttribute('data-cat', b.cat);
-      div.onclick = () => openBiz(i);
-      div.innerHTML = `
-        <div class="dir-card-top">
-          <div class="dir-icon-lg">${b.icon}</div>
-          <div><div class="dir-name">${b.name}</div><span class="dir-cat-tag">${b.cat}</span></div>
-        </div>
-        <div class="dir-desc">${b.desc}</div>
-        <div class="dir-card-footer">
-          <span class="dir-loc">📍 ${b.city}</span>
-          <span class="dir-web">${b.website ? 'Visit website →' : 'No website'}</span>
-        </div>`;
-      grid.appendChild(div);
-    });
-    if (grid.children.length === 0) {
-      grid.innerHTML = '<p style="color:var(--muted);padding:20px 0">No businesses listed in this city yet.</p>';
-    }
-  }
+/* ── MODAL ── */
+function openModal(idx) {
+  var b = BIZ[idx];
+  document.getElementById("m-icon").textContent    = b.icon;
+  document.getElementById("m-name").textContent    = b.name;
+  document.getElementById("m-cat").textContent     = b.cat;
+  document.getElementById("m-desc").textContent    = b.desc;
+  document.getElementById("m-city").textContent    = b.city;
+  document.getElementById("m-contact").textContent = b.contact;
+  var wb = document.getElementById("m-website");
+  if (b.website) { wb.href = b.website; wb.style.display = "block"; }
+  else { wb.style.display = "none"; }
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeModal() {
+  document.getElementById("modal").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("modal-close").onclick = closeModal;
+document.getElementById("modal-close-btn").onclick = closeModal;
+document.getElementById("modal").onclick = function(e) { if (e.target === this) closeModal(); };
+document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeModal(); });
 
-  // Init city grid on load
-  document.addEventListener('DOMContentLoaded', () => {
-    filterCity(document.querySelector('#city-pills .pill'), 'all');
+/* ── ATTACH CARD CLICKS ── */
+document.querySelectorAll(".biz-card").forEach(function(card) {
+  card.addEventListener("click", function() {
+    openModal(parseInt(this.getAttribute("data-idx")));
   });
+});
 
-  function openBiz(idx) {
-    const b = BIZ_DATA[idx];
-    document.getElementById('modalIcon').textContent    = b.icon;
-    document.getElementById('modalName').textContent    = b.name;
-    document.getElementById('modalCat').textContent     = b.cat;
-    document.getElementById('modalDesc').textContent    = b.desc;
-    document.getElementById('modalCity').textContent    = b.city;
-    document.getElementById('modalContact').textContent = b.contact;
-    const webBtn = document.getElementById('modalWebBtn');
-    if (b.website) {
-      webBtn.href = b.website; webBtn.style.display = 'block';
-    } else {
-      webBtn.style.display = 'none';
-    }
-    document.getElementById('bizModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+/* ── CATEGORY FILTER ── */
+function filterByCat(cat) {
+  var cards = document.querySelectorAll("#biz-grid .biz-card");
+  var count = 0;
+  cards.forEach(function(c) {
+    var show = (cat === "All" || c.getAttribute("data-cat") === cat);
+    c.style.display = show ? "flex" : "none";
+    if (show) count++;
+  });
+  document.getElementById("result-num").textContent = count;
+}
+
+document.querySelectorAll(".filter-bar .pill").forEach(function(pill) {
+  pill.addEventListener("click", function() {
+    document.querySelectorAll(".filter-bar .pill").forEach(function(p) { p.classList.remove("active"); });
+    this.classList.add("active");
+    var cat = this.getAttribute("data-cat") || "All";
+    filterByCat(cat);
+  });
+});
+
+/* ── SEARCH ── */
+function doSearch() {
+  var q = document.getElementById("search-input").value.toLowerCase().trim();
+  var cards = document.querySelectorAll("#biz-grid .biz-card");
+  var count = 0;
+  cards.forEach(function(c) {
+    var match = !q || c.textContent.toLowerCase().includes(q);
+    c.style.display = match ? "flex" : "none";
+    if (match) count++;
+  });
+  document.getElementById("result-num").textContent = count;
+}
+document.getElementById("search-input").addEventListener("input", doSearch);
+document.getElementById("search-btn").addEventListener("click", doSearch);
+
+/* ── LIST / CITY TOGGLE ── */
+document.getElementById("btn-list").addEventListener("click", function() {
+  document.getElementById("list-section").style.display = "block";
+  document.getElementById("city-section").style.display = "none";
+  this.className = "toggle-btn on";
+  document.getElementById("btn-city").className = "toggle-btn off";
+});
+document.getElementById("btn-city").addEventListener("click", function() {
+  document.getElementById("city-section").style.display = "block";
+  document.getElementById("list-section").style.display = "none";
+  this.className = "toggle-btn on";
+  document.getElementById("btn-list").className = "toggle-btn off";
+  renderCityGrid("all");
+});
+
+/* ── CITY FILTER ── */
+function renderCityGrid(city) {
+  var grid = document.getElementById("city-grid");
+  grid.innerHTML = "";
+  var count = 0;
+  BIZ.forEach(function(b, i) {
+    if (city !== "all" && b.city !== city) return;
+    count++;
+    var div = document.createElement("div");
+    div.className = "biz-card";
+    div.setAttribute("data-idx", i);
+    div.innerHTML =
+      "<div class=\"biz-card-top\"><div class=\"biz-icon\">" + b.icon + "</div>" +
+      "<div><div class=\"biz-name\">" + b.name + "</div><span class=\"biz-cat\">" + b.cat + "</span></div></div>" +
+      "<div class=\"biz-desc\">" + b.desc + "</div>" +
+      "<div class=\"biz-foot\"><span class=\"biz-city\">📍 " + b.city + "</span>" +
+      "<span class=\"biz-link\">" + (b.website ? "Visit website →" : "No website") + "</span></div>";
+    div.addEventListener("click", function() { openModal(parseInt(this.getAttribute("data-idx"))); });
+    grid.appendChild(div);
+  });
+  if (count === 0) grid.innerHTML = "<p style=\"color:var(--muted);padding:20px 0\">No businesses listed in this city yet.</p>";
+}
+
+document.querySelectorAll(".city-pill").forEach(function(pill) {
+  pill.addEventListener("click", function() {
+    document.querySelectorAll(".city-pill").forEach(function(p) { p.classList.remove("active"); });
+    this.classList.add("active");
+    renderCityGrid(this.getAttribute("data-city"));
+  });
+});
+
+/* ── LISTING FORM ── */
+async function sendToFormspree(id, data) {
+  try {
+    var res = await fetch("https://formspree.io/f/" + id, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data)
+    });
+    return res.ok;
+  } catch(e) { return false; }
+}
+document.getElementById("f-submit").addEventListener("click", async function() {
+  var name    = document.getElementById("f-name").value.trim();
+  var contact = document.getElementById("f-contact").value.trim();
+  var website = document.getElementById("f-website").value.trim();
+  var email   = document.getElementById("f-email").value.trim();
+  var cat     = document.getElementById("f-cat").value;
+  var city    = document.getElementById("f-city").value.trim();
+  var desc    = document.getElementById("f-desc").value.trim();
+  if (!name || !contact || !email || !cat || !city || !desc) {
+    alert("Please fill in all required fields."); return;
   }
-
-  function closeBiz() {
-    document.getElementById('bizModal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBiz(); });
+  this.textContent = "Sending…"; this.disabled = true;
+  var ok = await sendToFormspree("FORMSPREE_DIRLISTING_ID", {
+    _subject: "Business Listing — " + name,
+    business_name: name, contact_person: contact,
+    website: website || "N/A", email: email,
+    category: cat, city: city, description: desc
+  });
+  if (ok) { this.textContent = "✅ Submitted!"; }
+  else { this.textContent = "Submit for Review →"; this.disabled = false; alert("Something went wrong. Please try again."); }
+});
 </script>
 </body>
 </html>
