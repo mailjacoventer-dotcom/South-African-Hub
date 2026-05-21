@@ -192,7 +192,26 @@
         <div><label class="m-label">Your name *</label><input class="m-input" id="ev-organiser" type="text" placeholder="Organiser name"></div>
         <div><label class="m-label">Your email *</label><input class="m-input" id="ev-email" type="email" placeholder="you@email.com"></div>
       </div>
-      <div><label class="m-label">WhatsApp number <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(for RSVPs)</span></label><input class="m-input" id="ev-wa" type="tel" placeholder="+31 6 12 34 56 78"></div>
+      <div><label class="m-label">WhatsApp number <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(for RSVPs — 3rd party events)</span></label><input class="m-input" id="ev-wa" type="tel" placeholder="+31 6 12 34 56 78"></div>
+      <div>
+        <label class="m-label">RSVP / Tickets *</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px">
+          <div id="rsvp-opt-kaartjies" onclick="setRsvpType('kaartjies')" style="border:2px solid var(--green);background:#e8f4ec;border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+            <div style="font-size:18px;margin-bottom:4px">🎟️</div>
+            <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--green)">Kaartjies.nl</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">Our own event</div>
+          </div>
+          <div id="rsvp-opt-third" onclick="setRsvpType('third')" style="border:2px solid var(--wire);background:white;border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+            <div style="font-size:18px;margin-bottom:4px">💬</div>
+            <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:var(--navy)">WhatsApp / Email</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">3rd party event</div>
+          </div>
+        </div>
+      </div>
+      <div id="kaartjies-url-wrap" style="display:block">
+        <label class="m-label">Kaartjies.nl ticket URL *</label>
+        <input class="m-input" id="ev-kaartjies" type="url" placeholder="https://kaartjies.nl/your-event">
+      </div>
     </div>
       <div>
         <label class="m-label">Event banner / photo <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(optional but recommended)</span></label>
@@ -351,6 +370,12 @@
     if (!name || !date || !city || !time || !desc || !org || !mail) {
       alert('Please fill in all required fields.'); return;
     }
+    if (rsvpType === 'kaartjies' && !document.getElementById('ev-kaartjies').value.trim()) {
+      alert('Please enter the Kaartjies.nl ticket URL.'); return;
+    }
+    if (rsvpType === 'third' && !document.getElementById('ev-wa').value.trim()) {
+      alert('Please enter a WhatsApp number for RSVPs.'); return;
+    }
     var btn = document.getElementById('ev-submit-btn');
     btn.textContent = 'Sending…'; btn.disabled = true;
     try {
@@ -366,6 +391,8 @@
       fd.append('organiser_name', org);
       fd.append('organiser_email', mail);
       fd.append('whatsapp', wa || 'Not provided');
+      fd.append('rsvp_type', rsvpType);
+      fd.append('kaartjies_url', rsvpType === 'kaartjies' ? (document.getElementById('ev-kaartjies').value.trim() || 'Not provided') : 'N/A');
       if (photoInput.files && photoInput.files[0]) {
         fd.append('photo', photoInput.files[0], photoInput.files[0].name);
       }
@@ -381,6 +408,31 @@
     } catch(e) {
       btn.textContent = 'Submit Event →'; btn.disabled = false;
       alert('Something went wrong. Please email info@southafricanhub.nl directly.');
+    }
+  }
+
+  // ── RSVP TYPE TOGGLE ──
+  var rsvpType = 'kaartjies';
+  function setRsvpType(type) {
+    rsvpType = type;
+    var ka = document.getElementById('rsvp-opt-kaartjies');
+    var th = document.getElementById('rsvp-opt-third');
+    var urlWrap = document.getElementById('kaartjies-url-wrap');
+    var waField = document.getElementById('ev-wa').closest('div');
+    if (type === 'kaartjies') {
+      ka.style.cssText = 'border:2px solid var(--green);background:#e8f4ec;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
+      ka.querySelector('div:nth-child(2)').style.color = 'var(--green)';
+      th.style.cssText = 'border:2px solid var(--wire);background:white;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
+      th.querySelector('div:nth-child(2)').style.color = 'var(--navy)';
+      urlWrap.style.display = 'block';
+      waField.style.display = 'none';
+    } else {
+      th.style.cssText = 'border:2px solid var(--green);background:#e8f4ec;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
+      th.querySelector('div:nth-child(2)').style.color = 'var(--green)';
+      ka.style.cssText = 'border:2px solid var(--wire);background:white;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
+      ka.querySelector('div:nth-child(2)').style.color = 'var(--navy)';
+      urlWrap.style.display = 'none';
+      waField.style.display = 'block';
     }
   }
 
