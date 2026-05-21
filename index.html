@@ -9,151 +9,123 @@
   /* ── HOMEPAGE SPECIFICS ── */
   /* Hero */
   .hero {
-    background: linear-gradient(135deg, #0d1f3c 0%, #162a4a 55%, #1e3a5f 100%);
-    padding: 72px 48px 64px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: center;
+    background: url('hero-banner.png') center center / cover no-repeat;
+    padding: 0;
     position: relative;
     overflow: hidden;
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-bottom: 4px solid #1a5c2a;
   }
-  .hero::before {
-    content: '';
-    position: absolute; right: -60px; top: -60px;
-    width: 450px; height: 450px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(26,92,42,0.18) 0%, transparent 65%);
-    pointer-events: none;
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: rgba(10,20,45,0.35);
+    z-index: 0;
   }
-  .hero::after {
-    content: '';
-    position: absolute; left: -40px; bottom: -40px;
-    width: 280px; height: 280px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 65%);
-    pointer-events: none;
+  .hero-content {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 64px 48px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
   }
   .hero-eyebrow {
     font-family: 'Montserrat', sans-serif;
-    font-size: 10px; font-weight: 700;
+    font-size: 11px; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase;
-    color: #f0a500; margin-bottom: 16px;
+    color: #f0a500; margin-bottom: 12px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
   }
   .hero h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 44px; font-weight: 900;
-    color: white; line-height: 1.05;
-    margin-bottom: 6px;
+    font-size: 40px; font-weight: 900;
+    color: white; line-height: 1.1;
+    margin-bottom: 8px;
     text-transform: uppercase;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
   }
-  .hero h1 .line2 {
-    font-size: 52px; color: #1a5c2a; display: block;
-  }
+  .hero h1 .line2 { font-size: 52px; color: #1a5c2a; display: block; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
   .hero h1 .line3 {
-    font-size: 28px; color: rgba(255,255,255,0.45);
-    font-weight: 700; display: block; margin-top: 4px;
-    letter-spacing: 0.15em;
+    font-size: 22px; color: #c8102e; font-weight: 800;
+    display: block; margin-top: 4px;
+    letter-spacing: 0.2em;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
   .hero-tagline {
-    font-size: 14px; line-height: 1.7;
-    color: rgba(255,255,255,0.6);
-    max-width: 420px; margin: 20px 0 32px;
+    font-size: 15px; line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+    max-width: 560px; margin: 18px auto 32px;
     font-family: 'Open Sans', sans-serif;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
-  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-btns {
+    display: flex; gap: 14px;
+    flex-wrap: wrap; justify-content: center;
+    margin-bottom: 48px;
+  }
+  .hero-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 26px; border-radius: 6px;
+    font-size: 13px; font-weight: 800;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: all 0.18s; white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  }
+  .hero-btn-primary { background: #1a5c2a; color: white; }
+  .hero-btn-primary:hover { background: #22743a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,92,42,0.4); }
+  .hero-btn-navy { background: #0d1f3c; color: white; }
+  .hero-btn-navy:hover { background: #162a4a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,31,60,0.4); }
+  .hero-btn-red { background: #c8102e; color: white; }
+  .hero-btn-red:hover { background: #a50d26; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,16,46,0.4); }
+  .hero-btn-icon { font-size: 16px; }
+
+  /* Hero pillars */
   .hero-pillars {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 16px; position: relative; z-index: 1;
+    display: flex; gap: 0;
+    justify-content: center;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 32px;
+    flex-wrap: wrap;
   }
   .hero-pillar {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px; padding: 20px 18px;
-    border-top: 3px solid #1a5c2a;
-    transition: background 0.2s;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 0 32px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer; transition: opacity 0.15s;
+    text-align: left;
   }
-  .hero-pillar:nth-child(2) { border-top-color: #c8102e; }
-  .hero-pillar:nth-child(3) { border-top-color: #f0a500; }
-  .hero-pillar:nth-child(4) { border-top-color: #1a5c2a; }
-  .hero-pillar { cursor: pointer; }
-  .hero-pillar:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
-  .hero-pillar .p-icon { font-size: 22px; display: block; margin-bottom: 8px; }
+  .hero-pillar:last-child { border-right: none; }
+  .hero-pillar:hover { opacity: 0.85; }
+  .hero-pillar .p-icon-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .hero-pillar:nth-child(1) .p-icon-circle { background: rgba(26,92,42,0.3); border-color: #1a5c2a; }
+  .hero-pillar:nth-child(2) .p-icon-circle { background: rgba(13,31,60,0.4); border-color: rgba(255,255,255,0.3); }
+  .hero-pillar:nth-child(3) .p-icon-circle { background: rgba(200,16,46,0.3); border-color: #c8102e; }
+  .hero-pillar .p-text {}
   .hero-pillar .p-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 11px; font-weight: 800;
     text-transform: uppercase; letter-spacing: 0.12em;
-    color: white; margin-bottom: 5px;
+    color: white; margin-bottom: 4px;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
   }
   .hero-pillar .p-desc {
-    font-size: 12px; color: rgba(255,255,255,0.5);
-    line-height: 1.5;
-  }
-  .hero-pillar .p-arrow {
-    font-size: 11px; color: rgba(255,255,255,0.3);
-    margin-top: 8px; display: block;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600; letter-spacing: 0.06em;
+    font-size: 11px; color: rgba(255,255,255,0.6);
+    line-height: 1.5; max-width: 160px;
   }
 
-  /* Search popup */
-  .search-popup-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(13,31,60,0.75); z-index: 999;
-    align-items: flex-start; justify-content: center;
-    padding-top: 120px;
-    backdrop-filter: blur(4px);
-  }
-  .search-popup-overlay.open { display: flex; }
-  .search-popup {
-    background: white; border-radius: 14px;
-    width: 100%; max-width: 560px; padding: 32px;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.3);
-    animation: popIn 0.2s ease;
-    position: relative;
-  }
-  @keyframes popIn { from { transform:scale(0.95) translateY(-10px); opacity:0; } to { transform:scale(1) translateY(0); opacity:1; } }
-  .search-popup-close {
-    position: absolute; top: 14px; right: 14px;
-    background: var(--subtle); border: none; width: 30px; height: 30px;
-    border-radius: 50%; font-size: 16px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted);
-  }
-  .search-popup-close:hover { background: var(--wire); }
-  .search-popup h3 {
-    font-family: 'Montserrat', sans-serif; font-size: 18px;
-    font-weight: 800; color: var(--navy); margin-bottom: 6px;
-    text-transform: uppercase; letter-spacing: 0.04em;
-  }
-  .search-popup p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
-  .search-popup-row { display: flex; gap: 10px; }
-  .search-popup-input {
-    flex: 1; border: 2px solid var(--wire); border-radius: 6px;
-    padding: 12px 16px; font-size: 15px;
-    font-family: 'Open Sans', sans-serif;
-    outline: none; transition: border-color 0.15s;
-  }
-  .search-popup-input:focus { border-color: var(--green); }
-  .search-popup-btn {
-    background: var(--green); color: white; border: none;
-    border-radius: 6px; padding: 12px 22px; font-size: 14px;
-    font-weight: 700; font-family: 'Montserrat', sans-serif;
-    cursor: pointer; white-space: nowrap; transition: background 0.15s;
-    letter-spacing: 0.04em;
-  }
-  .search-popup-btn:hover { background: var(--green-light); }
-  .search-popup-cats { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-  .search-popup-cat {
-    padding: 5px 12px; border-radius: 16px; font-size: 11px;
-    font-weight: 700; background: var(--subtle); color: var(--navy);
-    border: 1.5px solid var(--wire); cursor: pointer;
-    font-family: 'Montserrat', sans-serif; letter-spacing: 0.03em;
-    text-decoration: none; transition: all 0.15s;
-  }
-  .search-popup-cat:hover { background: var(--navy); color: white; border-color: var(--navy); }
-
-  /* Tagline bar */
+  /* Tagline bar *//* Tagline bar */
   .tagline-bar {
     background: #1a5c2a;
     padding: 14px 48px;
@@ -613,43 +585,48 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div style="position:relative;z-index:1">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
     <div class="hero-eyebrow">southafricanhub.nl</div>
     <h1>
       South African
       <span class="line2">Business &amp; Services</span>
       <span class="line3">Netherlands</span>
     </h1>
-    <p class="hero-tagline">Find trusted SA-owned businesses, connect with the community, and get the support you need — all in one place.</p>
+    <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
     <div class="hero-btns">
-      <a href="directory.html" class="btn-primary">Browse the Directory</a>
-      <a href="events.html" class="btn-ghost">Upcoming Events</a>
+      <a href="directory.html" class="hero-btn hero-btn-primary">
+        <span class="hero-btn-icon">🔍</span> Browse Businesses
+      </a>
+      <a href="events.html" class="hero-btn hero-btn-navy">
+        <span class="hero-btn-icon">🤝</span> Join the Network
+      </a>
+      <a href="directory.html#list-business" class="hero-btn hero-btn-red">
+        <span class="hero-btn-icon">➕</span> List Your Business
+      </a>
     </div>
-  </div>
-  <div class="hero-pillars">
-    <div class="hero-pillar" onclick="openSearch()" title="Search the directory">
-      <span class="p-icon">🔍</span>
-      <div class="p-title">Find</div>
-      <div class="p-desc">Search for trusted SA businesses and services across the Netherlands</div>
-      <span class="p-arrow">Search directory →</span>
-    </div>
-    <div class="hero-pillar" onclick="window.location='events.html'" title="View upcoming events">
-      <span class="p-icon">🤝</span>
-      <div class="p-title">Connect</div>
-      <div class="p-desc">Build meaningful connections and grow your network</div>
-      <span class="p-arrow">View events →</span>
-    </div>
-    <div class="hero-pillar" onclick="window.location='markplaats.html'" title="Markplaats">
-      <span class="p-icon">❤️</span>
-      <div class="p-title">Support</div>
-      <div class="p-desc">Give or find items to support newly arriving SA families</div>
-      <span class="p-arrow">Browse Markplaats →</span>
-    </div>
-    <div class="hero-pillar" onclick="window.location='directory.html'" title="Browse directory">
-      <span class="p-icon">📈</span>
-      <div class="p-title">Grow</div>
-      <div class="p-desc">Share opportunities, collaborate and grow together</div>
-      <span class="p-arrow">Browse directory →</span>
+    <div class="hero-pillars">
+      <div class="hero-pillar" onclick="window.location='events.html'">
+        <div class="p-icon-circle">🤝</div>
+        <div class="p-text">
+          <div class="p-title">Connect</div>
+          <div class="p-desc">Build meaningful connections and grow your network</div>
+        </div>
+      </div>
+      <div class="hero-pillar" onclick="window.location='markplaats.html'">
+        <div class="p-icon-circle">❤️</div>
+        <div class="p-text">
+          <div class="p-title">Support</div>
+          <div class="p-desc">Support local SA businesses and uplift our community</div>
+        </div>
+      </div>
+      <div class="hero-pillar" onclick="window.location='directory.html'">
+        <div class="p-icon-circle">📈</div>
+        <div class="p-text">
+          <div class="p-title">Grow</div>
+          <div class="p-desc">Share opportunities, collaborate and grow together</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -966,7 +943,7 @@
     </div>
   </div>
   <div class="footer-right">
-    <div class="footer-powered">Accounting & tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-powered">Accounting & tax support by <a href="https://smithventer.nl">Smith Venter Advisory →</a></div>
     <div class="footer-copy">© 2025 southafricanhub.nl</div>
   </div>
 </footer>
