@@ -321,8 +321,8 @@ body {
    PAGE HERO BAND (dark — used on inner pages)
 ══════════════════════════════════════ */
 .page-hero-band {
-  background: url('hero-banner.png') center top / cover no-repeat;
-  padding: 52px 48px 44px;
+  background: var(--navy);
+  padding: 48px 48px 40px;
   position: relative;
   overflow: hidden;
   border-bottom: 4px solid var(--green);
@@ -330,8 +330,23 @@ body {
 .page-hero-band::before {
   content: '';
   position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.55);
+  right: -60px; top: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26,92,42,0.2) 0%, transparent 65%);
+  pointer-events: none;
+}
+.page-hero-band::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0; right: 0; top: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 40px,
+    rgba(255,255,255,0.012) 40px,
+    rgba(255,255,255,0.012) 80px
+  );
   pointer-events: none;
 }
 .page-hero-band .section-eyebrow,
@@ -345,7 +360,7 @@ body {
   font-family: var(--font-head);
   font-size: 36px;
   font-weight: 900;
-  color: var(--navy);
+  color: white;
   line-height: 1.1;
   margin-bottom: 10px;
   letter-spacing: -0.02em;
@@ -356,7 +371,7 @@ body {
   color: var(--green);
 }
 .page-hero-band p {
-  color: var(--muted);
+  color: rgba(255,255,255,0.6);
   font-size: 15px;
   line-height: 1.7;
   max-width: 500px;
@@ -367,12 +382,12 @@ body {
   font-family: var(--font-head);
   font-size: 26px;
   font-weight: 900;
-  color: var(--navy);
+  color: white;
   line-height: 1;
 }
 .hero-stat .l {
   font-size: 10px;
-  color: var(--muted);
+  color: rgba(255,255,255,0.45);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-top: 4px;
