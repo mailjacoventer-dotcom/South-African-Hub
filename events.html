@@ -193,7 +193,7 @@
         <div><label class="m-label">Your name *</label><input class="m-input" id="ev-organiser" type="text" placeholder="Organiser name"></div>
         <div><label class="m-label">Your email *</label><input class="m-input" id="ev-email" type="email" placeholder="you@email.com"></div>
       </div>
-      <div><label class="m-label">WhatsApp number <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(for RSVPs — 3rd party events)</span></label><input class="m-input" id="ev-wa" type="tel" placeholder="+31 6 12 34 56 78"></div>
+      <div id="ev-wa-wrap" style="display:none"><label class="m-label">WhatsApp number <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px">(for RSVPs)</span></label><input class="m-input" id="ev-wa" type="tel" placeholder="+31 6 12 34 56 78"></div>
       <div>
         <label class="m-label">RSVP / Tickets *</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px">
@@ -256,45 +256,33 @@
 <div class="toast" id="site-toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
 
 <script>
-  // ── FILTER ──
+  var rsvpType = 'kaartjies';
+
   function setFilter(el) {
     document.querySelectorAll('.filter-bar .pill').forEach(function(p) { p.classList.remove('active'); });
     el.classList.add('active');
   }
 
-  // ── BANNER UPLOAD ──
-  function triggerBanner(bannerDiv) {
-    bannerDiv.querySelector('input[type=file]').click();
-  }
+  function triggerBanner(bannerDiv) { bannerDiv.querySelector('input[type=file]').click(); }
   function loadBanner(input) {
     if (!input.files || !input.files[0]) return;
-    var bannerDiv = input.closest('.event-banner');
     var reader = new FileReader();
     reader.onload = function(e) {
-      var img = bannerDiv.querySelector('img');
-      var placeholder = bannerDiv.querySelector('.event-banner-placeholder');
-      img.src = e.target.result;
-      img.classList.add('loaded');
-      placeholder.style.display = 'none';
+      var img = input.closest('.event-banner').querySelector('img');
+      var ph  = input.closest('.event-banner').querySelector('.event-banner-placeholder');
+      img.src = e.target.result; img.classList.add('loaded');
+      if (ph) ph.style.display = 'none';
     };
     reader.readAsDataURL(input.files[0]);
   }
 
-  // ── RSVP ──
   var rsvpData = { title: '', wa: '', organiser: '' };
 
   function openRsvp(btn) {
     var card = btn.closest('.event-card');
     var type = card.getAttribute('data-type') || 'third-party';
     var kaartjies = card.getAttribute('data-kaartjies') || '';
-
-    // SAH own events — link to kaartjies.nl
-    if (type === 'own' && kaartjies) {
-      window.open(kaartjies, '_blank');
-      return;
-    }
-
-    // Third-party events — show WhatsApp/email modal
+    if (type === 'own' && kaartjies) { window.open(kaartjies, '_blank'); return; }
     rsvpData.title     = card.querySelector('.event-title').textContent;
     rsvpData.wa        = card.getAttribute('data-wa') || '';
     rsvpData.organiser = card.getAttribute('data-organiser') || 'info@southafricanhub.nl';
@@ -304,143 +292,57 @@
     document.body.style.overflow = 'hidden';
   }
 
-  function closeRsvp() {
-    document.getElementById('rsvp-modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  function closeRsvp() { document.getElementById('rsvp-modal').classList.remove('open'); document.body.style.overflow = ''; }
 
   function doRsvpWhatsApp() {
     var first = document.getElementById('rsvp-first').value.trim();
     var last  = document.getElementById('rsvp-last').value.trim();
     if (!first) { alert('Please enter your first name.'); return; }
-    var msg = encodeURIComponent('Hi! I\'d like to RSVP for: ' + rsvpData.title + '\n\nName: ' + first + ' ' + last);
-    window.open('https://wa.me/' + rsvpData.wa + '?text=' + msg, '_blank');
+    window.open('https://wa.me/' + rsvpData.wa + '?text=' + encodeURIComponent('Hi! RSVP for: ' + rsvpData.title + '\nName: ' + first + ' ' + last), '_blank');
     closeRsvp();
-    showToast('✅ Opening WhatsApp to send your RSVP!');
+    showToast('Opening WhatsApp!');
   }
 
   async function doRsvpEmail() {
     var first = document.getElementById('rsvp-first').value.trim();
     var last  = document.getElementById('rsvp-last').value.trim();
     var email = document.getElementById('rsvp-email').value.trim();
-    if (!first)                        { alert('Please enter your first name.'); return; }
-    if (!email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
+    if (!first || !email || !email.includes('@')) { alert('Please enter your name and email.'); return; }
     var btn = document.getElementById('rsvp-email-btn');
-    btn.textContent = 'Sending…'; btn.disabled = true;
+    btn.textContent = 'Sending...'; btn.disabled = true;
     try {
       var res = await fetch('https://formspree.io/f/xnjrdayb', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: 'RSVP — ' + rsvpData.title,
-          _replyto: email,
-          event: rsvpData.title,
-          name: first + ' ' + last,
-          email: email
-        })
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: 'RSVP - ' + rsvpData.title, _replyto: email, event: rsvpData.title, name: first + ' ' + last, email: email })
       });
-      if (res.ok) {
-        closeRsvp();
-        showToast('✅ RSVP confirmed! The organiser will be in touch.');
-      } else { throw new Error(); }
-    } catch(e) {
-      btn.textContent = 'RSVP via Email'; btn.disabled = false;
-      alert('Something went wrong. Please try again.');
-    }
+      if (res.ok) { closeRsvp(); showToast('RSVP confirmed!'); }
+      else { throw new Error(); }
+    } catch(e) { btn.textContent = 'RSVP via Email'; btn.disabled = false; alert('Something went wrong. Please try again.'); }
   }
 
-  // ── SUBMIT EVENT ──
-  function openEventSubmit() {
-    document.getElementById('event-modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeEventSubmit() {
-    document.getElementById('event-modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
+  function openEventSubmit() { document.getElementById('event-modal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeEventSubmit() { document.getElementById('event-modal').classList.remove('open'); document.body.style.overflow = ''; }
 
-  async function doSubmitEvent() {
-    var name = document.getElementById('ev-name').value.trim();
-    var date = document.getElementById('ev-date').value;
-    var city = document.getElementById('ev-city').value.trim();
-    var time = document.getElementById('ev-time').value.trim();
-    var desc = document.getElementById('ev-desc').value.trim();
-    var org  = document.getElementById('ev-organiser').value.trim();
-    var mail = document.getElementById('ev-email').value.trim();
-    var wa   = document.getElementById('ev-wa').value.trim();
-    if (!name||!date||!city||!time||!desc||!org||!mail) { alert('Please fill in all required fields.'); return; }
-    if (rsvpType==='kaartjies' && !document.getElementById('ev-kaartjies').value.trim()) { alert('Please enter the Kaartjies.nl ticket URL.'); return; }
-    if (rsvpType==='third' && !wa) { alert('Please enter a WhatsApp number for RSVPs.'); return; }
-    var btn = document.getElementById('ev-submit-btn');
-    btn.textContent = 'Sending…'; btn.disabled = true;
-    var fd = new FormData();
-    fd.append('_subject', 'Event Submission — ' + name);
-    fd.append('_replyto', mail);
-    fd.append('event_name', name);
-    fd.append('date', date);
-    fd.append('city', city);
-    fd.append('time', time);
-    fd.append('description', desc);
-    fd.append('organiser_name', org);
-    fd.append('organiser_email', mail);
-    fd.append('whatsapp', wa || 'Not provided');
-    fd.append('rsvp_type', rsvpType === 'kaartjies' ? 'Kaartjies.nl' : 'WhatsApp/Email');
-    fd.append('kaartjies_url', rsvpType === 'kaartjies' ? document.getElementById('ev-kaartjies').value.trim() : 'N/A');
-    var photoInput = document.getElementById('ev-photo');
-    if (photoInput && photoInput.files && photoInput.files[0]) {
-      fd.append('photo', photoInput.files[0], photoInput.files[0].name);
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://formspree.io/f/mlgvbeap');
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.onload = function() {
-      btn.textContent = 'Submit Event →'; btn.disabled = false;
-      if (xhr.status === 200 || xhr.status === 201) {
-        closeEventSubmit();
-        showToast('✅ Event submitted! We’ll add it within 24 hours.');
-        ['ev-name','ev-date','ev-city','ev-time','ev-desc','ev-organiser','ev-email','ev-wa','ev-kaartjies'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
-        if (photoInput) { photoInput.value=''; document.getElementById('ev-photo-empty').style.display='block'; document.getElementById('ev-photo-preview').style.display='none'; }
-      } else {
-        var errMsg = 'HTTP ' + xhr.status;
-        try { errMsg = JSON.parse(xhr.responseText).error || errMsg; } catch(e) {}
-        alert('Submission failed: ' + errMsg + '
-
-Please email info@southafricanhub.nl directly.');
-      }
-    };
-    xhr.onerror = function() {
-      btn.textContent = 'Submit Event →'; btn.disabled = false;
-      alert('Network error. Please email info@southafricanhub.nl directly.');
-    };
-    xhr.send(fd);
-  }
-
-  // ── RSVP TYPE TOGGLE ──
-  var rsvpType = 'kaartjies';
   function setRsvpType(type) {
     rsvpType = type;
     var ka = document.getElementById('rsvp-opt-kaartjies');
     var th = document.getElementById('rsvp-opt-third');
     var urlWrap = document.getElementById('kaartjies-url-wrap');
-    var waField = document.getElementById('ev-wa').closest('div');
+    var waWrap  = document.getElementById('ev-wa-wrap');
+    if (!ka || !th) return;
     if (type === 'kaartjies') {
-      ka.style.cssText = 'border:2px solid var(--green);background:#e8f4ec;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
-      ka.querySelector('div:nth-child(2)').style.color = 'var(--green)';
-      th.style.cssText = 'border:2px solid var(--wire);background:white;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
-      th.querySelector('div:nth-child(2)').style.color = 'var(--navy)';
-      urlWrap.style.display = 'block';
-      waField.style.display = 'none';
+      ka.style.border = '2px solid #1a5c2a'; ka.style.background = '#e8f4ec';
+      th.style.border = '2px solid #dde1e8'; th.style.background = 'white';
+      if (urlWrap) urlWrap.style.display = 'block';
+      if (waWrap)  waWrap.style.display  = 'none';
     } else {
-      th.style.cssText = 'border:2px solid var(--green);background:#e8f4ec;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
-      th.querySelector('div:nth-child(2)').style.color = 'var(--green)';
-      ka.style.cssText = 'border:2px solid var(--wire);background:white;border-radius:8px;padding:12px;text-align:center;cursor:pointer';
-      ka.querySelector('div:nth-child(2)').style.color = 'var(--navy)';
-      urlWrap.style.display = 'none';
-      waField.style.display = 'block';
+      th.style.border = '2px solid #1a5c2a'; th.style.background = '#e8f4ec';
+      ka.style.border = '2px solid #dde1e8'; ka.style.background = 'white';
+      if (urlWrap) urlWrap.style.display = 'none';
+      if (waWrap)  waWrap.style.display  = 'block';
     }
   }
 
-  // ── EVENT PHOTO PREVIEW ──
   function previewEventPhoto(input) {
     if (!input.files || !input.files[0]) return;
     var file = input.files[0];
@@ -451,32 +353,71 @@ Please email info@southafricanhub.nl directly.');
       document.getElementById('ev-photo-name').textContent = file.name;
       document.getElementById('ev-photo-empty').style.display = 'none';
       document.getElementById('ev-photo-preview').style.display = 'block';
-      document.getElementById('ev-photo-box').style.borderColor = '#1a5c2a';
-      document.getElementById('ev-photo-box').style.background = '#e8f4ec';
     };
     reader.readAsDataURL(file);
   }
 
-  // ── TOAST ──
+  function doSubmitEvent() {
+    var name = document.getElementById('ev-name').value.trim();
+    var date = document.getElementById('ev-date').value;
+    var city = document.getElementById('ev-city').value.trim();
+    var time = document.getElementById('ev-time').value.trim();
+    var desc = document.getElementById('ev-desc').value.trim();
+    var org  = document.getElementById('ev-organiser').value.trim();
+    var mail = document.getElementById('ev-email').value.trim();
+    var wa   = document.getElementById('ev-wa').value.trim();
+    var kUrl = document.getElementById('ev-kaartjies') ? document.getElementById('ev-kaartjies').value.trim() : '';
+    if (!name||!date||!city||!time||!desc||!org||!mail) { alert('Please fill in all required fields.'); return; }
+    if (rsvpType==='kaartjies' && !kUrl) { alert('Please enter the Kaartjies.nl ticket URL.'); return; }
+    if (rsvpType==='third' && !wa) { alert('Please enter a WhatsApp number for RSVPs.'); return; }
+    var btn = document.getElementById('ev-submit-btn');
+    btn.textContent = 'Sending...'; btn.disabled = true;
+    var fd = new FormData();
+    fd.append('_subject', 'Event Submission - ' + name);
+    fd.append('_replyto', mail);
+    fd.append('event_name', name);
+    fd.append('date', date);
+    fd.append('city', city);
+    fd.append('time', time);
+    fd.append('description', desc);
+    fd.append('organiser_name', org);
+    fd.append('organiser_email', mail);
+    fd.append('whatsapp', wa || 'N/A');
+    fd.append('rsvp_type', rsvpType === 'kaartjies' ? 'Kaartjies.nl' : 'WhatsApp/Email');
+    fd.append('kaartjies_url', kUrl || 'N/A');
+    var photoInput = document.getElementById('ev-photo');
+    if (photoInput && photoInput.files && photoInput.files[0]) fd.append('photo', photoInput.files[0]);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://formspree.io/f/mlgvbeap');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.onload = function() {
+      btn.textContent = 'Submit Event'; btn.disabled = false;
+      if (xhr.status === 200 || xhr.status === 201) {
+        closeEventSubmit();
+        showToast('Event submitted! We will add it within 24 hours.');
+        ['ev-name','ev-date','ev-city','ev-time','ev-desc','ev-organiser','ev-email','ev-wa','ev-kaartjies'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+      } else {
+        var err = 'HTTP ' + xhr.status;
+        try { err = JSON.parse(xhr.responseText).error || err; } catch(ex) {}
+        alert('Failed: ' + err + '. Please email info@southafricanhub.nl');
+      }
+    };
+    xhr.onerror = function() { btn.textContent = 'Submit Event'; btn.disabled = false; alert('Network error. Please email info@southafricanhub.nl'); };
+    xhr.send(fd);
+  }
+
   function showToast(msg) {
     var t = document.getElementById('site-toast');
-    var icon = msg.match(/^([\u{1F300}-\u{1FFFF}\u2705\u26A0\uFE0F])/u);
-    t.querySelector('.toast-icon').textContent = icon ? icon[1] : '';
-    t.querySelector('.toast-msg').textContent  = msg.replace(/^[\u{1F300}-\u{1FFFF}\u2705\u26A0\uFE0F]\s*/u, '');
+    t.querySelector('.toast-icon').textContent = '';
+    t.querySelector('.toast-msg').textContent = msg;
     t.classList.add('show');
     setTimeout(function() { t.classList.remove('show'); }, 3500);
   }
 
-  // Label own-event RSVP buttons as "Get Tickets"
-  document.querySelectorAll('.event-card[data-type="own"] .btn-rsvp').forEach(function(btn) {
-    btn.textContent = 'Get Tickets →';
-    btn.style.background = '#c8102e'; // red for tickets
-  });
-
-  // Close modals on backdrop click / Escape
-  document.getElementById('rsvp-modal').addEventListener('click', function(e) { if (e.target === this) closeRsvp(); });
-  document.getElementById('event-modal').addEventListener('click', function(e) { if (e.target === this) closeEventSubmit(); });
-  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeRsvp(); closeEventSubmit(); } });
+  document.getElementById('rsvp-modal').addEventListener('click', function(e) { if (e.target===this) closeRsvp(); });
+  document.getElementById('event-modal').addEventListener('click', function(e) { if (e.target===this) closeEventSubmit(); });
+  document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeRsvp(); closeEventSubmit(); } });
 </script>
+
 </body>
 </html>
