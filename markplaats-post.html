@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post a Listing — Markplaats · southafricanhub.nl</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1c1917;
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --accent: #e8501a;
+    --accent-light: #fff2ed;
+    --free: #14532d;
+    --free-bg: #dcfce7;
+    --sale: #92400e;
+    --sale-bg: #fef3c7;
+    --wire: #e2e0dc;
+    --muted: #78716c;
+    --subtle: #f5f4f1;
+    --focus: #e8501a;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--ink);
+    padding: 0 48px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-mark { width: 30px; height: 30px; background: var(--accent); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 12px; }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 16px; color: white; }
+  .logo-text span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: rgba(255,255,255,0.55); font-size: 13px; text-decoration: none; }
+  .nav-links a.active { color: white; font-weight: 500; }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--wire);
+    padding: 32px 48px 28px;
+  }
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .breadcrumb a { color: var(--accent); text-decoration: none; }
+  .breadcrumb span { color: var(--wire); }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .page-header p { color: var(--muted); font-size: 14px; }
+
+  /* ── MAIN LAYOUT ── */
+  .page-layout {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* ── FORM ── */
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--wire);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .form-section {
+    padding: 28px 32px;
+    border-bottom: 1px solid var(--wire);
+  }
+  .form-section:last-child { border-bottom: none; }
+  .form-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-section-title .num {
+    width: 20px; height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 10px; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .field label .req { color: var(--accent); margin-left: 2px; }
+  .field label .hint { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+
+  .field input, .field select, .field textarea {
+    width: 100%;
+    border: 1.5px solid var(--wire);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: 'Outfit', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    transition: border-color 0.15s, background 0.15s;
+    outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--focus);
+    background: var(--surface);
+  }
+  .field textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+  .field select { cursor: pointer; }
+  .field .char-count { font-size: 11px; color: var(--muted); margin-top: 4px; text-align: right; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* ── PRICE TYPE TOGGLE ── */
+  .price-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .price-option {
+    border: 2px solid var(--wire);
+    border-radius: 10px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .price-option:hover { border-color: var(--ink); }
+  .price-option.selected-free { border-color: var(--free); background: var(--free-bg); }
+  .price-option.selected-sale { border-color: var(--accent); background: var(--accent-light); }
+  .price-option .po-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .price-option .po-label { font-size: 13px; font-weight: 600; color: var(--ink); display: block; }
+  .price-option .po-desc { font-size: 11px; color: var(--muted); margin-top: 2px; display: block; }
+  .price-option.selected-free .po-label { color: var(--free); }
+  .price-option.selected-sale .po-label { color: var(--accent); }
+
+  .price-amount-field { display: none; }
+  .price-amount-field.visible { display: block; }
+
+  /* ── PHOTO UPLOAD ── */
+  .photo-upload {
+    border: 2px dashed var(--wire);
+    border-radius: 10px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: var(--bg);
+  }
+  .photo-upload:hover { border-color: var(--accent); background: var(--accent-light); }
+  .photo-upload .pu-icon { font-size: 28px; display: block; margin-bottom: 10px; }
+  .photo-upload .pu-label { font-size: 13px; font-weight: 600; color: var(--ink); display: block; margin-bottom: 4px; }
+  .photo-upload .pu-hint { font-size: 11px; color: var(--muted); }
+
+  /* ── SUBMIT ── */
+  .form-submit-section {
+    padding: 24px 32px;
+    background: var(--subtle);
+    border-top: 1px solid var(--wire);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .submit-note { font-size: 12px; color: var(--muted); line-height: 1.5; max-width: 300px; }
+  .btn-submit {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .btn-submit:hover { background: #d0461a; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--wire);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .tip-card h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .tip-list { display: flex; flex-direction: column; gap: 10px; }
+  .tip-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .tip-item .ti { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+
+  .rule-card {
+    background: var(--accent-light);
+    border: 1px solid #fdddd0;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .rule-card h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .rule-list { display: flex; flex-direction: column; gap: 8px; }
+  .rule-item {
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .rule-item::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  .preview-card {
+    background: var(--surface);
+    border: 1px solid var(--wire);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .preview-card-header {
+    padding: 12px 16px;
+    background: var(--subtle);
+    border-bottom: 1px solid var(--wire);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .preview-inner { padding: 16px; }
+  .preview-img { height: 80px; background: var(--subtle); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 12px; }
+  .preview-title { font-size: 14px; font-weight: 600; color: var(--muted); font-style: italic; }
+  .preview-hint { font-size: 11px; color: rgba(120,113,108,0.6); margin-top: 4px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    margin-top: 64px;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+  }
+  footer a { color: rgba(255,255,255,0.5); text-decoration: none; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a class="logo" href="#">
+    <div class="logo-mark">SAH</div>
+    <span class="logo-text">southafricanhub<span>.nl</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="directory.html">Directory</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html" class="active">Markplaats</a>
+    <a href="#">Resources</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="markplaats.html">Markplaats</a>
+    <span>›</span>
+    <span>Post a Listing</span>
+  </div>
+  <h1>Post a Listing</h1>
+  <p>Free to post · Community moderated · Live within 24 hours</p>
+</div>
+
+<!-- LAYOUT -->
+<div class="page-layout">
+
+  <!-- FORM -->
+  <div>
+    <div class="form-card">
+
+      <!-- SECTION 1: ITEM DETAILS -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="num">1</span> Item details</div>
+
+        <div class="field">
+          <label>Title <span class="req">*</span> <span class="hint">Keep it short and clear</span></label>
+          <input type="text" placeholder="e.g. IKEA 3-seater sofa, grey">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Category <span class="req">*</span></label>
+            <select>
+              <option value="">Select…</option>
+              <option>Furniture</option>
+              <option>Appliances</option>
+              <option>Baby & Kids</option>
+              <option>Bikes</option>
+              <option>Books & Study</option>
+              <option>Kitchen</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Condition <span class="req">*</span></label>
+            <select>
+              <option value="">Select…</option>
+              <option>Like new</option>
+              <option>Good condition</option>
+              <option>Used — some wear</option>
+              <option>Needs repair</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Description <span class="req">*</span> <span class="hint">Be honest about condition</span></label>
+          <textarea placeholder="Describe the item — dimensions, colour, any defects, collection notes…" maxlength="400"></textarea>
+          <div class="char-count">0 / 400</div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: PRICE -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="num">2</span> Pricing</div>
+
+        <div class="price-toggle">
+          <div class="price-option selected-free" id="opt-free" onclick="selectPrice('free')">
+            <span class="po-icon">🎁</span>
+            <span class="po-label">Give for Free</span>
+            <span class="po-desc">Pay it forward to a new family</span>
+          </div>
+          <div class="price-option" id="opt-sale" onclick="selectPrice('sale')">
+            <span class="po-icon">💰</span>
+            <span class="po-label">For Sale</span>
+            <span class="po-desc">Set your own price</span>
+          </div>
+        </div>
+
+        <div class="price-amount-field" id="price-field">
+          <div class="field" style="margin:0">
+            <label>Asking price (€) <span class="req">*</span></label>
+            <input type="number" placeholder="e.g. 25" min="1">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: LOCATION & CONTACT -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="num">3</span> Location & contact</div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>City <span class="req">*</span></label>
+            <input type="text" placeholder="e.g. Amsterdam">
+          </div>
+          <div class="field">
+            <label>Collection / delivery</label>
+            <select>
+              <option>Collection only</option>
+              <option>Delivery possible (extra cost)</option>
+              <option>Post / verzenden</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Your name <span class="req">*</span></label>
+          <input type="text" placeholder="First name or full name">
+        </div>
+
+        <div class="field">
+          <label>Contact email <span class="req">*</span> <span class="hint">Not shown publicly — we forward enquiries</span></label>
+          <input type="email" placeholder="you@email.com">
+        </div>
+      </div>
+
+      <!-- SECTION 4: PHOTO -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="num">4</span> Photo <span style="font-weight:400;font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;">(optional but recommended)</span></div>
+        <div class="photo-upload">
+          <span class="pu-icon">📷</span>
+          <span class="pu-label">Click to upload a photo</span>
+          <span class="pu-hint">JPG or PNG · Max 5MB · 1 photo per listing</span>
+        </div>
+      </div>
+
+      <!-- SUBMIT -->
+      <div class="form-submit-section">
+        <p class="submit-note">Your listing will be reviewed before going live — usually within 24 hours. We'll email you once it's published.</p>
+        <button class="btn-submit" onclick="submitMarkplaats(event)">Submit Listing →</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <div class="preview-card">
+      <div class="preview-card-header">Preview</div>
+      <div class="preview-inner">
+        <div class="preview-img">📦</div>
+        <div class="preview-title">Your listing will appear here…</div>
+        <div class="preview-hint">Fill in the form to see a preview</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <h4>Tips for a great listing</h4>
+      <div class="tip-list">
+        <div class="tip-item"><span class="ti">📸</span> A clear photo gets 3× more responses</div>
+        <div class="tip-item"><span class="ti">📏</span> Include dimensions for furniture</div>
+        <div class="tip-item"><span class="ti">✅</span> Be honest about wear — it builds trust</div>
+        <div class="tip-item"><span class="ti">🚗</span> State clearly if collection only</div>
+        <div class="tip-item"><span class="ti">💬</span> We'll forward all enquiries to your email</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <h4>Community guidelines</h4>
+      <div class="rule-list">
+        <div class="rule-item">SA community members only</div>
+        <div class="rule-item">Household items, bikes, books — no cars or electronics over €500</div>
+        <div class="rule-item">No commercial reselling</div>
+        <div class="rule-item">One listing per item</div>
+        <div class="rule-item">Mark as sold when gone</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-left">
+    <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
+    <div class="footer-tagline">For South Africans in the Netherlands</div>
+    <div class="footer-links" style="margin-top:8px;">
+      <a href="directory.html">Directory</a><a href="events.html">Events</a><a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-powered">Accounting &amp; tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-copy">© 2025 southafricanhub.nl</div>
+  </div>
+</footer>
+
+<script>
+  function selectPrice(type) {
+    const optFree = document.getElementById('opt-free');
+    const optSale = document.getElementById('opt-sale');
+    const priceField = document.getElementById('price-field');
+
+    optFree.className = 'price-option';
+    optSale.className = 'price-option';
+
+    if (type === 'free') {
+      optFree.classList.add('selected-free');
+      priceField.classList.remove('visible');
+    } else {
+      optSale.classList.add('selected-sale');
+      priceField.classList.add('visible');
+    }
+  }
+
+  // Live char counter
+  document.querySelector('textarea').addEventListener('input', function() {
+    this.nextElementSibling.textContent = this.value.length + ' / 400';
+  });
+</script>
+
+<script>
+  function selectPrice(type) {
+    const optFree = document.getElementById('opt-free');
+    const optSale = document.getElementById('opt-sale');
+    const priceField = document.getElementById('price-field');
+    optFree.className = 'price-option';
+    optSale.className = 'price-option';
+    if (type === 'free') { optFree.classList.add('selected-free'); priceField.classList.remove('visible'); }
+    else { optSale.classList.add('selected-sale'); priceField.classList.add('visible'); }
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const ta = document.querySelector('textarea');
+    if (ta) ta.addEventListener('input', function() { this.nextElementSibling.textContent = this.value.length + ' / 400'; });
+  });
+
+  async function sendToFormspree(endpointId, data) {
+    try {
+      const res = await fetch(`https://formspree.io/f/${endpointId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return res.ok;
+    } catch(e) { return false; }
+  }
+
+  async function submitMarkplaats(e) {
+    e.preventDefault();
+    const titleInput = document.querySelectorAll('.form-section input[type=text]')[0];
+    const titleVal   = titleInput ? titleInput.value.trim() : '';
+    const selects    = document.querySelectorAll('.form-section select');
+    const cat        = selects[0] ? selects[0].value : '';
+    const cond       = selects[1] ? selects[1].value : '';
+    const ta         = document.querySelector('textarea');
+    const desc       = ta ? ta.value.trim() : '';
+    const isFree     = document.getElementById('opt-free').classList.contains('selected-free');
+    const priceInp   = document.querySelector('#price-field input');
+    const price      = isFree ? 'Free' : (priceInp ? '\u20ac' + priceInp.value : 'N/A');
+    const delivery   = selects[2] ? selects[2].value : '';
+    const allInputs  = document.querySelectorAll('.form-section input[type=text], .form-section input[type=email]');
+    const city       = allInputs[allInputs.length - 2] ? allInputs[allInputs.length - 2].value.trim() : '';
+    const name       = allInputs[allInputs.length - 3] ? allInputs[allInputs.length - 3].value.trim() : '';
+    const emailInp   = document.querySelector('input[type=email]');
+    const email      = emailInp ? emailInp.value.trim() : '';
+    if (!titleVal || !cat || !desc || !city || !name || !email) {
+      showToast('\u26a0\ufe0f Please fill in all required fields.'); return;
+    }
+    const btn = e.target; btn.textContent = 'Sending\u2026'; btn.disabled = true;
+    const ok = await sendToFormspree('FORMSPREE_MARKPLAATS_ID', {
+      _subject: `Markplaats Listing \u2014 ${titleVal}`,
+      item: titleVal, category: cat, condition: cond,
+      price, delivery, city, description: desc,
+      seller_name: name, seller_email: email
+    });
+    if (ok) {
+      btn.textContent = '\u2705 Submitted!';
+      showToast('\u2705 Listing submitted \u2014 goes live within 24 hours.');
+    } else {
+      btn.textContent = 'Submit Listing \u2192'; btn.disabled = false;
+      showToast('\u26a0\ufe0f Something went wrong. Please try again.');
+    }
+  }
+    const btn2 = e.target; btn2.textContent = 'Sending\u2026'; btn2.disabled = true;
+    const ok = await sendToFormspree('FORMSPREE_MARKPLAATS_ID', {
+      _subject: 'Markplaats Listing \u2014 ' + titleVal,
+      item: titleVal, category: cat, condition: cond, price,
+      delivery, city, description: desc,
+      seller_name: name, seller_email: email
+    });
+    if (ok) {
+      btn2.textContent = '\u2705 Submitted!';
+      showToast('\u2705 Listing submitted \u2014 goes live within 24 hours.');
+    } else {
+      btn2.textContent = 'Submit Listing \u2192'; btn2.disabled = false;
+      showToast('\u26a0\ufe0f Something went wrong. Please try again.');
+    }
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('site-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'site-toast'; t.className = 'toast'; t.innerHTML = '<span class="toast-icon"></span><span class="toast-msg"></span>'; document.body.appendChild(t); }
+    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}\u2705\u26a0\ufe0f]\s*/u, '');
+    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}\u2705\u26a0\ufe0f])/u)?.[1] || '';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+<\/script>
+</body>
+</html>

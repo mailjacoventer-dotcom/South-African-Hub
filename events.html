@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — southafricanhub.nl</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .events-hero { padding-bottom: 52px; }
+  .filter-bar { top: 58px; }
+
+  .page-body { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+  .events-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  .event-card {
+    background: var(--surface); border: 1px solid var(--wire);
+    border-radius: var(--radius-lg); overflow: hidden;
+    text-decoration: none; color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;
+  }
+  .event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.09); }
+  .event-top { background: var(--ink); padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+  .event-date { text-align: center; flex-shrink: 0; }
+  .event-date .day { font-family: 'Playfair Display', serif; font-size: 34px; color: white; line-height: 1; }
+  .event-date .month { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 2px; }
+  .event-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
+  .event-city-block {}
+  .event-city { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .event-time { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+  .event-body { padding: 20px; }
+  .event-tag { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 3px 8px; border-radius: 3px; margin-bottom: 10px; }
+  .tag-community { background: var(--free-bg); color: var(--free); }
+  .tag-networking { background: var(--accent-light); color: var(--accent); }
+  .tag-workshop { background: #ede9fe; color: #6d28d9; }
+  .tag-sport { background: #fef3c7; color: var(--sale); }
+  .event-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; line-height: 1.3; }
+  .event-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+  .event-details { display: flex; flex-direction: column; gap: 5px; padding-top: 14px; border-top: 1px solid var(--wire); }
+  .event-detail { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .event-detail .icon { font-size: 14px; flex-shrink: 0; }
+  .event-cta { margin-top: 14px; }
+  .btn-rsvp { display: inline-block; background: var(--accent); color: white; padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.15s; }
+  .btn-rsvp:hover { background: var(--accent-hover); }
+  .btn-rsvp.free-event { background: var(--free); }
+  .btn-rsvp.free-event:hover { background: #166534; }
+
+  .section-divider { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); padding: 32px 0 16px; border-bottom: 1px solid var(--wire); margin-bottom: 24px; }
+
+  .submit-event-band {
+    background: var(--ink); border-radius: var(--radius-lg);
+    padding: 40px 48px; display: flex; justify-content: space-between;
+    align-items: center; gap: 24px; margin: 0 0 64px;
+    position: relative; overflow: hidden;
+  }
+  .submit-event-band::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(232,80,26,0.15) 0%, transparent 70%); }
+  .submit-event-band h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 6px; }
+  .submit-event-band p { color: rgba(255,255,255,0.5); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">SAH</div>
+    <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="directory.html">Directory</a>
+    <a href="events.html" class="active">Events</a>
+    <a href="markplaats.html">Markplaats</a>
+    <a href="#">Resources</a>
+    <a href="directory.html#list-business" class="nav-cta">List Your Business →</a>
+  </div>
+</nav>
+
+<div class="page-hero-band events-hero">
+  <div class="section-eyebrow">SA Community</div>
+  <h1>Upcoming <em>Events</em></h1>
+  <p>Braais, networking drinks, workshops, and more — get together with the SA community across the Netherlands.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">8</div><div class="l">Events this month</div></div>
+    <div class="hero-stat"><div class="n">6</div><div class="l">Cities</div></div>
+    <div class="hero-stat"><div class="n">Free</div><div class="l">To attend most events</div></div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="pill active" onclick="setFilter(this)">All</div>
+  <div class="pill" onclick="setFilter(this)">Community</div>
+  <div class="pill" onclick="setFilter(this)">Networking</div>
+  <div class="pill" onclick="setFilter(this)">Workshop</div>
+  <div class="pill" onclick="setFilter(this)">Sport</div>
+  <div class="filter-divider"></div>
+  <div class="pill" onclick="setFilter(this)">Amsterdam</div>
+  <div class="pill" onclick="setFilter(this)">Rotterdam</div>
+  <div class="pill" onclick="setFilter(this)">Utrecht</div>
+  <div class="pill" onclick="setFilter(this)">Online</div>
+</div>
+
+<div class="page-body">
+  <div class="section-divider">June 2025</div>
+  <div class="events-grid">
+
+    <a href="#" class="event-card">
+      <div class="event-top">
+        <div class="event-date"><div class="day">14</div><div class="month">June</div></div>
+        <div class="event-divider"></div>
+        <div class="event-city-block"><div class="event-city">Amsterdam</div><div class="event-time">14:00 – 18:00</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-community">Community</span>
+        <div class="event-title">SA Braai & Networking — Westerpark</div>
+        <div class="event-desc">The classic SA community staple. Bring a dish, meet fellow Saffas, and enjoy a proper braai in the park.</div>
+        <div class="event-details">
+          <div class="event-detail"><span class="icon">📍</span> Westerpark, Amsterdam</div>
+          <div class="event-detail"><span class="icon">🎟️</span> Free entry · All welcome</div>
+        </div>
+        <div class="event-cta"><a href="#" class="btn-rsvp free-event" onclick="rsvpEvent(event, this)">RSVP — Free</a></div>
+      </div>
+    </a>
+
+    <a href="#" class="event-card">
+      <div class="event-top">
+        <div class="event-date"><div class="day">20</div><div class="month">June</div></div>
+        <div class="event-divider"></div>
+        <div class="event-city-block"><div class="event-city">Rotterdam</div><div class="event-time">18:30 – 21:00</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-networking">Networking</span>
+        <div class="event-title">SA Professionals Drinks</div>
+        <div class="event-desc">Monthly informal drinks for SA professionals and business owners in Rotterdam. No agenda — just good people.</div>
+        <div class="event-details">
+          <div class="event-detail"><span class="icon">📍</span> Café Hopper, Rotterdam</div>
+          <div class="event-detail"><span class="icon">🎟️</span> Pay your own drinks</div>
+        </div>
+        <div class="event-cta"><a href="#" class="btn-rsvp" onclick="rsvpEvent(event, this)">Register</a></div>
+      </div>
+    </a>
+
+    <a href="#" class="event-card">
+      <div class="event-top">
+        <div class="event-date"><div class="day">26</div><div class="month">June</div></div>
+        <div class="event-divider"></div>
+        <div class="event-city-block"><div class="event-city">Utrecht</div><div class="event-time">10:00 – 14:00</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-community">Community</span>
+        <div class="event-title">SA Families Picnic Day</div>
+        <div class="event-desc">Family-friendly gathering in Griftpark. Kids welcome. Bring food to share and enjoy an afternoon in the sun.</div>
+        <div class="event-details">
+          <div class="event-detail"><span class="icon">📍</span> Griftpark, Utrecht</div>
+          <div class="event-detail"><span class="icon">🎟️</span> Free · Families welcome</div>
+        </div>
+        <div class="event-cta"><a href="#" class="btn-rsvp free-event" onclick="rsvpEvent(event, this)">RSVP — Free</a></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-divider" style="margin-top:40px;">July 2025</div>
+  <div class="events-grid">
+
+    <a href="#" class="event-card">
+      <div class="event-top">
+        <div class="event-date"><div class="day">5</div><div class="month">July</div></div>
+        <div class="event-divider"></div>
+        <div class="event-city-block"><div class="event-city">Online</div><div class="event-time">19:00 – 20:30</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-workshop">Workshop</span>
+        <div class="event-title">Tax & Business Clinic — SA Expats</div>
+        <div class="event-desc">Free webinar covering the 30% ruling, ZZP registration, and Dutch tax basics for South African expats. Q&A included.</div>
+        <div class="event-details">
+          <div class="event-detail"><span class="icon">💻</span> Online · Zoom link on registration</div>
+          <div class="event-detail"><span class="icon">🎟️</span> Free for hub members</div>
+        </div>
+        <div class="event-cta"><a href="#" class="btn-rsvp free-event" onclick="rsvpEvent(event, this)">Register — Free</a></div>
+      </div>
+    </a>
+
+    <a href="#" class="event-card">
+      <div class="event-top">
+        <div class="event-date"><div class="day">12</div><div class="month">July</div></div>
+        <div class="event-divider"></div>
+        <div class="event-city-block"><div class="event-city">Amsterdam</div><div class="event-time">11:00 – 15:00</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-sport">Sport</span>
+        <div class="event-title">SA vs The World — Touch Rugby</div>
+        <div class="event-desc">Annual touch rugby match. SA community vs everyone else. All skill levels welcome. Braai after.</div>
+        <div class="event-details">
+          <div class="event-detail"><span class="icon">📍</span> Flevopark, Amsterdam</div>
+          <div class="event-detail"><span class="icon">🎟️</span> Free · Bring water and sunscreen</div>
+        </div>
+        <div class="event-cta"><a href="#" class="btn-rsvp free-event" onclick="rsvpEvent(event, this)">RSVP — Free</a></div>
+      </div>
+    </a>
+
+    <a href="#" class="event-card">
+      <div class="event-top">
+        <div class="event-date"><div class="day">19</div><div class="month">July</div></div>
+        <div class="event-divider"></div>
+        <div class="event-city-block"><div class="event-city">Den Haag</div><div class="event-time">18:00 – 20:30</div></div>
+      </div>
+      <div class="event-body">
+        <span class="event-tag tag-networking">Networking</span>
+        <div class="event-title">SA Business Owners Dinner</div>
+        <div class="event-desc">Intimate dinner for SA business owners across the Netherlands. Share lessons, referrals, and good food.</div>
+        <div class="event-details">
+          <div class="event-detail"><span class="icon">📍</span> Venue TBC, Den Haag</div>
+          <div class="event-detail"><span class="icon">🎟️</span> €25 per person · Limited seats</div>
+        </div>
+        <div class="event-cta"><a href="#" class="btn-rsvp" onclick="rsvpEvent(event, this)">Book a seat</a></div>
+      </div>
+    </a>
+
+  </div>
+
+  <div style="margin-top:48px;">
+    <div class="submit-event-band">
+      <div>
+        <h3>Organising an event for the SA community?</h3>
+        <p>Submit it here and we'll list it on the hub — free of charge.</p>
+      </div>
+      <a href="#" class="btn-primary" onclick="submitEvent(event)">Submit an Event</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
+    <div class="footer-tagline">For South Africans in the Netherlands</div>
+    <div class="footer-links" style="margin-top:8px;">
+      <a href="directory.html">Directory</a><a href="events.html">Events</a><a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-powered">Accounting & tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-copy">© 2025 southafricanhub.nl</div>
+  </div>
+</footer>
+
+<script>
+  function setFilter(el) {
+    document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+</script>
+
+<div id="rsvp-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:14px;padding:36px;width:440px;max-width:90vw;position:relative;">
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#78716c;">✕</button>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e8501a;margin-bottom:10px;">RSVP</div>
+    <div id="modal-title" style="font-family:'Playfair Display',serif;font-size:22px;color:#1c1917;margin-bottom:20px;line-height:1.2;"></div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input id="rsvp-first" type="text" placeholder="First name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;">
+        <input id="rsvp-last" type="text" placeholder="Last name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;">
+      </div>
+      <input id="rsvp-email" type="email" placeholder="Email address" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;width:100%;">
+      <button onclick="sendRsvp()" style="background:#e8501a;color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;">Confirm RSVP →</button>
+      <p style="font-size:11px;color:#78716c;margin:0;">Your RSVP goes to <strong>info@southafricanhub.nl</strong>. We'll confirm by email.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setFilter(el) {
+    document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  let currentEventTitle = '';
+
+  function rsvpEvent(e, btn) {
+    e.preventDefault();
+    // find nearest event title
+    const card = btn.closest('.event-card') || btn.closest('a');
+    currentEventTitle = card ? card.querySelector('.event-title')?.textContent || 'Event' : 'Event';
+    document.getElementById('modal-title').textContent = currentEventTitle;
+    document.getElementById('rsvp-modal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('rsvp-modal').style.display = 'none';
+  }
+
+  async function sendRsvp() {
+    const first = document.getElementById('rsvp-first').value.trim();
+    const last  = document.getElementById('rsvp-last').value.trim();
+    const email = document.getElementById('rsvp-email').value.trim();
+    if (!first || !email || !email.includes('@')) { alert('Please enter your name and email.'); return; }
+    const btn = document.querySelector('#rsvp-modal button[onclick="sendRsvp()"]');
+    if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+    const ok = await sendToFormspree('FORMSPREE_RSVP_ID', {
+      _subject: 'RSVP — ' + currentEventTitle,
+      event: currentEventTitle, name: first + ' ' + last, email
+    });
+    if (ok) { closeModal(); showToast('✅ RSVP confirmed! We\'ll be in touch.'); }
+    else { if (btn) { btn.textContent = 'Confirm RSVP →'; btn.disabled = false; } showToast('⚠️ Something went wrong. Please try again.'); }
+  }
+
+  async function submitEvent(e) {
+    e.preventDefault();
+    const name  = prompt('Your name:');
+    const email = prompt('Your email:');
+    if (!name || !email) return;
+    const ok = await sendToFormspree('FORMSPREE_RSVP_ID', {
+      _subject: 'Event Submission — southafricanhub.nl',
+      type: 'Event submission', contact_name: name, contact_email: email
+    });
+    showToast(ok ? '✅ We\'ll be in touch with the event submission form.' : '⚠️ Something went wrong. Please try again.');
+  }
+
+  function showToast(msg) {
+    let t = document.getElementById('site-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'site-toast'; t.className = 'toast'; t.innerHTML = '<span class="toast-icon"></span><span class="toast-msg"></span>'; document.body.appendChild(t); }
+    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}✅⚠️]\s*/u, '');
+    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}✅⚠️])/u)?.[1] || '';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+<\/script>
+</body>
+</html>

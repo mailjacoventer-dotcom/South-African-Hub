@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>southafricanhub.nl — South Africans in the Netherlands</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* ── HOMEPAGE SPECIFICS ── */
+  .hero {
+    background: var(--ink);
+    padding: 72px 48px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: -80px; top: -80px;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,80,26,0.14) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: 48px; color: white; line-height: 1.05; margin-bottom: 18px; }
+  .hero h1 em { font-style: italic; color: rgba(255,255,255,0.45); }
+  .hero p { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.55); max-width: 420px; margin-bottom: 32px; }
+  .hero-btns { display: flex; gap: 12px; }
+  .hero-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; position: relative; z-index: 1; }
+  .hero-stat-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    text-align: center;
+  }
+  .hero-stat-card .n { font-family: 'Playfair Display', serif; font-size: 32px; color: white; display: block; line-height: 1; }
+  .hero-stat-card .l { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; display: block; }
+
+  /* CAT BAR */
+  .cat-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--wire);
+    padding: 12px 48px;
+    display: flex; gap: 8px; align-items: center;
+    overflow-x: auto;
+    position: sticky; top: 58px; z-index: 100;
+  }
+  .cat-bar .view-toggle { margin-left: auto; }
+
+  /* DUAL SECTION */
+  .dual-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--wire);
+  }
+  .dual-col { padding: 48px; }
+  .dual-col:first-child { border-right: 1px solid var(--wire); }
+  .dual-col .section-title { font-size: 24px; margin-bottom: 6px; }
+
+  /* DIRECTORY GRID */
+  .dir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .dir-card {
+    background: var(--surface); border: 1px solid var(--wire);
+    border-radius: var(--radius-sm); padding: 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+    transition: border-color 0.15s; text-decoration: none; color: inherit;
+  }
+  .dir-card:hover { border-color: var(--accent); }
+  .dir-icon { width: 36px; height: 36px; background: var(--subtle); border-radius: var(--radius-sm); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .dir-card-text .name { font-weight: 600; font-size: 13px; }
+  .dir-card-text .cat { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .dir-card-text .loc { font-size: 11px; color: var(--green); margin-top: 4px; }
+
+  /* MAP VIEW */
+  #map-view { display: none; }
+  #map-view.visible { display: block; }
+  #list-view.hidden { display: none; }
+  .map-shell { padding: 48px; border-top: 1px solid var(--wire); }
+  .map-container { display: grid; grid-template-columns: 1fr 300px; gap: 16px; height: 420px; margin-top: 24px; }
+  .map-canvas { background: #dde8d0; border: 1px solid var(--wire); border-radius: var(--radius-md); position: relative; overflow: hidden; }
+  .map-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 44px 44px; }
+  .map-pin { position: absolute; transform: translate(-50%,-100%); cursor: pointer; }
+  .map-pin-dot { width: 26px; height: 26px; background: var(--accent); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: transform 0.15s; }
+  .map-pin:hover .map-pin-dot { transform: rotate(-45deg) scale(1.15); }
+  .map-pin-label { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white; font-size: 10px; white-space: nowrap; padding: 3px 7px; border-radius: 4px; font-weight: 600; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+  .map-pin:hover .map-pin-label { opacity: 1; }
+  .map-city { position: absolute; font-size: 10px; color: rgba(0,0,0,0.3); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+  .map-legend { position: absolute; bottom: 12px; left: 12px; background: white; border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 11px; display: flex; gap: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .map-sidebar { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+  .map-list-item { background: var(--surface); border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 12px; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: border-color 0.15s; }
+  .map-list-item:hover { border-color: var(--accent); }
+  .map-list-item .name { font-weight: 600; font-size: 13px; }
+  .map-list-item .cat { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .map-list-item .loc { font-size: 11px; color: var(--green); margin-top: 4px; }
+
+  /* RESOURCES */
+  .resource-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .resource-item { background: var(--surface); border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; text-decoration: none; color: inherit; transition: border-color 0.15s; }
+  .resource-item:hover { border-color: var(--accent); }
+  .res-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
+  .res-tag.guide { background: var(--accent-light); color: var(--accent); }
+  .res-tag.tip { background: var(--subtle); color: var(--muted); }
+  .res-title { font-weight: 600; font-size: 13px; }
+  .res-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* EVENTS CAROUSEL */
+  .events-section { padding: 48px; background: var(--surface); border-top: 1px solid var(--wire); border-bottom: 1px solid var(--wire); }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+
+  /* Carousel wrapper */
+  .carousel-outer { position: relative; }
+  .carousel-track-wrap { overflow: hidden; border-radius: var(--radius-lg); }
+  .carousel-track {
+    display: flex;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  /* Each slide = full-width banner */
+  .carousel-slide {
+    min-width: 100%;
+    position: relative;
+    height: 300px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Banner image area — gradient fallback when no image uploaded */
+  .slide-banner {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease;
+  }
+  .carousel-slide:hover .slide-banner { transform: scale(1.02); }
+
+  /* Colour fallbacks per slide */
+  .slide-banner.s1 { background-image: linear-gradient(135deg, #1c1917 0%, #2d1a0e 50%, #3d2010 100%); }
+  .slide-banner.s2 { background-image: linear-gradient(135deg, #0f1f2e 0%, #1a3040 50%, #0d2535 100%); }
+  .slide-banner.s3 { background-image: linear-gradient(135deg, #1a1f0a 0%, #2d3a10 50%, #1e2a08 100%); }
+  .slide-banner.s4 { background-image: linear-gradient(135deg, #1f1225 0%, #2d1535 50%, #1a0f1e 100%); }
+  .slide-banner.s5 { background-image: linear-gradient(135deg, #1f150a 0%, #3a2010 50%, #2a1808 100%); }
+
+  /* Overlay gradient for text legibility */
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.35) 60%, rgba(0,0,0,0.1) 100%);
+  }
+
+  /* Upload hint shown when no real image */
+  .slide-upload-hint {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: rgba(255,255,255,0.1);
+    border: 1px dashed rgba(255,255,255,0.3);
+    border-radius: var(--radius-sm);
+    padding: 5px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .slide-upload-hint:hover { background: rgba(255,255,255,0.18); color: white; }
+
+  /* Slide content */
+  .slide-content {
+    position: absolute;
+    inset: 0;
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    z-index: 2;
+  }
+  .slide-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 4px 10px; border-radius: 3px;
+    margin-bottom: 12px; align-self: flex-start;
+  }
+  .slide-tag.community { background: var(--free-bg); color: var(--free); }
+  .slide-tag.networking { background: var(--accent-light); color: var(--accent); }
+  .slide-tag.workshop   { background: #ede9fe; color: #6d28d9; }
+  .slide-tag.sport      { background: var(--sale-bg); color: var(--sale); }
+
+  .slide-date-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .slide-date-block { text-align: center; }
+  .slide-date-block .day { font-family: 'Playfair Display', serif; font-size: 36px; color: white; line-height: 1; }
+  .slide-date-block .month { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .slide-date-sep { width: 1px; height: 40px; background: rgba(255,255,255,0.2); }
+  .slide-city { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+
+  .slide-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; color: white; line-height: 1.2;
+    margin-bottom: 8px;
+    max-width: 560px;
+  }
+  .slide-meta { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 16px; }
+  .slide-cta {
+    display: inline-block;
+    background: var(--accent); color: white;
+    padding: 9px 20px; border-radius: var(--radius-sm);
+    font-size: 13px; font-weight: 600;
+    text-decoration: none; align-self: flex-start;
+    transition: background 0.15s;
+  }
+  .slide-cta:hover { background: var(--accent-hover); }
+
+  /* Nav arrows */
+  .carousel-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px;
+    background: white; border: 1px solid var(--wire);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    transition: all 0.15s; font-size: 16px; color: var(--ink);
+  }
+  .carousel-arrow:hover { background: var(--ink); color: white; border-color: var(--ink); }
+  .carousel-arrow.prev { left: -18px; }
+  .carousel-arrow.next { right: -18px; }
+
+  /* Dots */
+  .carousel-dots {
+    display: flex; justify-content: center; gap: 7px; margin-top: 18px;
+  }
+  .carousel-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--wire); cursor: pointer;
+    transition: all 0.2s;
+  }
+  .carousel-dot.active { background: var(--accent); width: 22px; border-radius: 4px; }
+
+  /* MARKPLAATS PREVIEW */
+  .mp-preview { padding: 48px; border-top: 1px solid var(--wire); }
+  .mp-grid-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 24px; }
+  .mp-card-preview { background: var(--surface); border: 1px solid var(--wire); border-radius: var(--radius-md); overflow: hidden; text-decoration: none; color: inherit; display: block; transition: transform 0.2s, box-shadow 0.2s; }
+  .mp-card-preview:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.07); }
+  .mp-img { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 38px; position: relative; }
+  .mp-img.warm { background: #fef3c7; }
+  .mp-img.cool { background: #e0f2fe; }
+  .mp-img.soft { background: #fce7f3; }
+  .mp-img.nat  { background: #dcfce7; }
+  .mp-badge { position: absolute; top: 8px; left: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; }
+  .mp-badge.free { background: var(--free-bg); color: var(--free); }
+  .mp-badge.sale { background: var(--sale-bg); color: var(--sale); }
+  .mp-body-preview { padding: 12px; }
+  .mp-title-preview { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .mp-footer-preview { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--wire); }
+  .mp-price { font-size: 14px; font-weight: 700; }
+  .mp-price.free { color: var(--free); }
+  .mp-city-preview { font-size: 11px; color: var(--muted); }
+
+  /* LISTING CTA */
+  .listing-cta-band {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--wire);
+  }
+  .cta-left { background: var(--accent); padding: 48px; }
+  .cta-left h3 { font-family: 'Playfair Display', serif; font-size: 26px; color: white; margin-bottom: 10px; }
+  .cta-left p { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.65; margin-bottom: 24px; }
+  .perks { margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.12); }
+  .perks-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+  .perks ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .perks li { font-size: 13px; color: rgba(255,255,255,0.85); }
+  .cta-right { background: var(--subtle); padding: 48px; border-left: 1px solid var(--wire); }
+  .cta-right h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-bottom: 20px; }
+  .form-field { margin-bottom: 14px; }
+  .form-field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+  .form-field input, .form-field select, .form-field textarea {
+    width: 100%; border: 1.5px solid var(--wire); border-radius: var(--radius-sm);
+    padding: 10px 13px; font-size: 13px; font-family: 'Outfit', sans-serif;
+    background: var(--surface); color: var(--ink); outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+  .form-field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-submit { width: 100%; background: var(--ink); color: white; border: none; border-radius: var(--radius-sm); padding: 12px; font-size: 14px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; margin-top: 4px; transition: background 0.15s; }
+  .form-submit:hover { background: #2e2a28; }
+  .form-note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">SAH</div>
+    <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="directory.html">Directory</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html">Markplaats</a>
+    <a href="#">Resources</a>
+    <a href="directory.html#list-business" class="nav-cta">List Your Business →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">South Africans in the Netherlands</div>
+    <h1>Your community,<br><em>your people</em>,<br>your business.</h1>
+    <p>Find trusted SA-owned businesses, connect with the community, and get the support you need — all in one place.</p>
+    <div class="hero-btns">
+      <a href="directory.html" class="btn-primary">Browse the Directory</a>
+      <a href="events.html" class="btn-ghost">Upcoming Events</a>
+    </div>
+  </div>
+  <div class="hero-stats-grid">
+    <div class="hero-stat-card"><span class="n">340+</span><span class="l">Members</span></div>
+    <div class="hero-stat-card"><span class="n">80+</span><span class="l">Businesses</span></div>
+    <div class="hero-stat-card"><span class="n">12</span><span class="l">Cities</span></div>
+    <div class="hero-stat-card"><span class="n">Free</span><span class="l">To list</span></div>
+  </div>
+</section>
+
+<!-- CAT BAR -->
+<div class="cat-bar">
+  <div class="pill active" onclick="filterCat(this)">All</div>
+  <div class="pill" onclick="filterCat(this)">Property & Housing</div>
+  <div class="pill" onclick="filterCat(this)">Tax & Accounting</div>
+  <div class="pill" onclick="filterCat(this)">Legal</div>
+  <div class="pill" onclick="filterCat(this)">Health & Wellness</div>
+  <div class="pill" onclick="filterCat(this)">Marketing & Creative</div>
+  <div class="pill" onclick="filterCat(this)">Recruitment</div>
+  <div class="pill" onclick="filterCat(this)">Food & Retail</div>
+  <div class="pill" onclick="filterCat(this)">Professional Services</div>
+  <div class="view-toggle">
+    <button class="toggle-btn on" id="btn-list" onclick="showList()">☰ List</button>
+    <button class="toggle-btn off" id="btn-map" onclick="showMap()">⊕ Map</button>
+  </div>
+</div>
+
+<!-- LIST VIEW -->
+<div id="list-view" class="dual-section">
+  <div class="dual-col">
+    <div class="section-eyebrow">Business Directory</div>
+    <div class="section-title">SA businesses near you</div>
+    <div class="section-sub">Trusted professionals and entrepreneurs from the community.</div>
+    <div class="dir-grid">
+      <a href="directory.html" class="dir-card"><div class="dir-icon">🏠</div><div class="dir-card-text"><div class="name">Botha Makelaars</div><div class="cat">Property & Housing</div><div class="loc">📍 Rotterdam</div></div></a>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">📊</div><div class="dir-card-text"><div class="name">Smith Venter Advisory</div><div class="cat">Tax & Accounting</div><div class="loc">📍 Almere</div></div></a>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">⚖️</div><div class="dir-card-text"><div class="name">Van der Berg Legal</div><div class="cat">Legal</div><div class="loc">📍 Amsterdam</div></div></a>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">💆</div><div class="dir-card-text"><div class="name">Cape & Calm</div><div class="cat">Health & Wellness</div><div class="loc">📍 Utrecht</div></div></a>
+    </div>
+    <a href="directory.html" class="view-all-link" style="margin-top:16px;display:inline-flex;">View all 80+ businesses →</a>
+  </div>
+  <div class="dual-col">
+    <div class="section-eyebrow">Resources & Guides</div>
+    <div class="section-title">Settle smarter in NL</div>
+    <div class="section-sub">Practical guides written for South Africans navigating Dutch life.</div>
+    <div class="resource-list">
+      <a href="#" class="resource-item"><span class="res-tag guide">Guide</span><div><div class="res-title">30% Ruling: what SA expats need to know</div><div class="res-meta">Tax guide · 5 min read</div></div></a>
+      <a href="#" class="resource-item"><span class="res-tag tip">Tip</span><div><div class="res-title">How to register your business as a ZZP'er</div><div class="res-meta">KvK & BTW registration walkthrough</div></div></a>
+      <a href="#" class="resource-item"><span class="res-tag guide">Guide</span><div><div class="res-title">Understanding Box 3 as a South African expat</div><div class="res-meta">Dutch tax guide · IB-aangifte</div></div></a>
+      <a href="#" class="resource-item"><span class="res-tag tip">Tip</span><div><div class="res-title">Getting your DigiD & BSN sorted on arrival</div><div class="res-meta">Practical arrival checklist</div></div></a>
+    </div>
+    <a href="#" class="view-all-link" style="margin-top:16px;display:inline-flex;">All resources & guides →</a>
+  </div>
+</div>
+
+<!-- MAP VIEW -->
+<div id="map-view">
+  <div class="map-shell">
+    <div class="section-eyebrow">Business Directory</div>
+    <div class="section-title">SA businesses across the Netherlands</div>
+    <div class="map-container">
+      <div class="map-canvas">
+        <div class="map-grid"></div>
+        <div class="map-city" style="left:49%;top:22%">Amsterdam</div>
+        <div class="map-city" style="left:40%;top:41%">Rotterdam</div>
+        <div class="map-city" style="left:46%;top:36%">Utrecht</div>
+        <div class="map-city" style="left:55%;top:28%">Almere</div>
+        <div class="map-city" style="left:38%;top:39%">Den Haag</div>
+        <div class="map-city" style="left:51%;top:56%">Eindhoven</div>
+        <div class="map-pin" style="left:51%;top:26%"><div class="map-pin-label">Van der Berg Legal</div><div class="map-pin-dot"></div></div>
+        <div class="map-pin" style="left:57%;top:32%"><div class="map-pin-label">Smith Venter Advisory</div><div class="map-pin-dot"></div></div>
+        <div class="map-pin" style="left:42%;top:44%"><div class="map-pin-label">Botha Makelaars</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
+        <div class="map-pin" style="left:48%;top:39%"><div class="map-pin-label">Cape & Calm</div><div class="map-pin-dot"></div></div>
+        <div class="map-pin" style="left:40%;top:42%"><div class="map-pin-label">Naidoo Recruitment</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
+        <div class="map-pin" style="left:52%;top:59%"><div class="map-pin-label">Khumalo Dev</div><div class="map-pin-dot"></div></div>
+        <div class="map-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Amsterdam / Almere / Utrecht</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Rotterdam / Den Haag</div>
+        </div>
+      </div>
+      <div class="map-sidebar">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding:4px 0 8px;">6 businesses</div>
+        <a href="directory.html" class="map-list-item"><div class="name">Van der Berg Legal</div><div class="cat">Legal</div><div class="loc">📍 Amsterdam</div></a>
+        <a href="directory.html" class="map-list-item"><div class="name">Smith Venter Advisory</div><div class="cat">Tax & Accounting</div><div class="loc">📍 Almere</div></a>
+        <a href="directory.html" class="map-list-item"><div class="name">Botha Makelaars</div><div class="cat">Property & Housing</div><div class="loc">📍 Rotterdam</div></a>
+        <a href="directory.html" class="map-list-item"><div class="name">Cape & Calm</div><div class="cat">Health & Wellness</div><div class="loc">📍 Utrecht</div></a>
+        <a href="directory.html" class="map-list-item"><div class="name">Naidoo Recruitment</div><div class="cat">Recruitment</div><div class="loc">📍 Den Haag</div></a>
+        <a href="directory.html" class="map-list-item"><div class="name">Khumalo Dev</div><div class="cat">Marketing & Creative</div><div class="loc">📍 Eindhoven</div></a>
+      </div>
+    </div>
+    <a href="directory.html" class="view-all-link" style="margin-top:16px;display:inline-flex;">View full directory →</a>
+  </div>
+</div>
+
+<!-- EVENTS CAROUSEL -->
+<section class="events-section">
+  <div class="section-header">
+    <div><div class="section-eyebrow">Upcoming Events</div><div class="section-title">Get together</div></div>
+    <a href="events.html" class="view-all-link">View all events →</a>
+  </div>
+
+  <div class="carousel-outer">
+    <div class="carousel-track-wrap">
+      <div class="carousel-track" id="carouselTrack">
+
+        <!-- SLIDE 1 -->
+        <a href="events.html" class="carousel-slide">
+          <div class="slide-banner s1" id="banner-0"></div>
+          <div class="slide-overlay"></div>
+          <label class="slide-upload-hint" onclick="event.preventDefault(); triggerUpload(0)">
+            <input type="file" accept="image/*" style="display:none" onchange="loadBanner(this,0)">
+            📷 Upload banner
+          </label>
+          <div class="slide-content">
+            <span class="slide-tag community">Community</span>
+            <div class="slide-date-row">
+              <div class="slide-date-block"><div class="day">14</div><div class="month">June</div></div>
+              <div class="slide-date-sep"></div>
+              <div class="slide-city">Amsterdam</div>
+            </div>
+            <div class="slide-title">SA Braai & Networking — Westerpark</div>
+            <div class="slide-meta">Westerpark · 14:00–18:00 · Free entry · All welcome</div>
+            <span class="slide-cta">View event →</span>
+          </div>
+        </a>
+
+        <!-- SLIDE 2 -->
+        <a href="events.html" class="carousel-slide">
+          <div class="slide-banner s2" id="banner-1"></div>
+          <div class="slide-overlay"></div>
+          <label class="slide-upload-hint" onclick="event.preventDefault(); triggerUpload(1)">
+            <input type="file" accept="image/*" style="display:none" onchange="loadBanner(this,1)">
+            📷 Upload banner
+          </label>
+          <div class="slide-content">
+            <span class="slide-tag networking">Networking</span>
+            <div class="slide-date-row">
+              <div class="slide-date-block"><div class="day">20</div><div class="month">June</div></div>
+              <div class="slide-date-sep"></div>
+              <div class="slide-city">Rotterdam</div>
+            </div>
+            <div class="slide-title">SA Professionals Drinks</div>
+            <div class="slide-meta">Café Hopper · 18:30–21:00 · Networking · Business owners</div>
+            <span class="slide-cta">View event →</span>
+          </div>
+        </a>
+
+        <!-- SLIDE 3 -->
+        <a href="events.html" class="carousel-slide">
+          <div class="slide-banner s3" id="banner-2"></div>
+          <div class="slide-overlay"></div>
+          <label class="slide-upload-hint" onclick="event.preventDefault(); triggerUpload(2)">
+            <input type="file" accept="image/*" style="display:none" onchange="loadBanner(this,2)">
+            📷 Upload banner
+          </label>
+          <div class="slide-content">
+            <span class="slide-tag workshop">Workshop</span>
+            <div class="slide-date-row">
+              <div class="slide-date-block"><div class="day">5</div><div class="month">July</div></div>
+              <div class="slide-date-sep"></div>
+              <div class="slide-city">Online</div>
+            </div>
+            <div class="slide-title">Tax & Business Clinic — SA Expats</div>
+            <div class="slide-meta">Webinar · 19:00–20:30 · Free for hub members</div>
+            <span class="slide-cta">Register free →</span>
+          </div>
+        </a>
+
+        <!-- SLIDE 4 -->
+        <a href="events.html" class="carousel-slide">
+          <div class="slide-banner s4" id="banner-3"></div>
+          <div class="slide-overlay"></div>
+          <label class="slide-upload-hint" onclick="event.preventDefault(); triggerUpload(3)">
+            <input type="file" accept="image/*" style="display:none" onchange="loadBanner(this,3)">
+            📷 Upload banner
+          </label>
+          <div class="slide-content">
+            <span class="slide-tag sport">Sport</span>
+            <div class="slide-date-row">
+              <div class="slide-date-block"><div class="day">12</div><div class="month">July</div></div>
+              <div class="slide-date-sep"></div>
+              <div class="slide-city">Amsterdam</div>
+            </div>
+            <div class="slide-title">SA vs The World — Touch Rugby</div>
+            <div class="slide-meta">Flevopark · 11:00–15:00 · All skill levels welcome · Braai after</div>
+            <span class="slide-cta">View event →</span>
+          </div>
+        </a>
+
+        <!-- SLIDE 5 -->
+        <a href="events.html" class="carousel-slide">
+          <div class="slide-banner s5" id="banner-4"></div>
+          <div class="slide-overlay"></div>
+          <label class="slide-upload-hint" onclick="event.preventDefault(); triggerUpload(4)">
+            <input type="file" accept="image/*" style="display:none" onchange="loadBanner(this,4)">
+            📷 Upload banner
+          </label>
+          <div class="slide-content">
+            <span class="slide-tag networking">Networking</span>
+            <div class="slide-date-row">
+              <div class="slide-date-block"><div class="day">19</div><div class="month">July</div></div>
+              <div class="slide-date-sep"></div>
+              <div class="slide-city">Den Haag</div>
+            </div>
+            <div class="slide-title">SA Business Owners Dinner</div>
+            <div class="slide-meta">Venue TBC · 18:00–20:30 · €25 per person · Limited seats</div>
+            <span class="slide-cta">Book a seat →</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Arrows -->
+    <button class="carousel-arrow prev" onclick="carouselMove(-1)" aria-label="Previous">‹</button>
+    <button class="carousel-arrow next" onclick="carouselMove(1)" aria-label="Next">›</button>
+  </div>
+
+  <!-- Dots -->
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
+
+<!-- MARKPLAATS PREVIEW -->
+<section class="mp-preview">
+  <div class="section-header">
+    <div><div class="section-eyebrow">Markplaats</div><div class="section-title">Help each other settle in</div><p class="section-sub" style="margin-top:6px;">Free & affordable items from the SA community — for newly arriving families.</p></div>
+    <a href="markplaats.html" class="view-all-link">Browse all listings →</a>
+  </div>
+  <div class="mp-grid-preview">
+    <a href="markplaats.html" class="mp-card-preview"><div class="mp-img warm">🛋️<span class="mp-badge free">Free</span></div><div class="mp-body-preview"><div class="mp-title-preview">IKEA 3-seater sofa</div><div class="mp-footer-preview"><span class="mp-price free">Free</span><span class="mp-city-preview">📍 Amsterdam</span></div></div></a>
+    <a href="markplaats.html" class="mp-card-preview"><div class="mp-img cool">🚲<span class="mp-badge sale">For Sale</span></div><div class="mp-body-preview"><div class="mp-title-preview">City bike — ladies</div><div class="mp-footer-preview"><span class="mp-price">€45</span><span class="mp-city-preview">📍 Utrecht</span></div></div></a>
+    <a href="markplaats.html" class="mp-card-preview"><div class="mp-img soft">👶<span class="mp-badge free">Free</span></div><div class="mp-body-preview"><div class="mp-title-preview">Baby clothes bundle</div><div class="mp-footer-preview"><span class="mp-price free">Free</span><span class="mp-city-preview">📍 Rotterdam</span></div></div></a>
+    <a href="markplaats.html" class="mp-card-preview"><div class="mp-img nat">🧺<span class="mp-badge sale">For Sale</span></div><div class="mp-body-preview"><div class="mp-title-preview">Bosch washing machine</div><div class="mp-footer-preview"><span class="mp-price">€120</span><span class="mp-city-preview">📍 Amsterdam</span></div></div></a>
+  </div>
+  <div style="margin-top:20px;display:flex;gap:12px;align-items:center;">
+    <a href="markplaats-post.html" class="btn-primary">+ Post a Listing</a>
+    <a href="markplaats.html" class="btn-secondary">Browse all →</a>
+    <span style="font-size:12px;color:var(--muted);">Free to post · Community moderated</span>
+  </div>
+</section>
+
+<!-- LISTING CTA -->
+<div class="listing-cta-band" id="list-business">
+  <div class="cta-left">
+    <h3>Are you a SA business owner in the Netherlands?</h3>
+    <p>List your business for free and get discovered by thousands of fellow South Africans.</p>
+    <div class="perks">
+      <div class="perks-label">What you get</div>
+      <ul>
+        <li>✓ &nbsp;Listed in the SA business directory</li>
+        <li>✓ &nbsp;Visible on the map view</li>
+        <li>✓ &nbsp;Featured in your category</li>
+        <li>✓ &nbsp;Shared in SA Business & Services NL</li>
+        <li>✓ &nbsp;100% free — always</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cta-right">
+    <h4>Submit your listing</h4>
+    <div class="form-row"><div class="form-field"><label>Business Name *</label><input type="text" placeholder="e.g. Smith Venter Advisory"></div><div class="form-field"><label>Contact Person *</label><input type="text" placeholder="Full name"></div></div>
+    <div class="form-row"><div class="form-field"><label>Website</label><input type="text" placeholder="https://yoursite.nl"></div><div class="form-field"><label>Email *</label><input type="email" placeholder="you@email.com"></div></div>
+    <div class="form-row">
+      <div class="form-field"><label>Category *</label><select><option value="">Select…</option><option>Property & Housing</option><option>Tax & Accounting</option><option>Legal</option><option>Health & Wellness</option><option>Marketing & Creative</option><option>Recruitment</option><option>Food & Retail</option><option>Professional Services</option></select></div>
+      <div class="form-field"><label>City *</label><input type="text" placeholder="e.g. Almere"></div>
+    </div>
+    <div class="form-field"><label>Short Description *</label><textarea placeholder="What you do — max 150 words"></textarea></div>
+    <button class="form-submit" onclick="submitBusinessListing(event)">Submit for Review →</button>
+    <p class="form-note">Submissions go to <strong>info@southafricanhub.nl</strong> and are reviewed within 2–3 business days.</p>
+  </div>
+</div>
+
+<!-- EMAIL SIGNUP BANNER -->
+<div class="signup-banner">
+  <div class="signup-inner">
+    <div class="signup-copy">
+      <div class="eyebrow">Stay connected</div>
+      <h3>Join the SA Hub community</h3>
+      <p>Get updates on new businesses, upcoming events, and practical guides for South Africans in the Netherlands — straight to your inbox. No spam, unsubscribe anytime.</p>
+    </div>
+    <div>
+      <div class="signup-name-row">
+        <input class="signup-input" type="text" id="signup-first" placeholder="First name" autocomplete="given-name">
+        <input class="signup-input" type="text" id="signup-last" placeholder="Last name" autocomplete="family-name">
+      </div>
+      <div class="signup-form-row">
+        <input class="signup-input" type="email" id="signup-email" placeholder="Your email address" autocomplete="email">
+        <button class="signup-btn" onclick="submitSignup()">Join the hub →</button>
+      </div>
+      <div class="signup-note">By signing up you agree to receive community updates from southafricanhub.nl</div>
+      <div class="signup-success" id="signup-success">
+        <span class="signup-success-icon">✅</span>
+        <span>You're in! Welcome to the SA Hub community.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-left">
+    <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
+    <div class="footer-tagline">For South Africans in the Netherlands</div>
+    <div class="footer-links" style="margin-top:8px;">
+      <a href="directory.html">Directory</a>
+      <a href="events.html">Events</a>
+      <a href="markplaats.html">Markplaats</a>
+      <a href="#">Resources</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-powered">Accounting & tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-copy">© 2025 southafricanhub.nl</div>
+  </div>
+</footer>
+
+<script>
+  // ── NEWSLETTER SIGNUP ──
+  async function submitSignup() {
+    const first = document.getElementById('signup-first').value.trim();
+    const last  = document.getElementById('signup-last').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    if (!email || !email.includes('@')) { showToast('⚠️ Please enter a valid email address.'); return; }
+    const ok = await sendToFormspree('FORMSPREE_SIGNUP_ID', {
+      _subject: 'SA Hub — New community signup',
+      name: `${first} ${last}`,
+      email
+    });
+    if (ok) {
+      document.getElementById('signup-success').classList.add('visible');
+      document.querySelector('.signup-form-row').style.display = 'none';
+      document.querySelector('.signup-name-row').style.display = 'none';
+      document.querySelector('.signup-note').style.display = 'none';
+    } else { showToast('⚠️ Something went wrong. Please try again.'); }
+  }
+
+  // ── BUSINESS LISTING FORM ──
+  async function submitBusinessListing(e) {
+    e.preventDefault();
+    const fields = document.querySelectorAll('.cta-right input, .cta-right select, .cta-right textarea');
+    const name    = fields[0].value.trim();
+    const contact = fields[1].value.trim();
+    const website = fields[2].value.trim();
+    const email   = fields[3].value.trim();
+    const cat     = fields[4].value;
+    const city    = fields[5].value.trim();
+    const desc    = fields[6].value.trim();
+    if (!name || !contact || !email || !cat || !city || !desc) {
+      showToast('⚠️ Please fill in all required fields.'); return;
+    }
+    const btn = e.target; btn.textContent = 'Sending…'; btn.disabled = true;
+    const ok = await sendToFormspree('FORMSPREE_BIZLISTING_ID', {
+      _subject: `Business Listing — ${name}`,
+      business_name: name, contact_person: contact,
+      website: website || 'Not provided', email,
+      category: cat, city, description: desc
+    });
+    if (ok) {
+      btn.textContent = '✅ Submitted!';
+      showToast('✅ Listing submitted — we'll review it within 2–3 days.');
+    } else { btn.textContent = 'Submit for Review →'; btn.disabled = false; showToast('⚠️ Something went wrong. Please try again.'); }
+  }
+
+  // ── TOAST ──
+  function showToast(msg) {
+    let t = document.getElementById('site-toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'site-toast';
+      t.className = 'toast';
+      t.innerHTML = `<span class="toast-icon"></span><span class="toast-msg"></span>`;
+      document.body.appendChild(t);
+    }
+    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}✅⚠️]\s*/u, '');
+    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}✅⚠️])/u)?.[1] || '';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+  function filterCat(el) {
+    document.querySelectorAll('.cat-bar .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── LIST / MAP TOGGLE ──
+  function showList() {
+    document.getElementById('list-view').classList.remove('hidden');
+    document.getElementById('map-view').style.display = 'none';
+    document.getElementById('btn-list').classList.add('on'); document.getElementById('btn-list').classList.remove('off');
+    document.getElementById('btn-map').classList.add('off'); document.getElementById('btn-map').classList.remove('on');
+  }
+  function showMap() {
+    document.getElementById('map-view').style.display = 'block';
+    document.getElementById('list-view').classList.add('hidden');
+    document.getElementById('btn-map').classList.add('on'); document.getElementById('btn-map').classList.remove('off');
+    document.getElementById('btn-list').classList.add('off'); document.getElementById('btn-list').classList.remove('on');
+  }
+
+  // ── CAROUSEL ──
+  const SLIDE_COUNT = 5;
+  let current = 0;
+  let autoTimer = null;
+
+  const track  = document.getElementById('carouselTrack');
+  const dotsEl = document.getElementById('carouselDots');
+
+  // Build dots
+  for (let i = 0; i < SLIDE_COUNT; i++) {
+    const d = document.createElement('div');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(idx) {
+    current = (idx + SLIDE_COUNT) % SLIDE_COUNT;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    resetAuto();
+  }
+
+  function carouselMove(dir) { goTo(current + dir); }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 5000);
+  }
+  resetAuto();
+
+  // Pause on hover
+  document.querySelector('.carousel-outer').addEventListener('mouseenter', () => clearInterval(autoTimer));
+  document.querySelector('.carousel-outer').addEventListener('mouseleave', resetAuto);
+
+  // Touch / swipe support
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) carouselMove(dx < 0 ? 1 : -1);
+  });
+
+  // ── BANNER UPLOAD ──
+  function triggerUpload(idx) {
+    // find the file input inside the slide at idx
+    const slide = track.querySelectorAll('.carousel-slide')[idx];
+    slide.querySelector('input[type=file]').click();
+  }
+
+  function loadBanner(input, idx) {
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const banner = document.getElementById('banner-' + idx);
+      banner.style.backgroundImage = `url('${e.target.result}')`;
+      // remove colour class once real image is loaded
+      banner.className = 'slide-banner';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Directory — southafricanhub.nl</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page-body { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+
+  /* SEARCH */
+  .search-row { display: flex; gap: 10px; margin-bottom: 28px; }
+  .search-row input { flex: 1; border: 1.5px solid var(--wire); border-radius: var(--radius-sm); padding: 11px 16px; font-size: 14px; font-family: 'Outfit', sans-serif; outline: none; background: var(--surface); transition: border-color 0.15s; }
+  .search-row input:focus { border-color: var(--accent); }
+  .search-row button { background: var(--ink); color: white; border: none; border-radius: var(--radius-sm); padding: 11px 22px; font-size: 14px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; }
+
+  /* DIRECTORY GRID */
+  .dir-full-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .dir-full-card {
+    background: var(--surface); border: 1px solid var(--wire);
+    border-radius: var(--radius-md); padding: 20px;
+    text-decoration: none; color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .dir-full-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); border-color: var(--accent); }
+  .dir-card-top { display: flex; gap: 14px; align-items: flex-start; }
+  .dir-icon-lg { width: 44px; height: 44px; background: var(--subtle); border-radius: var(--radius-sm); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .dir-name { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .dir-cat-tag { display: inline-block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; background: var(--subtle); color: var(--muted); border-radius: 3px; padding: 2px 7px; }
+  .dir-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .dir-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--wire); }
+  .dir-loc { font-size: 12px; color: var(--green); }
+  .dir-web { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 500; }
+
+  /* MAP VIEW */
+  #dir-map-view { display: none; }
+  #dir-map-view.visible { display: block; }
+  #dir-list-view.hidden { display: none; }
+  .map-full { display: grid; grid-template-columns: 1fr 320px; gap: 16px; height: 520px; }
+  .map-canvas { background: #dde8d0; border: 1px solid var(--wire); border-radius: var(--radius-md); position: relative; overflow: hidden; }
+  .map-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 44px 44px; }
+  .map-pin { position: absolute; transform: translate(-50%,-100%); cursor: pointer; }
+  .map-pin-dot { width: 26px; height: 26px; background: var(--accent); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: transform 0.15s; }
+  .map-pin:hover .map-pin-dot { transform: rotate(-45deg) scale(1.2); }
+  .map-pin-label { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); background: var(--ink); color: white; font-size: 10px; white-space: nowrap; padding: 3px 7px; border-radius: 4px; font-weight: 600; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+  .map-pin:hover .map-pin-label { opacity: 1; }
+  .map-city-lbl { position: absolute; font-size: 10px; color: rgba(0,0,0,0.28); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .map-legend-box { position: absolute; bottom: 12px; left: 12px; background: white; border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 11px; display: flex; gap: 12px; }
+  .leg-item { display: flex; align-items: center; gap: 5px; color: var(--muted); }
+  .leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .map-sidebar-dir { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+  .map-side-item { background: var(--surface); border: 1px solid var(--wire); border-radius: var(--radius-sm); padding: 12px; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: border-color 0.15s; }
+  .map-side-item:hover { border-color: var(--accent); }
+  .map-side-item .n { font-weight: 600; font-size: 13px; }
+  .map-side-item .c { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .map-side-item .l { font-size: 11px; color: var(--green); margin-top: 4px; }
+
+  /* LISTING FORM */
+  .listing-section { margin-top: 60px; padding-top: 48px; border-top: 2px solid var(--wire); }
+  .listing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--wire); border-radius: var(--radius-lg); overflow: hidden; margin-top: 24px; }
+  .listing-left { background: var(--accent); padding: 40px; }
+  .listing-left h3 { font-family: 'Playfair Display', serif; font-size: 26px; color: white; margin-bottom: 10px; }
+  .listing-left p { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.65; }
+  .perks-box { margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.12); }
+  .perks-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+  .perks-list { display: flex; flex-direction: column; gap: 7px; }
+  .perks-list li { list-style: none; font-size: 13px; color: rgba(255,255,255,0.85); }
+  .listing-right { background: var(--subtle); padding: 40px; }
+  .listing-right h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--muted); margin-bottom: 20px; }
+  .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .f-field { display: flex; flex-direction: column; gap: 5px; }
+  .f-field label { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .f-field input, .f-field select, .f-field textarea { width: 100%; border: 1.5px solid var(--wire); border-radius: var(--radius-sm); padding: 10px 13px; font-size: 13px; font-family: 'Outfit', sans-serif; background: var(--surface); color: var(--ink); outline: none; transition: border-color 0.15s; }
+  .f-field input:focus, .f-field select:focus, .f-field textarea:focus { border-color: var(--accent); }
+  .f-field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .f-submit { width: 100%; background: var(--ink); color: white; border: none; border-radius: var(--radius-sm); padding: 12px; font-size: 14px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; margin-top: 6px; transition: background 0.15s; }
+  .f-submit:hover { background: #2e2a28; }
+  .f-note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">SAH</div>
+    <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="directory.html" class="active">Directory</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html">Markplaats</a>
+    <a href="#">Resources</a>
+    <a href="#list-business" class="nav-cta">List Your Business →</a>
+  </div>
+</nav>
+
+<div class="page-hero-band">
+  <div class="section-eyebrow">SA Business Directory</div>
+  <h1>Find trusted<br><em>SA businesses</em></h1>
+  <p>South African professionals and entrepreneurs across the Netherlands — vetted by the community.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">80+</div><div class="l">Businesses listed</div></div>
+    <div class="hero-stat"><div class="n">8</div><div class="l">Categories</div></div>
+    <div class="hero-stat"><div class="n">12</div><div class="l">Cities</div></div>
+  </div>
+</div>
+
+<div class="filter-bar">
+  <div class="pill active" onclick="filterCat(this)">All</div>
+  <div class="pill" onclick="filterCat(this)">Property & Housing</div>
+  <div class="pill" onclick="filterCat(this)">Tax & Accounting</div>
+  <div class="pill" onclick="filterCat(this)">Legal</div>
+  <div class="pill" onclick="filterCat(this)">Health & Wellness</div>
+  <div class="pill" onclick="filterCat(this)">Marketing & Creative</div>
+  <div class="pill" onclick="filterCat(this)">Recruitment</div>
+  <div class="pill" onclick="filterCat(this)">Food & Retail</div>
+  <div class="pill" onclick="filterCat(this)">Professional Services</div>
+  <div class="view-toggle">
+    <button class="toggle-btn on" id="btn-list" onclick="showList()">☰ List</button>
+    <button class="toggle-btn off" id="btn-map" onclick="showMap()">⊕ Map</button>
+  </div>
+</div>
+
+<div class="page-body">
+  <div class="search-row">
+    <input type="text" placeholder="Search businesses, services, or city…">
+    <button>Search</button>
+  </div>
+
+  <!-- LIST VIEW -->
+  <div id="dir-list-view">
+    <div class="dir-full-grid">
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🏠</div><div><div class="dir-name">Botha Makelaars</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Specialist in expat property searches across Rotterdam and surrounds. Dutch and Afrikaans spoken.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Rotterdam</span><span class="dir-web">bothaMakelaars.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">📊</div><div><div class="dir-name">Smith Venter Advisory</div><span class="dir-cat-tag">Tax & Accounting</span></div></div>
+        <div class="dir-desc">Dutch tax, bookkeeping, and advisory for SA expats and MKB businesses. ZZP, BV, IB-aangifte, 30% ruling.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Almere</span><span class="dir-web">smithventeradvisory.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">⚖️</div><div><div class="dir-name">Van der Berg Legal</div><span class="dir-cat-tag">Legal</span></div></div>
+        <div class="dir-desc">Immigration, employment, and contract law. Experienced with expat cases across the Netherlands.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Amsterdam</span><span class="dir-web">vanderberglegal.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">💆</div><div><div class="dir-name">Cape & Calm Wellness</div><span class="dir-cat-tag">Health & Wellness</span></div></div>
+        <div class="dir-desc">Therapeutic massage, mindfulness coaching, and wellness consultation. SA trained, Dutch registered.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><span class="dir-web">capeandcalm.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🎨</div><div><div class="dir-name">Khumalo Creative Studio</div><span class="dir-cat-tag">Marketing & Creative</span></div></div>
+        <div class="dir-desc">Brand identity, web design, and digital marketing for startups and growing businesses.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Eindhoven</span><span class="dir-web">khumalocreative.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">👥</div><div><div class="dir-name">Naidoo Recruitment</div><span class="dir-cat-tag">Recruitment</span></div></div>
+        <div class="dir-desc">Finance, tech, and professional placement across the Netherlands. Specialists in expat candidate support.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Den Haag</span><span class="dir-web">naidoorecruitment.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🍖</div><div><div class="dir-name">Braaihuis Amsterdam</div><span class="dir-cat-tag">Food & Retail</span></div></div>
+        <div class="dir-desc">SA-style catering for events, braais, and corporate functions. Boerewors, sosaties, and the full works.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Amsterdam</span><span class="dir-web">braaihuis.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">💼</div><div><div class="dir-name">Eksteen Consulting</div><span class="dir-cat-tag">Professional Services</span></div></div>
+        <div class="dir-desc">Project management, interim management, and business process improvement for Dutch and international clients.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Amsterdam</span><span class="dir-web">eksteenconsulting.nl →</span></div>
+      </a>
+
+      <a href="#" class="dir-full-card">
+        <div class="dir-card-top"><div class="dir-icon-lg">🏘️</div><div><div class="dir-name">Joubert Property Group</div><span class="dir-cat-tag">Property & Housing</span></div></div>
+        <div class="dir-desc">Buying, selling, and renting across Amsterdam and Utrecht. English and Afrikaans spoken.</div>
+        <div class="dir-card-footer"><span class="dir-loc">📍 Utrecht</span><span class="dir-web">joubert-property.nl →</span></div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- MAP VIEW -->
+  <div id="dir-map-view">
+    <div class="map-full">
+      <div class="map-canvas">
+        <div class="map-grid-bg"></div>
+        <div class="map-city-lbl" style="left:48%;top:22%">Amsterdam</div>
+        <div class="map-city-lbl" style="left:40%;top:41%">Rotterdam</div>
+        <div class="map-city-lbl" style="left:46%;top:36%">Utrecht</div>
+        <div class="map-city-lbl" style="left:55%;top:28%">Almere</div>
+        <div class="map-city-lbl" style="left:37%;top:39%">Den Haag</div>
+        <div class="map-city-lbl" style="left:50%;top:55%">Eindhoven</div>
+        <div class="map-pin" style="left:50%;top:27%"><div class="map-pin-label">Van der Berg Legal</div><div class="map-pin-dot"></div></div>
+        <div class="map-pin" style="left:53%;top:25%"><div class="map-pin-label">Braaihuis Amsterdam</div><div class="map-pin-dot" style="background:#6d28d9"></div></div>
+        <div class="map-pin" style="left:57%;top:32%"><div class="map-pin-label">Smith Venter Advisory</div><div class="map-pin-dot"></div></div>
+        <div class="map-pin" style="left:42%;top:44%"><div class="map-pin-label">Botha Makelaars</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
+        <div class="map-pin" style="left:48%;top:39%"><div class="map-pin-label">Cape & Calm</div><div class="map-pin-dot"></div></div>
+        <div class="map-pin" style="left:50%;top:40%"><div class="map-pin-label">Joubert Property</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
+        <div class="map-pin" style="left:39%;top:42%"><div class="map-pin-label">Naidoo Recruitment</div><div class="map-pin-dot" style="background:var(--sale)"></div></div>
+        <div class="map-pin" style="left:53%;top:58%"><div class="map-pin-label">Khumalo Creative</div><div class="map-pin-dot"></div></div>
+        <div class="map-legend-box">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--accent)"></div> Tax / Legal / Wellness</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div> Property</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--sale)"></div> Recruitment</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#6d28d9"></div> Food & Retail</div>
+        </div>
+      </div>
+      <div class="map-sidebar-dir">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding:4px 0 8px;">9 businesses</div>
+        <a href="#" class="map-side-item"><div class="n">Smith Venter Advisory</div><div class="c">Tax & Accounting</div><div class="l">📍 Almere</div></a>
+        <a href="#" class="map-side-item"><div class="n">Van der Berg Legal</div><div class="c">Legal</div><div class="l">📍 Amsterdam</div></a>
+        <a href="#" class="map-side-item"><div class="n">Botha Makelaars</div><div class="c">Property & Housing</div><div class="l">📍 Rotterdam</div></a>
+        <a href="#" class="map-side-item"><div class="n">Cape & Calm Wellness</div><div class="c">Health & Wellness</div><div class="l">📍 Utrecht</div></a>
+        <a href="#" class="map-side-item"><div class="n">Khumalo Creative Studio</div><div class="c">Marketing & Creative</div><div class="l">📍 Eindhoven</div></a>
+        <a href="#" class="map-side-item"><div class="n">Naidoo Recruitment</div><div class="c">Recruitment</div><div class="l">📍 Den Haag</div></a>
+        <a href="#" class="map-side-item"><div class="n">Braaihuis Amsterdam</div><div class="c">Food & Retail</div><div class="l">📍 Amsterdam</div></a>
+        <a href="#" class="map-side-item"><div class="n">Eksteen Consulting</div><div class="c">Professional Services</div><div class="l">📍 Amsterdam</div></a>
+        <a href="#" class="map-side-item"><div class="n">Joubert Property Group</div><div class="c">Property & Housing</div><div class="l">📍 Utrecht</div></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTING FORM -->
+  <div class="listing-section" id="list-business">
+    <div class="section-eyebrow">Join the directory</div>
+    <div class="section-title">List your SA business — free</div>
+    <div class="listing-grid">
+      <div class="listing-left">
+        <h3>Get discovered by the SA community</h3>
+        <p>Submit your business and we'll review it within 2–3 days. Once live you'll appear in the directory, on the map, and in your category.</p>
+        <div class="perks-box">
+          <div class="perks-label">What you get</div>
+          <ul class="perks-list">
+            <li>✓ &nbsp;Listed in the SA business directory</li>
+            <li>✓ &nbsp;Visible on the map view</li>
+            <li>✓ &nbsp;Featured in your category</li>
+            <li>✓ &nbsp;Shared in SA Business & Services NL</li>
+            <li>✓ &nbsp;100% free — always</li>
+          </ul>
+        </div>
+      </div>
+      <div class="listing-right">
+        <h4>Submit your listing</h4>
+        <div class="f-row"><div class="f-field"><label>Business Name *</label><input type="text" placeholder="e.g. Smith Venter Advisory"></div><div class="f-field"><label>Contact Person *</label><input type="text" placeholder="Full name"></div></div>
+        <div class="f-row"><div class="f-field"><label>Website</label><input type="text" placeholder="https://yoursite.nl"></div><div class="f-field"><label>Email *</label><input type="email" placeholder="you@email.com"></div></div>
+        <div class="f-row">
+          <div class="f-field"><label>Category *</label><select><option value="">Select…</option><option>Property & Housing</option><option>Tax & Accounting</option><option>Legal</option><option>Health & Wellness</option><option>Marketing & Creative</option><option>Recruitment</option><option>Food & Retail</option><option>Professional Services</option></select></div>
+          <div class="f-field"><label>City *</label><input type="text" placeholder="e.g. Almere"></div>
+        </div>
+        <div class="f-field" style="margin-bottom:14px;"><label>Short Description *</label><textarea placeholder="What you do — max 150 words"></textarea></div>
+        <button class="f-submit" onclick="submitDirListing(event)">Submit for Review →</button>
+        <p class="f-note">Submissions go to <strong>info@southafricanhub.nl</strong> — reviewed within 2–3 business days.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
+    <div class="footer-tagline">For South Africans in the Netherlands</div>
+    <div class="footer-links" style="margin-top:8px;">
+      <a href="directory.html">Directory</a><a href="events.html">Events</a><a href="markplaats.html">Markplaats</a><a href="#">Resources</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-powered">Accounting & tax support by <a href="https://smithventeradvisory.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-copy">© 2025 southafricanhub.nl</div>
+  </div>
+</footer>
+
+<script>
+  function filterCat(el) {
+    document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function showList() {
+    document.getElementById('dir-list-view').classList.remove('hidden');
+    document.getElementById('dir-map-view').classList.remove('visible');
+    document.getElementById('btn-list').classList.replace('off','on');
+    document.getElementById('btn-map').classList.replace('on','off');
+  }
+  function showMap() {
+    document.getElementById('dir-map-view').classList.add('visible');
+    document.getElementById('dir-list-view').classList.add('hidden');
+    document.getElementById('btn-map').classList.replace('off','on');
+    document.getElementById('btn-list').classList.replace('on','off');
+  }
+  async function sendToFormspree(endpointId, data) {
+    try {
+      const res = await fetch(`https://formspree.io/f/${endpointId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return res.ok;
+    } catch(e) { return false; }
+  }
+
+  async function submitDirListing(e) {
+    e.preventDefault();
+    const inputs = document.querySelectorAll('.listing-right input, .listing-right select, .listing-right textarea');
+    const name    = inputs[0].value.trim();
+    const contact = inputs[1].value.trim();
+    const website = inputs[2].value.trim();
+    const email   = inputs[3].value.trim();
+    const cat     = inputs[4].value;
+    const city    = inputs[5].value.trim();
+    const desc    = inputs[6].value.trim();
+    if (!name || !contact || !email || !cat || !city || !desc) { showToast('⚠️ Please fill in all required fields.'); return; }
+    const btn = e.target; btn.textContent = 'Sending…'; btn.disabled = true;
+    const ok = await sendToFormspree('FORMSPREE_DIRLISTING_ID', {
+      _subject: `Business Listing — ${name}`,
+      business_name: name, contact_person: contact,
+      website: website || 'N/A', email,
+      category: cat, city, description: desc
+    });
+    if (ok) {
+      btn.textContent = '✅ Submitted!';
+      showToast('✅ Listing submitted — we'll review it within 2–3 days.');
+    } else { btn.textContent = 'Submit for Review →'; btn.disabled = false; showToast('⚠️ Something went wrong. Please try again.'); }
+  }
+  function showToast(msg) {
+    let t = document.getElementById('site-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'site-toast'; t.className = 'toast'; t.innerHTML = '<span class="toast-icon"></span><span class="toast-msg"></span>'; document.body.appendChild(t); }
+    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}✅⚠️]\s*/u, '');
+    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}✅⚠️])/u)?.[1] || '';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+</script>
+</body>
+</html>
