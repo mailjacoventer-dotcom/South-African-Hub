@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/directory", "destination": "/directory.html" },
+    { "source": "/events", "destination": "/events.html" },
+    { "source": "/markplaats", "destination": "/markplaats.html" },
+    { "source": "/markplaats-post", "destination": "/markplaats-post.html" }
+  ]
+}
