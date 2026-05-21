@@ -76,9 +76,10 @@
   .dir-card-text .loc { font-size: 11px; color: var(--green); margin-top: 4px; }
 
   /* MAP VIEW */
-  #map-view { display: none; }
-  #map-view.visible { display: block; }
-  #list-view.hidden { display: none; }
+  #map-view { display: none !important; }
+  #map-view.visible { display: block !important; }
+  #list-view { display: grid; }
+  #list-view.hidden { display: none !important; }
   .map-shell { padding: 48px; border-top: 1px solid var(--wire); }
   .map-container { display: grid; grid-template-columns: 1fr 300px; gap: 16px; height: 420px; margin-top: 24px; }
   .map-canvas { background: #dde8d0; border: 1px solid var(--wire); border-radius: var(--radius-md); position: relative; overflow: hidden; }
@@ -714,8 +715,8 @@
     const mv = document.getElementById('map-view');
     const bl = document.getElementById('btn-list');
     const bm = document.getElementById('btn-map');
-    if (lv) { lv.style.display = 'grid'; lv.classList.remove('hidden'); }
-    if (mv) { mv.style.display = 'none'; }
+    if (lv) { lv.style.cssText = 'display:grid !important'; lv.classList.remove('hidden'); }
+    if (mv) { mv.style.cssText = 'display:none !important'; mv.classList.remove('visible'); }
     if (bl) { bl.className = 'toggle-btn on'; }
     if (bm) { bm.className = 'toggle-btn off'; }
   }
@@ -724,8 +725,8 @@
     const mv = document.getElementById('map-view');
     const bl = document.getElementById('btn-list');
     const bm = document.getElementById('btn-map');
-    if (mv) { mv.style.display = 'block'; }
-    if (lv) { lv.style.display = 'none'; lv.classList.add('hidden'); }
+    if (mv) { mv.style.cssText = 'display:block !important'; mv.classList.add('visible'); }
+    if (lv) { lv.style.cssText = 'display:none !important'; lv.classList.add('hidden'); }
     if (bm) { bm.className = 'toggle-btn on'; }
     if (bl) { bl.className = 'toggle-btn off'; }
   }

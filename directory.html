@@ -34,9 +34,10 @@
   .dir-web { font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 500; }
 
   /* MAP VIEW */
-  #dir-map-view { display: none; }
-  #dir-map-view.visible { display: block; }
-  #dir-list-view.hidden { display: none; }
+  #dir-map-view { display: none !important; }
+  #dir-map-view.visible { display: block !important; }
+  #dir-list-view { display: grid; }
+  #dir-list-view.hidden { display: none !important; }
   .map-full { display: grid; grid-template-columns: 1fr 320px; gap: 16px; height: 520px; }
   .map-canvas { background: #dde8d0; border: 1px solid var(--wire); border-radius: var(--radius-md); position: relative; overflow: hidden; }
   .map-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 44px 44px; }
@@ -289,8 +290,8 @@
     const mv = document.getElementById('dir-map-view');
     const bl = document.getElementById('btn-list');
     const bm = document.getElementById('btn-map');
-    if (lv) { lv.style.display = 'grid'; lv.classList.remove('hidden'); }
-    if (mv) { mv.style.display = 'none'; mv.classList.remove('visible'); }
+    if (lv) { lv.style.cssText = 'display:grid !important'; lv.classList.remove('hidden'); }
+    if (mv) { mv.style.cssText = 'display:none !important'; mv.classList.remove('visible'); }
     if (bl) { bl.className = 'toggle-btn on'; }
     if (bm) { bm.className = 'toggle-btn off'; }
   }
@@ -299,8 +300,8 @@
     const mv = document.getElementById('dir-map-view');
     const bl = document.getElementById('btn-list');
     const bm = document.getElementById('btn-map');
-    if (mv) { mv.style.display = 'block'; mv.classList.add('visible'); }
-    if (lv) { lv.style.display = 'none'; lv.classList.add('hidden'); }
+    if (mv) { mv.style.cssText = 'display:block !important'; mv.classList.add('visible'); }
+    if (lv) { lv.style.cssText = 'display:none !important'; lv.classList.add('hidden'); }
     if (bm) { bm.className = 'toggle-btn on'; }
     if (bl) { bl.className = 'toggle-btn off'; }
   }
