@@ -82,6 +82,7 @@
   .btn-navy { background: var(--navy); color: white; border: none; border-radius: 6px; padding: 10px 18px; font-size: 13px; font-weight: 700; font-family: 'Montserrat',sans-serif; cursor: pointer; transition: background .15s; flex: 1; }
   .btn-navy:hover { background: var(--navy-mid); }
 </style>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </head>
 <body>
 
@@ -367,48 +368,51 @@
     var org  = document.getElementById('ev-organiser').value.trim();
     var mail = document.getElementById('ev-email').value.trim();
     var wa   = document.getElementById('ev-wa').value.trim();
-    if (!name || !date || !city || !time || !desc || !org || !mail) {
-      alert('Please fill in all required fields.'); return;
-    }
-    if (rsvpType === 'kaartjies' && !document.getElementById('ev-kaartjies').value.trim()) {
-      alert('Please enter the Kaartjies.nl ticket URL.'); return;
-    }
-    if (rsvpType === 'third' && !document.getElementById('ev-wa').value.trim()) {
-      alert('Please enter a WhatsApp number for RSVPs.'); return;
-    }
+    if (!name||!date||!city||!time||!desc||!org||!mail) { alert('Please fill in all required fields.'); return; }
+    if (rsvpType==='kaartjies' && !document.getElementById('ev-kaartjies').value.trim()) { alert('Please enter the Kaartjies.nl ticket URL.'); return; }
+    if (rsvpType==='third' && !wa) { alert('Please enter a WhatsApp number for RSVPs.'); return; }
     var btn = document.getElementById('ev-submit-btn');
     btn.textContent = 'Sending…'; btn.disabled = true;
-    try {
-      var photoInput = document.getElementById('ev-photo');
-      var fd = new FormData();
-      fd.append('_subject', 'Event Submission — ' + name);
-      fd.append('_replyto', mail);
-      fd.append('event_name', name);
-      fd.append('date', date);
-      fd.append('city', city);
-      fd.append('time', time);
-      fd.append('description', desc);
-      fd.append('organiser_name', org);
-      fd.append('organiser_email', mail);
-      fd.append('whatsapp', wa || 'Not provided');
-      fd.append('rsvp_type', rsvpType);
-      fd.append('kaartjies_url', rsvpType === 'kaartjies' ? (document.getElementById('ev-kaartjies').value.trim() || 'Not provided') : 'N/A');
-      if (photoInput.files && photoInput.files[0]) {
-        fd.append('photo', photoInput.files[0], photoInput.files[0].name);
-      }
-      var res = await fetch('https://formspree.io/f/mlgvbeap', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: fd
-      });
-      if (res.ok) {
-        closeEventSubmit();
-        showToast('✅ Event submitted! We\'ll add it within 24 hours.');
-      } else { throw new Error(); }
-    } catch(e) {
-      btn.textContent = 'Submit Event →'; btn.disabled = false;
-      alert('Something went wrong. Please email info@southafricanhub.nl directly.');
+    var fd = new FormData();
+    fd.append('_subject', 'Event Submission — ' + name);
+    fd.append('_replyto', mail);
+    fd.append('event_name', name);
+    fd.append('date', date);
+    fd.append('city', city);
+    fd.append('time', time);
+    fd.append('description', desc);
+    fd.append('organiser_name', org);
+    fd.append('organiser_email', mail);
+    fd.append('whatsapp', wa || 'Not provided');
+    fd.append('rsvp_type', rsvpType === 'kaartjies' ? 'Kaartjies.nl' : 'WhatsApp/Email');
+    fd.append('kaartjies_url', rsvpType === 'kaartjies' ? document.getElementById('ev-kaartjies').value.trim() : 'N/A');
+    var photoInput = document.getElementById('ev-photo');
+    if (photoInput && photoInput.files && photoInput.files[0]) {
+      fd.append('photo', photoInput.files[0], photoInput.files[0].name);
     }
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://formspree.io/f/mlgvbeap');
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.onload = function() {
+      btn.textContent = 'Submit Event →'; btn.disabled = false;
+      if (xhr.status === 200 || xhr.status === 201) {
+        closeEventSubmit();
+        showToast('✅ Event submitted! We’ll add it within 24 hours.');
+        ['ev-name','ev-date','ev-city','ev-time','ev-desc','ev-organiser','ev-email','ev-wa','ev-kaartjies'].forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+        if (photoInput) { photoInput.value=''; document.getElementById('ev-photo-empty').style.display='block'; document.getElementById('ev-photo-preview').style.display='none'; }
+      } else {
+        var errMsg = 'HTTP ' + xhr.status;
+        try { errMsg = JSON.parse(xhr.responseText).error || errMsg; } catch(e) {}
+        alert('Submission failed: ' + errMsg + '
+
+Please email info@southafricanhub.nl directly.');
+      }
+    };
+    xhr.onerror = function() {
+      btn.textContent = 'Submit Event →'; btn.disabled = false;
+      alert('Network error. Please email info@southafricanhub.nl directly.');
+    };
+    xhr.send(fd);
   }
 
   // ── RSVP TYPE TOGGLE ──
