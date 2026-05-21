@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources & Guides — southafricanhub.nl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .page-body { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+  .resources-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; }
+
+  /* Resource card */
+  .res-card {
+    background: white; border: 1.5px solid var(--wire);
+    border-radius: 12px; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .res-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(13,31,60,0.1); border-color: var(--green); }
+  .res-card-top {
+    padding: 20px 20px 0;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .res-icon {
+    width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .res-icon.green { background: #e8f4ec; }
+  .res-icon.navy  { background: #e8edf4; }
+  .res-icon.gold  { background: #fef3c7; }
+  .res-icon.red   { background: #fde8eb; }
+  .res-tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 3px 8px; border-radius: 3px;
+    font-family: 'Montserrat', sans-serif; margin-bottom: 6px;
+  }
+  .tag-guide { background: #e8f4ec; color: var(--green); }
+  .tag-contact { background: #e8edf4; color: var(--navy); }
+  .tag-emergency { background: #fde8eb; color: #c8102e; }
+  .tag-community { background: #fef3c7; color: #92400e; }
+  .tag-legal { background: #ede9fe; color: #6d28d9; }
+  .res-title {
+    font-family: 'Montserrat', sans-serif; font-size: 15px;
+    font-weight: 800; color: var(--navy); margin-bottom: 4px; line-height: 1.3;
+  }
+  .res-sub { font-size: 12px; color: var(--muted); margin-bottom: 0; }
+  .res-body { padding: 14px 20px 20px; }
+  .res-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--wire);
+    font-size: 13px;
+  }
+  .res-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .res-item-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .res-item-text { flex: 1; }
+  .res-item-label { font-weight: 600; color: var(--navy); display: block; margin-bottom: 2px; }
+  .res-item-val { color: var(--muted); font-size: 12px; line-height: 1.5; }
+  .res-item-val a { color: var(--green); text-decoration: none; font-weight: 600; }
+  .res-item-val a:hover { text-decoration: underline; }
+  .res-cta {
+    display: block; margin: 14px 20px 20px;
+    background: var(--green); color: white; text-align: center;
+    padding: 10px; border-radius: 6px; font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 700; text-decoration: none;
+    letter-spacing: 0.04em; transition: background 0.15s;
+  }
+  .res-cta:hover { background: #22743a; }
+  .res-cta.navy-btn { background: var(--navy); }
+  .res-cta.navy-btn:hover { background: var(--navy-mid); }
+  .res-cta.red-btn { background: #c8102e; }
+  .res-cta.red-btn:hover { background: #a50d26; }
+
+  /* Section header */
+  .section-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+
+  /* Community banner */
+  .community-banner {
+    background: var(--navy); border-radius: 12px;
+    padding: 32px 40px; display: flex;
+    justify-content: space-between; align-items: center;
+    gap: 24px; margin-bottom: 48px; position: relative; overflow: hidden;
+  }
+  .community-banner::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(26,92,42,0.25) 0%, transparent 70%); }
+  .community-banner h3 { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; color: white; margin-bottom: 6px; text-transform: uppercase; }
+  .community-banner p { color: rgba(255,255,255,0.55); font-size: 13px; max-width: 500px; }
+  .community-btns { display: flex; gap: 12px; flex-shrink: 0; }
+  .cb-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px; border-radius: 6px; font-size: 13px;
+    font-weight: 700; font-family: 'Montserrat', sans-serif;
+    text-decoration: none; letter-spacing: 0.04em; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .cb-btn-fb { background: #1877f2; color: white; }
+  .cb-btn-fb:hover { background: #0d6ee0; }
+  .cb-btn-wa { background: #25D366; color: white; }
+  .cb-btn-wa:hover { background: #1ebe5d; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">SAH</div>
+    <span class="nav-logo-text">southafricanhub<span>.nl</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="directory.html">Directory</a>
+    <a href="events.html">Events</a>
+    <a href="markplaats.html">Markplaats</a>
+    <a href="resources.html" class="active">Resources</a>
+    <a href="directory.html#list-business" class="nav-cta">List Your Business →</a>
+  </div>
+</nav>
+
+<div class="page-hero-band">
+  <div class="section-eyebrow">SA in the Netherlands</div>
+  <h1>Resources &amp; <em>Guides</em></h1>
+  <p>Everything South Africans need to know about living, working and thriving in the Netherlands — all in one place.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="n">6</div><div class="l">Resource sections</div></div>
+    <div class="hero-stat"><div class="n">NL</div><div class="l">Verified info</div></div>
+    <div class="hero-stat"><div class="n">2026</div><div class="l">Up to date</div></div>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- COMMUNITY -->
+  <div class="community-banner">
+    <div>
+      <h3>Join the SA Community in the Netherlands</h3>
+      <p>Connect with thousands of South Africans — share tips, ask questions, find support. Join us on Facebook and WhatsApp.</p>
+    </div>
+    <div class="community-btns">
+      <a href="https://www.facebook.com/groups/826871183812024" target="_blank" class="cb-btn cb-btn-fb">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook Group
+      </a>
+      <a href="https://chat.whatsapp.com/southafricanhub" target="_blank" class="cb-btn cb-btn-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Group
+      </a>
+    </div>
+  </div>
+
+  <!-- ROW 1 -->
+  <div class="resources-grid">
+
+    <!-- EMERGENCY NUMBERS -->
+    <div class="res-card">
+      <div class="res-card-top">
+        <div class="res-icon red">🚨</div>
+        <div>
+          <span class="res-tag tag-emergency">Emergency</span>
+          <div class="res-title">Emergency Numbers NL</div>
+          <div class="res-sub">Save these before you need them</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="res-item">
+          <span class="res-item-icon">🚑</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Police / Fire / Ambulance</span>
+            <span class="res-item-val"><strong style="font-size:18px;color:#c8102e">112</strong> — Emergency only</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">👮</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Police (non-emergency)</span>
+            <span class="res-item-val">0900 8844</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">🏥</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Out-of-hours Doctor (Huisartsenpost)</span>
+            <span class="res-item-val">Call your GP first — check their website for after-hours number</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">⚡</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Gas / Electricity outage</span>
+            <span class="res-item-val">0800 9009</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">🚗</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Roadside breakdown (ANWB)</span>
+            <span class="res-item-val">088 269 2222</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">⚓</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Coast Guard</span>
+            <span class="res-item-val">0900 0111</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SA EMBASSY -->
+    <div class="res-card">
+      <div class="res-card-top">
+        <div class="res-icon navy">🇿🇦</div>
+        <div>
+          <span class="res-tag tag-contact">Contact</span>
+          <div class="res-title">SA Embassy — The Hague</div>
+          <div class="res-sub">Passports, visas & consular services</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="res-item">
+          <span class="res-item-icon">📍</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Address</span>
+            <span class="res-item-val">Wassenaarseweg 40<br>2596 CJ Den Haag</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">⏰</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Office hours</span>
+            <span class="res-item-val">Mon–Fri, 09:00–12:00<br>(closed SA & NL public holidays)</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">📧</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Email</span>
+            <span class="res-item-val"><a href="mailto:info@zuidafrika.nl">info@zuidafrika.nl</a></span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">📞</span>
+          <div class="res-item-text">
+            <span class="res-item-label">After hours emergency</span>
+            <span class="res-item-val">+31 615 574 596</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">🌐</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Website</span>
+            <span class="res-item-val"><a href="https://zuidafrika.nl" target="_blank">zuidafrika.nl</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="https://zuidafrika.nl/contact/" target="_blank" class="res-cta navy-btn">Visit Embassy Website →</a>
+    </div>
+
+    <!-- TAX DEADLINES -->
+    <div class="res-card">
+      <div class="res-card-top">
+        <div class="res-icon gold">📅</div>
+        <div>
+          <span class="res-tag tag-guide">Tax 2026</span>
+          <div class="res-title">Dutch Tax Deadlines 2026</div>
+          <div class="res-sub">Filing your 2025 income tax return</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="res-item">
+          <span class="res-item-icon">📬</span>
+          <div class="res-item-text">
+            <span class="res-item-label">1 March 2026</span>
+            <span class="res-item-val">Filing window opens for 2025 tax year</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">⚡</span>
+          <div class="res-item-text">
+            <span class="res-item-label">1 April 2026</span>
+            <span class="res-item-val">File by this date to receive assessment before 1 July</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">✅</span>
+          <div class="res-item-text">
+            <span class="res-item-label">1 May 2026 ← Standard deadline</span>
+            <span class="res-item-val">Final deadline to file without penalty</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">🔄</span>
+          <div class="res-item-text">
+            <span class="res-item-label">1 September 2026</span>
+            <span class="res-item-val">Extended deadline if you requested uitstel</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">⚠️</span>
+          <div class="res-item-text">
+            <span class="res-item-label">30% Ruling — 2026 change</span>
+            <span class="res-item-val">Stays at 30% in 2026, drops to 27% from Jan 2027. Partial non-resident status expires Dec 2026.</span>
+          </div>
+        </div>
+      </div>
+      <a href="https://www.belastingdienst.nl" target="_blank" class="res-cta">Go to Belastingdienst →</a>
+    </div>
+
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="resources-grid">
+
+    <!-- START A BUSINESS -->
+    <div class="res-card">
+      <div class="res-card-top">
+        <div class="res-icon green">🏢</div>
+        <div>
+          <span class="res-tag tag-guide">Guide</span>
+          <div class="res-title">Starting a Business in NL</div>
+          <div class="res-sub">KVK registration step by step</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="res-item">
+          <span class="res-item-icon">1️⃣</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Get your BSN</span>
+            <span class="res-item-val">Register at your municipality (gemeente) to get a Burger Service Number</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">2️⃣</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Apply for DigiD</span>
+            <span class="res-item-val">Your digital ID for all Dutch government services — <a href="https://www.digid.nl" target="_blank">digid.nl</a></span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">3️⃣</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Choose your legal form</span>
+            <span class="res-item-val">Eenmanszaak (sole trader) is the simplest. BV (Ltd) for larger ventures.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">4️⃣</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Register with KVK</span>
+            <span class="res-item-val">Fill in online form, book appointment, bring valid ID. One-time fee: €75. Receive KVK number same day.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">5️⃣</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Get your BTW number</span>
+            <span class="res-item-val">Belastingdienst issues your VAT number automatically ~1 week after KVK registration</span>
+          </div>
+        </div>
+      </div>
+      <a href="https://www.kvk.nl/en/starting/" target="_blank" class="res-cta">KVK Registration Guide →</a>
+    </div>
+
+    <!-- 30% RULING -->
+    <div class="res-card">
+      <div class="res-card-top">
+        <div class="res-icon gold">💰</div>
+        <div>
+          <span class="res-tag tag-guide">Tax Guide</span>
+          <div class="res-title">30% Ruling for Expats</div>
+          <div class="res-sub">What SA expats need to know in 2026</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="res-item">
+          <span class="res-item-icon">✅</span>
+          <div class="res-item-text">
+            <span class="res-item-label">What it is</span>
+            <span class="res-item-val">30% of your salary paid tax-free if you qualify as a highly skilled migrant brought from abroad</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">📋</span>
+          <div class="res-item-text">
+            <span class="res-item-label">2026 rate</span>
+            <span class="res-item-val">Still 30% for 2026. Drops to 27% from 1 January 2027.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">💼</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Salary cap</span>
+            <span class="res-item-val">Max eligible salary: €262,000 in 2026. Income above this taxed normally.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">⚠️</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Partial non-resident status ending</span>
+            <span class="res-item-val">The Box 2 & 3 exemption for 30% ruling holders expires 31 December 2026. Act now.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">💡</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Get help</span>
+            <span class="res-item-val">SA tax specialists in NL: <a href="directory.html?cat=Tax+%26+Accounting">see our directory →</a></span>
+          </div>
+        </div>
+      </div>
+      <a href="https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/internationaal/werken_in_het_buitenland/buitenlandse_werknemers_naar_nederland/30_procent_regeling/30_procent_regeling" target="_blank" class="res-cta">Official 30% Ruling Info →</a>
+    </div>
+
+    <!-- ARRIVING IN NL -->
+    <div class="res-card">
+      <div class="res-card-top">
+        <div class="res-icon green">✈️</div>
+        <div>
+          <span class="res-tag tag-guide">Arrival Guide</span>
+          <div class="res-title">New to the Netherlands?</div>
+          <div class="res-sub">Your first steps after arriving</div>
+        </div>
+      </div>
+      <div class="res-body">
+        <div class="res-item">
+          <span class="res-item-icon">🏛️</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Register at gemeente</span>
+            <span class="res-item-val">Within 5 days of arrival. Brings your BSN — needed for everything.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">💳</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Open a bank account</span>
+            <span class="res-item-val">ING, ABN AMRO or Bunq are foreigner-friendly. Bring BSN + passport + proof of address.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">🏥</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Get health insurance</span>
+            <span class="res-item-val">Mandatory within 4 months of arrival. Basic policy from ~€140/month.</span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">📱</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Apply for DigiD</span>
+            <span class="res-item-val">Your digital identity for all government services. Apply at <a href="https://www.digid.nl" target="_blank">digid.nl</a></span>
+          </div>
+        </div>
+        <div class="res-item">
+          <span class="res-item-icon">🚲</span>
+          <div class="res-item-text">
+            <span class="res-item-label">Buy a bike</span>
+            <span class="res-item-val">Seriously — it's the fastest way to get around. Check our <a href="markplaats.html">Markplaats</a> for second-hand bikes.</span>
+          </div>
+        </div>
+      </div>
+      <a href="directory.html" class="res-cta">Find SA Professionals to Help →</a>
+    </div>
+
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div style="background:var(--subtle);border-radius:10px;padding:20px 24px;border-left:4px solid var(--gold)">
+    <div style="font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px">Disclaimer</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.7;margin:0">This information is provided as a general guide for the SA community in the Netherlands. Tax rules and deadlines change — always verify with the <a href="https://www.belastingdienst.nl" target="_blank" style="color:var(--green);font-weight:600">Belastingdienst</a> or consult a qualified tax adviser. For professional SA-specialist advice, see our <a href="directory.html?cat=Tax+%26+Accounting" style="color:var(--green);font-weight:600">Tax & Accounting directory →</a></p>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-left">
+    <div class="footer-logo-row"><div class="footer-logo-mark">SAH</div><span class="footer-logo-name">southafricanhub<span>.nl</span></span></div>
+    <div class="footer-tagline">For South Africans in the Netherlands</div>
+    <div class="footer-links" style="margin-top:8px">
+      <a href="directory.html">Directory</a><a href="events.html">Events</a>
+      <a href="markplaats.html">Markplaats</a><a href="resources.html">Resources</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div class="footer-powered">Accounting &amp; tax support by <a href="https://smithventer.nl">Smith Venter Advisory →</a></div>
+    <div class="footer-copy">© 2025 southafricanhub.nl</div>
+  </div>
+</footer>
+
+</body>
+</html>
