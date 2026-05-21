@@ -21,54 +21,48 @@
   }
   .hero-overlay {
     position: absolute; inset: 0;
-    background: rgba(10,20,45,0.15);
+    background: rgba(255,255,255,0.0);
     z-index: 0;
   }
   .hero-content {
     position: relative; z-index: 1;
-    text-align: center;
-    padding: 0 48px 40px;
-    width: 100%;
+    text-align: left;
+    padding: 60px 48px 48px 60px;
+    width: 55%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     min-height: 520px;
   }
   .hero-eyebrow {
     font-family: 'Montserrat', sans-serif;
     font-size: 11px; font-weight: 700;
     letter-spacing: 0.22em; text-transform: uppercase;
-    color: #f0a500; margin-bottom: 12px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    color: #1a5c2a; margin-bottom: 12px;
   }
   .hero h1 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 40px; font-weight: 900;
-    color: white; line-height: 1.1;
+    font-size: 36px; font-weight: 900;
+    color: #0d1f3c; line-height: 1.1;
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: -0.01em;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.4);
   }
-  .hero h1 .line2 { font-size: 52px; color: #1a5c2a; display: block; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .hero h1 .line2 { font-size: 46px; color: #1a5c2a; display: block; }
   .hero h1 .line3 {
-    font-size: 22px; color: #c8102e; font-weight: 800;
-    display: block; margin-top: 4px;
-    letter-spacing: 0.2em;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    font-size: 20px; color: #c8102e; font-weight: 800;
+    display: block; margin-top: 4px; letter-spacing: 0.2em;
   }
   .hero-tagline {
     font-size: 15px; line-height: 1.7;
-    color: rgba(255,255,255,0.9);
-    max-width: 560px; margin: 18px auto 32px;
+    color: #3a4a5c;
+    max-width: 440px; margin: 18px 0 28px;
     font-family: 'Open Sans', sans-serif;
-    text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
   .hero-btns {
-    display: flex; gap: 14px;
-    flex-wrap: wrap; justify-content: center;
-    margin-bottom: 24px;
-    margin-top: auto;
+    display: flex; gap: 12px;
+    flex-wrap: wrap; justify-content: flex-start;
+    margin-bottom: 0;
   }
   .hero-btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -91,19 +85,21 @@
   /* Hero pillars */
   .hero-pillars {
     display: flex; gap: 0;
-    justify-content: center;
-    border-top: 1px solid rgba(255,255,255,0.15);
-    padding-top: 32px;
+    justify-content: flex-start;
+    border-top: 1px solid rgba(13,31,60,0.12);
+    padding-top: 24px;
+    margin-top: 28px;
     flex-wrap: wrap;
   }
   .hero-pillar {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 0 32px;
-    border-right: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 0 24px 0 0;
+    margin-right: 24px;
+    border-right: 1px solid rgba(13,31,60,0.12);
     cursor: pointer; transition: opacity 0.15s;
     text-align: left;
   }
-  .hero-pillar:last-child { border-right: none; }
+  .hero-pillar:last-child { border-right: none; margin-right: 0; }
   .hero-pillar:hover { opacity: 0.85; }
   .hero-pillar .p-icon-circle {
     width: 40px; height: 40px; border-radius: 50%;
@@ -120,12 +116,11 @@
     font-family: 'Montserrat', sans-serif;
     font-size: 11px; font-weight: 800;
     text-transform: uppercase; letter-spacing: 0.12em;
-    color: white; margin-bottom: 4px;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    color: #0d1f3c; margin-bottom: 4px;
   }
   .hero-pillar .p-desc {
-    font-size: 11px; color: rgba(255,255,255,0.6);
-    line-height: 1.5; max-width: 160px;
+    font-size: 11px; color: #6b7585;
+    line-height: 1.5; max-width: 140px;
   }
 
   /* Tagline bar *//* Tagline bar */
@@ -590,16 +585,25 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-btns">
-      <a href="directory.html" class="hero-btn hero-btn-primary">
-        <span class="hero-btn-icon">🔍</span> Browse Businesses
-      </a>
-      <a href="events.html" class="hero-btn hero-btn-navy">
-        <span class="hero-btn-icon">🤝</span> Join the Network
-      </a>
-      <a href="directory.html#list-business" class="hero-btn hero-btn-red">
-        <span class="hero-btn-icon">➕</span> List Your Business
-      </a>
+    <div class="hero-text">
+      <div class="hero-eyebrow">southafricanhub.nl</div>
+      <h1>
+        South African
+        <span class="line2">Business &amp; Services</span>
+        <span class="line3">Netherlands</span>
+      </h1>
+      <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
+      <div class="hero-btns">
+        <a href="directory.html" class="hero-btn hero-btn-primary">
+          <span class="hero-btn-icon">🔍</span> Browse Businesses
+        </a>
+        <a href="events.html" class="hero-btn hero-btn-navy">
+          <span class="hero-btn-icon">🤝</span> Join the Network
+        </a>
+        <a href="directory.html#list-business" class="hero-btn hero-btn-red">
+          <span class="hero-btn-icon">➕</span> List Your Business
+        </a>
+      </div>
     </div>
     <div class="hero-pillars">
       <div class="hero-pillar" onclick="window.location='events.html'">
