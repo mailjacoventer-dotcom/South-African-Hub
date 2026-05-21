@@ -21,16 +21,18 @@
   }
   .hero-overlay {
     position: absolute; inset: 0;
-    background: rgba(10,20,45,0.35);
+    background: rgba(10,20,45,0.15);
     z-index: 0;
   }
   .hero-content {
     position: relative; z-index: 1;
     text-align: center;
-    padding: 64px 48px;
+    padding: 0 48px 40px;
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 520px;
   }
   .hero-eyebrow {
     font-family: 'Montserrat', sans-serif;
@@ -65,7 +67,8 @@
   .hero-btns {
     display: flex; gap: 14px;
     flex-wrap: wrap; justify-content: center;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
+    margin-top: auto;
   }
   .hero-btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -587,13 +590,6 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-eyebrow">southafricanhub.nl</div>
-    <h1>
-      South African
-      <span class="line2">Business &amp; Services</span>
-      <span class="line3">Netherlands</span>
-    </h1>
-    <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
     <div class="hero-btns">
       <a href="directory.html" class="hero-btn hero-btn-primary">
         <span class="hero-btn-icon">🔍</span> Browse Businesses
