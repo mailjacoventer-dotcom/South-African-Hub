@@ -27,11 +27,11 @@
   .hero-content {
     position: relative; z-index: 1;
     text-align: center;
-    padding: 48px 48px 48px 48px;
-    width: 100%;
+    padding: 40px 48px 36px;
+    width: 65%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     min-height: 520px;
   }
@@ -64,20 +64,20 @@
     text-align: center;
   }
   .hero-btns {
-    display: flex; gap: 12px;
-    flex-wrap: wrap; justify-content: center;
+    display: flex; gap: 8px;
+    flex-wrap: nowrap; justify-content: center;
     margin-bottom: 0;
     align-items: center;
   }
   .hero-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 13px 26px; border-radius: 6px;
-    font-size: 13px; font-weight: 800;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 11px 16px; border-radius: 6px;
+    font-size: 11px; font-weight: 800;
     font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.06em; text-transform: uppercase;
+    letter-spacing: 0.05em; text-transform: uppercase;
     text-decoration: none; cursor: pointer; border: none;
     transition: all 0.18s; white-space: nowrap;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
   .hero-btn-primary { background: #1a5c2a; color: white; }
   .hero-btn-primary:hover { background: #22743a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,92,42,0.4); }
@@ -91,21 +91,22 @@
   /* Hero pillars */
   .hero-pillars {
     display: flex; gap: 0;
-    justify-content: flex-start;
+    justify-content: center;
     border-top: 1px solid rgba(13,31,60,0.12);
-    padding-top: 24px;
-    margin-top: 28px;
-    flex-wrap: wrap;
+    padding-top: 20px;
+    margin-top: 20px;
+    flex-wrap: nowrap;
+    width: 100%;
   }
   .hero-pillar {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 0 24px 0 0;
-    margin-right: 24px;
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 0 20px;
     border-right: 1px solid rgba(13,31,60,0.12);
     cursor: pointer; transition: opacity 0.15s;
     text-align: left;
+    flex: 1;
   }
-  .hero-pillar:last-child { border-right: none; margin-right: 0; }
+  .hero-pillar:last-child { border-right: none; }
   .hero-pillar:hover { opacity: 0.85; }
   .hero-pillar .p-icon-circle {
     width: 40px; height: 40px; border-radius: 50%;
