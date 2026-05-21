@@ -23,7 +23,31 @@
     display: block;
   }
   .event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.09); }
-  .event-top { background: var(--ink); padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
+  .event-banner {
+    height: 140px; overflow: hidden; position: relative;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .event-banner img {
+    width: 100%; height: 100%; object-fit: cover; display: none;
+  }
+  .event-banner img.loaded { display: block; }
+  .event-banner-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .event-banner-placeholder span { font-size: 22px; }
+  .event-banner-placeholder p { font-size: 11px; color: rgba(255,255,255,0.4); font-family: 'Montserrat', sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin: 0; }
+  .event-banner input[type=file] { display: none; }
+  .event-banner-overlay {
+    position: absolute; inset: 0;
+    background: rgba(13,31,60,0.3);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity .2s;
+  }
+  .event-banner:hover .event-banner-overlay { opacity: 1; }
+  .event-banner-overlay span { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 4px; font-size: 11px; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 0.06em; }
+  .event-top { background: var(--navy); padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
   .event-date { text-align: center; flex-shrink: 0; }
   .event-date .day { font-family: 'Montserrat', sans-serif; font-size: 34px; color: white; line-height: 1; }
   .event-date .month { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 2px; }
@@ -105,7 +129,16 @@
   <div class="section-divider">June 2025</div>
   <div class="events-grid">
 
-    <a href="#" class="event-card">
+    <a href="#" class="event-card" data-organiser="info@southafricanhub.nl" data-wa="31612345678">
+      <div class="event-banner" onclick="event.preventDefault(); document.getElementById('banner-braai-input').click()">
+        <img id="banner-braai-img" src="" alt="Event banner">
+        <div class="event-banner-placeholder" id="banner-braai-placeholder">
+          <span>🖼️</span>
+          <p>Upload event banner</p>
+        </div>
+        <input type="file" id="banner-braai-input" accept="image/*" onchange="loadEventBanner(this, 'banner-braai')">
+        <div class="event-banner-overlay"><span>📷 Change banner</span></div>
+      </div>
       <div class="event-top">
         <div class="event-date"><div class="day">14</div><div class="month">June</div></div>
         <div class="event-divider"></div>
@@ -123,7 +156,16 @@
       </div>
     </a>
 
-    <a href="#" class="event-card">
+    <a href="#" class="event-card" data-organiser="info@southafricanhub.nl" data-wa="31612345679">
+      <div class="event-banner" onclick="event.preventDefault(); document.getElementById('banner-drinks-input').click()">
+        <img id="banner-drinks-img" src="" alt="Event banner">
+        <div class="event-banner-placeholder" id="banner-drinks-placeholder">
+          <span>🖼️</span>
+          <p>Upload event banner</p>
+        </div>
+        <input type="file" id="banner-drinks-input" accept="image/*" onchange="loadEventBanner(this, 'banner-drinks')">
+        <div class="event-banner-overlay"><span>📷 Change banner</span></div>
+      </div>
       <div class="event-top">
         <div class="event-date"><div class="day">20</div><div class="month">June</div></div>
         <div class="event-divider"></div>
@@ -141,7 +183,16 @@
       </div>
     </a>
 
-    <a href="#" class="event-card">
+    <a href="#" class="event-card" data-organiser="info@southafricanhub.nl" data-wa="31612345680">
+      <div class="event-banner" onclick="event.preventDefault(); document.getElementById('banner-picnic-input').click()">
+        <img id="banner-picnic-img" src="" alt="Event banner">
+        <div class="event-banner-placeholder" id="banner-picnic-placeholder">
+          <span>🖼️</span>
+          <p>Upload event banner</p>
+        </div>
+        <input type="file" id="banner-picnic-input" accept="image/*" onchange="loadEventBanner(this, 'banner-picnic')">
+        <div class="event-banner-overlay"><span>📷 Change banner</span></div>
+      </div>
       <div class="event-top">
         <div class="event-date"><div class="day">26</div><div class="month">June</div></div>
         <div class="event-divider"></div>
@@ -163,7 +214,16 @@
   <div class="section-divider" style="margin-top:40px;">July 2025</div>
   <div class="events-grid">
 
-    <a href="#" class="event-card">
+    <a href="#" class="event-card" data-organiser="info@southafricanhub.nl" data-wa="31612345681">
+      <div class="event-banner" onclick="event.preventDefault(); document.getElementById('banner-tax-input').click()">
+        <img id="banner-tax-img" src="" alt="Event banner">
+        <div class="event-banner-placeholder" id="banner-tax-placeholder">
+          <span>🖼️</span>
+          <p>Upload event banner</p>
+        </div>
+        <input type="file" id="banner-tax-input" accept="image/*" onchange="loadEventBanner(this, 'banner-tax')">
+        <div class="event-banner-overlay"><span>📷 Change banner</span></div>
+      </div>
       <div class="event-top">
         <div class="event-date"><div class="day">5</div><div class="month">July</div></div>
         <div class="event-divider"></div>
@@ -181,7 +241,16 @@
       </div>
     </a>
 
-    <a href="#" class="event-card">
+    <a href="#" class="event-card" data-organiser="info@southafricanhub.nl" data-wa="31612345682">
+      <div class="event-banner" onclick="event.preventDefault(); document.getElementById('banner-rugby-input').click()">
+        <img id="banner-rugby-img" src="" alt="Event banner">
+        <div class="event-banner-placeholder" id="banner-rugby-placeholder">
+          <span>🖼️</span>
+          <p>Upload event banner</p>
+        </div>
+        <input type="file" id="banner-rugby-input" accept="image/*" onchange="loadEventBanner(this, 'banner-rugby')">
+        <div class="event-banner-overlay"><span>📷 Change banner</span></div>
+      </div>
       <div class="event-top">
         <div class="event-date"><div class="day">12</div><div class="month">July</div></div>
         <div class="event-divider"></div>
@@ -199,7 +268,16 @@
       </div>
     </a>
 
-    <a href="#" class="event-card">
+    <a href="#" class="event-card" data-organiser="info@southafricanhub.nl" data-wa="31612345683">
+      <div class="event-banner" onclick="event.preventDefault(); document.getElementById('banner-dinner-input').click()">
+        <img id="banner-dinner-img" src="" alt="Event banner">
+        <div class="event-banner-placeholder" id="banner-dinner-placeholder">
+          <span>🖼️</span>
+          <p>Upload event banner</p>
+        </div>
+        <input type="file" id="banner-dinner-input" accept="image/*" onchange="loadEventBanner(this, 'banner-dinner')">
+        <div class="event-banner-overlay"><span>📷 Change banner</span></div>
+      </div>
       <div class="event-top">
         <div class="event-date"><div class="day">19</div><div class="month">July</div></div>
         <div class="event-divider"></div>
@@ -252,23 +330,137 @@
 </script>
 
 <div id="rsvp-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;">
-  <div style="background:white;border-radius:14px;padding:36px;width:440px;max-width:90vw;position:relative;">
-    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#78716c;">✕</button>
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#1a5c2a;margin-bottom:10px;">RSVP</div>
-    <div id="modal-title" style="font-family:'Montserrat',sans-serif;font-size:22px;color:#1c1917;margin-bottom:20px;line-height:1.2;"></div>
+  <div style="background:white;border-radius:14px;padding:36px;width:460px;max-width:90vw;position:relative;box-shadow:0 24px 64px rgba(0,0,0,0.2)">
+    <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:#eef0f3;border:none;font-size:16px;cursor:pointer;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#78716c;">✕</button>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--green);margin-bottom:10px;font-family:'Montserrat',sans-serif">RSVP</div>
+    <div id="modal-title" style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.2;text-transform:uppercase;letter-spacing:-0.01em"></div>
+    <div id="modal-organiser-info" style="font-size:12px;color:var(--muted);margin-bottom:20px"></div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <input id="rsvp-first" type="text" placeholder="First name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;">
-        <input id="rsvp-last" type="text" placeholder="Last name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;">
+        <input id="rsvp-first" type="text" placeholder="First name" style="border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        <input id="rsvp-last" type="text" placeholder="Last name" style="border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
       </div>
-      <input id="rsvp-email" type="email" placeholder="Email address" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;width:100%;">
-      <button onclick="sendRsvp()" style="background:#1a5c2a;color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;font-family:'Open Sans',sans-serif;cursor:pointer;">Confirm RSVP →</button>
-      <p style="font-size:11px;color:#78716c;margin:0;">Your RSVP goes to <strong>info@southafricanhub.nl</strong>. We'll confirm by email.</p>
+      <input id="rsvp-email" type="email" placeholder="Email address" style="border:1.5px solid var(--wire);border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;width:100%">
+      <div id="rsvp-actions" style="display:flex;gap:10px">
+        <button id="rsvp-wa-btn" onclick="rsvpWhatsApp()" style="flex:1;background:#25D366;color:white;border:none;border-radius:6px;padding:12px;font-size:13px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          RSVP via WhatsApp
+        </button>
+        <button onclick="rsvpEmail()" style="flex:1;background:var(--navy);color:white;border:none;border-radius:6px;padding:12px;font-size:13px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer">RSVP via Email</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin:0;text-align:center">Your RSVP goes directly to the event organiser</p>
     </div>
   </div>
 </div>
 
 <script>
+  var currentEvent = { title: '', organiser: '', wa: '' };
+
+  function rsvpEvent(e, btn) {
+    e.preventDefault();
+    var card = btn.closest('.event-card') || btn.closest('a');
+    currentEvent.title     = card ? (card.querySelector('.event-title') || {}).textContent || 'Event' : 'Event';
+    currentEvent.organiser = card ? card.getAttribute('data-organiser') || 'info@southafricanhub.nl' : 'info@southafricanhub.nl';
+    currentEvent.wa        = card ? card.getAttribute('data-wa') || '' : '';
+    document.getElementById('modal-title').textContent = currentEvent.title;
+    var info = document.getElementById('modal-organiser-info');
+    info.textContent = currentEvent.wa ? 'Organiser reachable via WhatsApp or email' : 'Organiser reachable via email';
+    // Show/hide WA button
+    document.getElementById('rsvp-wa-btn').style.display = currentEvent.wa ? 'flex' : 'none';
+    document.getElementById('rsvp-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('rsvp-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function rsvpWhatsApp() {
+    var first = document.getElementById('rsvp-first').value.trim();
+    var last  = document.getElementById('rsvp-last').value.trim();
+    if (!first) { alert('Please enter your first name.'); return; }
+    var msg = encodeURIComponent('Hi! I'd like to RSVP for: ' + currentEvent.title + '
+
+Name: ' + first + ' ' + last);
+    window.open('https://wa.me/' + currentEvent.wa + '?text=' + msg, '_blank');
+    closeModal();
+  }
+
+  async function rsvpEmail() {
+    var first = document.getElementById('rsvp-first').value.trim();
+    var last  = document.getElementById('rsvp-last').value.trim();
+    var email = document.getElementById('rsvp-email').value.trim();
+    if (!first || !email || !email.includes('@')) { alert('Please enter your name and email.'); return; }
+    var btn = document.querySelector('#rsvp-actions button:last-child');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    try {
+      var res = await fetch('https://formspree.io/f/xnjrdayb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'RSVP — ' + currentEvent.title,
+          _replyto: email,
+          event: currentEvent.title,
+          name: first + ' ' + last,
+          email: email,
+          _to: currentEvent.organiser
+        })
+      });
+      if (res.ok) {
+        closeModal();
+        showToast('✅ RSVP confirmed! The organiser will be in touch.');
+      } else { throw new Error(); }
+    } catch(e) {
+      btn.textContent = 'RSVP via Email'; btn.disabled = false;
+      alert('Something went wrong. Please try again.');
+    }
+  }
+
+  // Event banner upload
+  function loadEventBanner(input, bannerId) {
+    if (!input.files || !input.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = document.getElementById(bannerId + '-img');
+      var placeholder = document.getElementById(bannerId + '-placeholder');
+      img.src = e.target.result;
+      img.classList.add('loaded');
+      if (placeholder) placeholder.style.display = 'none';
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  function setFilter(el) {
+    document.querySelectorAll('.filter-bar .pill').forEach(function(p) { p.classList.remove('active'); });
+    el.classList.add('active');
+  }
+
+  async function submitEvent(e) {
+    e.preventDefault();
+    var name  = prompt('Your name:');
+    var email = prompt('Your email:');
+    if (!name || !email) return;
+    var ok = await fetch('https://formspree.io/f/xnjrdayb', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ _subject: 'Event Submission', contact_name: name, contact_email: email, type: 'Event submission' })
+    }).then(r => r.ok).catch(() => false);
+    showToast(ok ? '✅ We'll be in touch with the event submission form.' : '⚠️ Something went wrong.');
+  }
+
+  function showToast(msg) {
+    var t = document.getElementById('site-toast');
+    if (!t) { t = document.createElement('div'); t.id = 'site-toast'; t.className = 'toast'; t.innerHTML = '<span class="toast-icon"></span><span class="toast-msg"></span>'; document.body.appendChild(t); }
+    t.querySelector('.toast-msg').textContent = msg.replace(/^[\u{1F300}-\u{1FFFF}✅⚠️]\s*/u, '');
+    t.querySelector('.toast-icon').textContent = msg.match(/^([\u{1F300}-\u{1FFFF}✅⚠️])/u)?.[1] || '';
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3500);
+  }
+
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('rsvp-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+</script>
   function setFilter(el) {
     document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
