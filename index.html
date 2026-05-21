@@ -7,6 +7,235 @@
 <link rel="stylesheet" href="shared.css">
 <style>
   /* ── HOMEPAGE SPECIFICS ── */
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0d1f3c 0%, #162a4a 55%, #1e3a5f 100%);
+    padding: 72px 48px 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid #1a5c2a;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: -60px; top: -60px;
+    width: 450px; height: 450px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(26,92,42,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; left: -40px; bottom: -40px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: #f0a500; margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 44px; font-weight: 900;
+    color: white; line-height: 1.05;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .line2 {
+    font-size: 52px; color: #1a5c2a; display: block;
+  }
+  .hero h1 .line3 {
+    font-size: 28px; color: rgba(255,255,255,0.45);
+    font-weight: 700; display: block; margin-top: 4px;
+    letter-spacing: 0.15em;
+  }
+  .hero-tagline {
+    font-size: 14px; line-height: 1.7;
+    color: rgba(255,255,255,0.6);
+    max-width: 420px; margin: 20px 0 32px;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-pillars {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; position: relative; z-index: 1;
+  }
+  .hero-pillar {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 20px 18px;
+    border-top: 3px solid #1a5c2a;
+    transition: background 0.2s;
+  }
+  .hero-pillar:nth-child(2) { border-top-color: #c8102e; }
+  .hero-pillar:nth-child(3) { border-top-color: #f0a500; }
+  .hero-pillar:nth-child(4) { border-top-color: #1a5c2a; }
+  .hero-pillar:hover { background: rgba(255,255,255,0.1); }
+  .hero-pillar .p-icon { font-size: 22px; display: block; margin-bottom: 8px; }
+  .hero-pillar .p-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: white; margin-bottom: 5px;
+  }
+  .hero-pillar .p-desc {
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+
+  /* Tagline bar */
+  .tagline-bar {
+    background: #1a5c2a;
+    padding: 14px 48px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    align-items: center;
+  }
+  .tagline-item {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: white;
+  }
+  .tagline-sep { color: rgba(255,255,255,0.3); font-size: 18px; }
+
+  /* Cat bar */
+  .cat-bar {
+    background: white;
+    border-bottom: 2px solid #dde1e8;
+    padding: 12px 48px;
+    display: flex; gap: 8px; align-items: center;
+    overflow-x: auto;
+    position: sticky; top: 62px; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  /* Dual section */
+  .dual-section {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #dde1e8;
+  }
+  .dual-col { padding: 48px; }
+  .dual-col:first-child { border-right: 1px solid #dde1e8; }
+  .dual-col .section-title { font-size: 22px; margin-bottom: 6px; }
+
+  /* Dir cards */
+  .dir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .dir-card {
+    background: white; border: 1.5px solid #dde1e8;
+    border-radius: 8px; padding: 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    text-decoration: none; color: inherit;
+  }
+  .dir-card:hover { border-color: #1a5c2a; box-shadow: 0 4px 12px rgba(26,92,42,0.12); }
+  .dir-icon {
+    width: 36px; height: 36px; background: #eef0f3;
+    border-radius: 6px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .dir-card-text .name { font-weight: 700; font-size: 13px; font-family: 'Montserrat', sans-serif; }
+  .dir-card-text .cat { font-size: 11px; color: #6b7585; margin-top: 2px; }
+  .dir-card-text .loc { font-size: 11px; color: #1a5c2a; margin-top: 4px; font-weight: 600; }
+
+  /* Resource list */
+  .resource-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .resource-item {
+    background: white; border: 1.5px solid #dde1e8;
+    border-radius: 8px; padding: 14px 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+    text-decoration: none; color: inherit;
+    transition: border-color 0.15s;
+  }
+  .resource-item:hover { border-color: #1a5c2a; }
+  .res-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.07em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 3px;
+    flex-shrink: 0; margin-top: 1px;
+    font-family: 'Montserrat', sans-serif;
+  }
+  .res-tag.guide { background: #e8f4ec; color: #1a5c2a; }
+  .res-tag.tip { background: #eef0f3; color: #6b7585; }
+  .res-title { font-weight: 600; font-size: 13px; font-family: 'Montserrat', sans-serif; }
+  .res-meta { font-size: 11px; color: #6b7585; margin-top: 3px; }
+
+  /* Events section */
+  .events-section {
+    padding: 48px; background: white;
+    border-top: 1px solid #dde1e8;
+    border-bottom: 1px solid #dde1e8;
+  }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+
+  /* Carousel */
+  .carousel-outer { position: relative; }
+  .carousel-track-wrap { overflow: hidden; border-radius: 10px; }
+  .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94); }
+  .carousel-slide { min-width: 100%; position: relative; height: 300px; border-radius: 10px; overflow: hidden; text-decoration: none; display: block; flex-shrink: 0; }
+  .slide-banner { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.6s ease; }
+  .carousel-slide:hover .slide-banner { transform: scale(1.02); }
+  .slide-banner.s1 { background-image: linear-gradient(135deg, #0d1f3c 0%, #1a5c2a 100%); }
+  .slide-banner.s2 { background-image: linear-gradient(135deg, #0d1f3c 0%, #162a4a 100%); }
+  .slide-banner.s3 { background-image: linear-gradient(135deg, #162a4a 0%, #1a5c2a 100%); }
+  .slide-banner.s4 { background-image: linear-gradient(135deg, #0d1f3c 0%, #c8102e 60%, #0d1f3c 100%); }
+  .slide-banner.s5 { background-image: linear-gradient(135deg, #1a5c2a 0%, #0d1f3c 100%); }
+  .slide-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13,31,60,0.85) 0%, rgba(13,31,60,0.4) 60%, rgba(13,31,60,0.1) 100%); }
+  .slide-upload-hint { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); border-radius: 5px; padding: 5px 12px; font-size: 11px; color: rgba(255,255,255,0.5); cursor: pointer; transition: background 0.15s; }
+  .slide-upload-hint:hover { background: rgba(255,255,255,0.2); color: white; }
+  .slide-content { position: absolute; inset: 0; padding: 32px 40px; display: flex; flex-direction: column; justify-content: flex-end; z-index: 2; }
+  .slide-tag { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 10px; border-radius: 3px; margin-bottom: 12px; align-self: flex-start; font-family: 'Montserrat', sans-serif; }
+  .slide-tag.community { background: #e8f4ec; color: #1a5c2a; }
+  .slide-tag.networking { background: rgba(240,165,0,0.2); color: #f0a500; }
+  .slide-tag.workshop { background: rgba(255,255,255,0.15); color: white; }
+  .slide-tag.sport { background: rgba(200,16,46,0.2); color: #ff6b6b; }
+  .slide-date-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .slide-date-block { text-align: center; }
+  .slide-date-block .day { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 900; color: white; line-height: 1; }
+  .slide-date-block .month { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); margin-top: 2px; font-family: 'Montserrat', sans-serif; }
+  .slide-date-sep { width: 1px; height: 40px; background: rgba(255,255,255,0.2); }
+  .slide-city { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #f0a500; font-family: 'Montserrat', sans-serif; }
+  .slide-title { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: white; line-height: 1.2; margin-bottom: 8px; max-width: 560px; }
+  .slide-meta { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 16px; }
+  .slide-cta { display: inline-block; background: #1a5c2a; color: white; padding: 9px 20px; border-radius: 5px; font-size: 13px; font-weight: 700; text-decoration: none; align-self: flex-start; font-family: 'Montserrat', sans-serif; letter-spacing: 0.04em; transition: background 0.15s; }
+  .slide-cta:hover { background: #22743a; }
+  .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: white; border: 1.5px solid #dde1e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; box-shadow: 0 2px 10px rgba(0,0,0,0.12); transition: all 0.15s; font-size: 16px; color: #0d1f3c; }
+  .carousel-arrow:hover { background: #0d1f3c; color: white; border-color: #0d1f3c; }
+  .carousel-arrow.prev { left: -18px; }
+  .carousel-arrow.next { right: -18px; }
+  .carousel-dots { display: flex; justify-content: center; gap: 7px; margin-top: 18px; }
+  .carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: #dde1e8; cursor: pointer; transition: all 0.2s; }
+  .carousel-dot.active { background: #1a5c2a; width: 22px; border-radius: 4px; }
+
+  /* Markplaats preview */
+  .mp-preview { padding: 48px; border-top: 1px solid #dde1e8; }
+  .mp-grid-preview { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 24px; }
+  .mp-card-preview { background: white; border: 1.5px solid #dde1e8; border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; display: block; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+  .mp-card-preview:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,92,42,0.12); border-color: #1a5c2a; }
+  .mp-img { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 38px; position: relative; }
+  .mp-img.warm { background: #fef3c7; }
+  .mp-img.cool { background: #e0f2fe; }
+  .mp-img.soft { background: #fce7f3; }
+  .mp-img.nat  { background: #dcfce7; }
+  .mp-badge { position: absolute; top: 8px; left: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 3px; font-family: 'Montserrat', sans-serif; }
+  .mp-badge.free { background: #e8f4ec; color: #1a5c2a; }
+  .mp-badge.sale { background: #fef3c7; color: #92400e; }
+  .mp-body-preview { padding: 12px; }
+  .mp-title-preview { font-weight: 700; font-size: 13px; margin-bottom: 4px; font-family: 'Montserrat', sans-serif; }
+  .mp-footer-preview { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #dde1e8; }
+  .mp-price { font-size: 14px; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+  .mp-price.free { color: #1a5c2a; }
+  .mp-city-preview { font-size: 11px; color: #6b7585; }
+
+  /* Listing CTA band */
+  .listing-cta-band {
   .hero {
     background: var(--ink);
     padding: 72px 48px 60px;
@@ -320,22 +549,53 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div>
-    <div class="hero-eyebrow">South Africans in the Netherlands</div>
-    <h1>Your community,<br><em>your people</em>,<br>your business.</h1>
-    <p>Find trusted SA-owned businesses, connect with the community, and get the support you need — all in one place.</p>
+  <div style="position:relative;z-index:1">
+    <div class="hero-eyebrow">southafricanhub.nl</div>
+    <h1>
+      South African
+      <span class="line2">Business &amp; Services</span>
+      <span class="line3">Netherlands</span>
+    </h1>
+    <p class="hero-tagline">Find trusted SA-owned businesses, connect with the community, and get the support you need — all in one place.</p>
     <div class="hero-btns">
       <a href="directory.html" class="btn-primary">Browse the Directory</a>
       <a href="events.html" class="btn-ghost">Upcoming Events</a>
     </div>
   </div>
-  <div class="hero-stats-grid">
-    <div class="hero-stat-card"><span class="n">23</span><span class="l">Businesses</span></div>
-    <div class="hero-stat-card"><span class="n">23</span><span class="l">Businesses</span></div>
-    <div class="hero-stat-card"><span class="n">15</span><span class="l">Cities</span></div>
-    <div class="hero-stat-card"><span class="n">Free</span><span class="l">To list</span></div>
+  <div class="hero-pillars">
+    <div class="hero-pillar">
+      <span class="p-icon">🔍</span>
+      <div class="p-title">Find</div>
+      <div class="p-desc">Discover trusted South African businesses and services in the Netherlands</div>
+    </div>
+    <div class="hero-pillar">
+      <span class="p-icon">🤝</span>
+      <div class="p-title">Connect</div>
+      <div class="p-desc">Build meaningful connections and grow your network</div>
+    </div>
+    <div class="hero-pillar">
+      <span class="p-icon">❤️</span>
+      <div class="p-title">Support</div>
+      <div class="p-desc">Support local South African businesses and uplift our community</div>
+    </div>
+    <div class="hero-pillar">
+      <span class="p-icon">📈</span>
+      <div class="p-title">Grow</div>
+      <div class="p-desc">Share opportunities, collaborate and grow together</div>
+    </div>
   </div>
 </section>
+
+<!-- TAGLINE BAR -->
+<div class="tagline-bar">
+  <span class="tagline-item">Find</span>
+  <span class="tagline-sep">|</span>
+  <span class="tagline-item">Connect</span>
+  <span class="tagline-sep">|</span>
+  <span class="tagline-item">Support</span>
+  <span class="tagline-sep">|</span>
+  <span class="tagline-item">Grow Together</span>
+</div>
 
 <!-- CAT BAR -->
 <div class="cat-bar">

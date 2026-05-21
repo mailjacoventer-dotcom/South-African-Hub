@@ -26,12 +26,12 @@
   .event-date .month { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 2px; }
   .event-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
   .event-city-block {}
-  .event-city { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .event-city { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); }
   .event-time { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 3px; }
   .event-body { padding: 20px; }
   .event-tag { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; padding: 3px 8px; border-radius: 3px; margin-bottom: 10px; }
   .tag-community { background: var(--free-bg); color: var(--free); }
-  .tag-networking { background: var(--accent-light); color: var(--accent); }
+  .tag-networking { background: var(--green-bg); color: var(--green); }
   .tag-workshop { background: #ede9fe; color: #6d28d9; }
   .tag-sport { background: #fef3c7; color: var(--sale); }
   .event-title { font-weight: 700; font-size: 16px; margin-bottom: 8px; line-height: 1.3; }
@@ -40,8 +40,8 @@
   .event-detail { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
   .event-detail .icon { font-size: 14px; flex-shrink: 0; }
   .event-cta { margin-top: 14px; }
-  .btn-rsvp { display: inline-block; background: var(--accent); color: white; padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.15s; }
-  .btn-rsvp:hover { background: var(--accent-hover); }
+  .btn-rsvp { display: inline-block; background: var(--green); color: white; padding: 9px 20px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; text-decoration: none; transition: background 0.15s; }
+  .btn-rsvp:hover { background: var(--green-light); }
   .btn-rsvp.free-event { background: var(--free); }
   .btn-rsvp.free-event:hover { background: #166534; }
 
@@ -251,7 +251,7 @@
 <div id="rsvp-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;">
   <div style="background:white;border-radius:14px;padding:36px;width:440px;max-width:90vw;position:relative;">
     <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#78716c;">✕</button>
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e8501a;margin-bottom:10px;">RSVP</div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#1a5c2a;margin-bottom:10px;">RSVP</div>
     <div id="modal-title" style="font-family:'Playfair Display',serif;font-size:22px;color:#1c1917;margin-bottom:20px;line-height:1.2;"></div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -259,7 +259,7 @@
         <input id="rsvp-last" type="text" placeholder="Last name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;">
       </div>
       <input id="rsvp-email" type="email" placeholder="Email address" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;width:100%;">
-      <button onclick="sendRsvp()" style="background:#e8501a;color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;">Confirm RSVP →</button>
+      <button onclick="sendRsvp()" style="background:#1a5c2a;color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;">Confirm RSVP →</button>
       <p style="font-size:11px;color:#78716c;margin:0;">Your RSVP goes to <strong>info@southafricanhub.nl</strong>. We'll confirm by email.</p>
     </div>
   </div>
