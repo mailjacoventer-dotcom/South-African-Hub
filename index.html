@@ -956,7 +956,7 @@
     const last  = document.getElementById('signup-last').value.trim();
     const email = document.getElementById('signup-email').value.trim();
     if (!email || !email.includes('@')) { showToast('⚠️ Please enter a valid email address.'); return; }
-    const ok = await sendToFormspree('FORMSPREE_SIGNUP_ID', {
+    const ok = await sendToFormspree('mojbdaza', {
       _subject: 'SA Hub — New community signup',
       name: `${first} ${last}`,
       email
@@ -984,7 +984,7 @@
       showToast('⚠️ Please fill in all required fields.'); return;
     }
     const btn = e.target; btn.textContent = 'Sending…'; btn.disabled = true;
-    const ok = await sendToFormspree('FORMSPREE_BIZLISTING_ID', {
+    const ok = await sendToFormspree('xvzyapnk', {
       _subject: `Business Listing — ${name}`,
       business_name: name, contact_person: contact,
       website: website || 'Not provided', email,

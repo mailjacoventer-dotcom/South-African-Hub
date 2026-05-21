@@ -772,7 +772,7 @@ document.getElementById("f-submit").addEventListener("click", async function() {
     alert("Please fill in all required fields."); return;
   }
   this.textContent = "Sending…"; this.disabled = true;
-  var ok = await sendToFormspree("FORMSPREE_DIRLISTING_ID", {
+  var ok = await sendToFormspree("xvzyapnk", {
     _subject: "Business Listing — " + name,
     business_name: name, contact_person: contact,
     website: website || "N/A", email: email,

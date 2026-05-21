@@ -296,7 +296,7 @@
     if (!first || !email || !email.includes('@')) { alert('Please enter your name and email.'); return; }
     const btn = document.querySelector('#rsvp-modal button[onclick="sendRsvp()"]');
     if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
-    const ok = await sendToFormspree('FORMSPREE_RSVP_ID', {
+    const ok = await sendToFormspree('xnjrdayb', {
       _subject: 'RSVP — ' + currentEventTitle,
       event: currentEventTitle, name: first + ' ' + last, email
     });
@@ -309,7 +309,7 @@
     const name  = prompt('Your name:');
     const email = prompt('Your email:');
     if (!name || !email) return;
-    const ok = await sendToFormspree('FORMSPREE_RSVP_ID', {
+    const ok = await sendToFormspree('xnjrdayb', {
       _subject: 'Event Submission — southafricanhub.nl',
       type: 'Event submission', contact_name: name, contact_email: email
     });
