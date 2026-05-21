@@ -118,8 +118,8 @@
   <div class="pill" onclick="filterCat(this)">Food & Retail</div>
   <div class="pill" onclick="filterCat(this)">Professional Services</div>
   <div class="view-toggle">
-    <button class="toggle-btn on" id="btn-list" onclick="showList()">☰ List</button>
-    <button class="toggle-btn off" id="btn-map" onclick="showMap()">⊕ Map</button>
+    <button class="toggle-btn on" id="btn-list" onclick="showList()">≡ List</button>
+    <button class="toggle-btn off" id="btn-map" onclick="showMap()">⊕ City</button>
   </div>
 </div>
 
@@ -457,48 +457,35 @@
     </div>
 
   <!-- MAP -->
-  <div id="dir-map-view">
-    <div class="map-full">
-      <div class="map-canvas">
-        <div class="map-grid-bg"></div>
-        <div class="map-city-lbl" style="left:48%;top:22%">Amsterdam</div>
-        <div class="map-city-lbl" style="left:40%;top:41%">Rotterdam</div>
-        <div class="map-city-lbl" style="left:46%;top:36%">Utrecht</div>
-        <div class="map-city-lbl" style="left:55%;top:28%">Almere</div>
-        <div class="map-city-lbl" style="left:37%;top:39%">Den Haag</div>
-        <div class="map-city-lbl" style="left:50%;top:55%">Eindhoven</div>
-        <div class="map-pin" style="left:50%;top:27%"><div class="map-pin-label">Van der Berg Legal</div><div class="map-pin-dot"></div></div>
-        <div class="map-pin" style="left:53%;top:25%"><div class="map-pin-label">Braaihuis Amsterdam</div><div class="map-pin-dot" style="background:#6d28d9"></div></div>
-        <div class="map-pin" style="left:57%;top:32%"><div class="map-pin-label">Smith Venter Advisory</div><div class="map-pin-dot"></div></div>
-        <div class="map-pin" style="left:42%;top:44%"><div class="map-pin-label">Botha Makelaars</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
-        <div class="map-pin" style="left:48%;top:39%"><div class="map-pin-label">Cape & Calm</div><div class="map-pin-dot"></div></div>
-        <div class="map-pin" style="left:50%;top:40%"><div class="map-pin-label">Joubert Property</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
-        <div class="map-pin" style="left:39%;top:42%"><div class="map-pin-label">Naidoo Recruitment</div><div class="map-pin-dot" style="background:var(--sale)"></div></div>
-        <div class="map-pin" style="left:53%;top:58%"><div class="map-pin-label">Khumalo Creative</div><div class="map-pin-dot"></div></div>
-        <div class="map-legend-box">
-          <div class="leg-item"><div class="leg-dot" style="background:var(--accent)"></div> Tax / Legal / Wellness</div>
-          <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div> Property</div>
-          <div class="leg-item"><div class="leg-dot" style="background:var(--sale)"></div> Recruitment</div>
-          <div class="leg-item"><div class="leg-dot" style="background:#6d28d9"></div> Food & Retail</div>
-        </div>
-      </div>
-      <div class="map-sidebar-dir">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding:4px 0 8px;">9 businesses</div>
-        <a href="#" class="map-side-item"><div class="n">Smith Venter Advisory</div><div class="c">Tax & Accounting</div><div class="l">📍 Almere</div></a>
-        <a href="#" class="map-side-item"><div class="n">Van der Berg Legal</div><div class="c">Legal</div><div class="l">📍 Amsterdam</div></a>
-        <a href="#" class="map-side-item"><div class="n">Botha Makelaars</div><div class="c">Property & Housing</div><div class="l">📍 Rotterdam</div></a>
-        <a href="#" class="map-side-item"><div class="n">Cape & Calm Wellness</div><div class="c">Health & Wellness</div><div class="l">📍 Utrecht</div></a>
-        <a href="#" class="map-side-item"><div class="n">Khumalo Creative Studio</div><div class="c">Marketing & Creative</div><div class="l">📍 Eindhoven</div></a>
-        <a href="#" class="map-side-item"><div class="n">Naidoo Recruitment</div><div class="c">Recruitment</div><div class="l">📍 Den Haag</div></a>
-        <a href="#" class="map-side-item"><div class="n">Braaihuis Amsterdam</div><div class="c">Food & Retail</div><div class="l">📍 Amsterdam</div></a>
-        <a href="#" class="map-side-item"><div class="n">Eksteen Consulting</div><div class="c">Professional Services</div><div class="l">📍 Amsterdam</div></a>
-        <a href="#" class="map-side-item"><div class="n">Joubert Property Group</div><div class="c">Property & Housing</div><div class="l">📍 Utrecht</div></a>
-      </div>
+  <div id="dir-map-view" style="display:none !important">
+  <div style="padding:32px 48px">
+    <div style="margin-bottom:20px">
+      <div class="section-eyebrow">Browse by City</div>
+      <div class="section-title">Find businesses near you</div>
     </div>
+    <div id="city-pills" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+      <div class="pill active" style="cursor:pointer" onclick="filterCity(this,'all')">All cities</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Amsterdam')">Amsterdam</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Utrecht')">Utrecht</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Almere')">Almere</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Den Haag')">Den Haag</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Leiden')">Leiden</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Bitgummole')">Bitgummole</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Zaandam')">Zaandam</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Woerden')">Woerden</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Gouda')">Gouda</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Heemstede')">Heemstede</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Heemskerk')">Heemskerk</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Hilversum')">Hilversum</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Apeldoorn')">Apeldoorn</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'Meerssen')">Meerssen</div>
+      <div class="pill" style="cursor:pointer" onclick="filterCity(this,'South Holland')">South Holland</div>
+    </div>
+    <div class="dir-full-grid" id="city-grid"></div>
   </div>
+</div>
 
-  <!-- LISTING FORM -->
-  <div class="listing-section" id="list-business">
+<!-- LISTING<div class="listing-section" id="list-business">
     <div class="section-eyebrow">Join the directory</div>
     <div class="section-title">List your SA business — free</div>
     <div class="listing-grid">
@@ -551,12 +538,11 @@
     document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
     const cat = el.textContent.trim();
-    document.querySelectorAll('.dir-full-card').forEach(card => {
-      const cardCat = card.querySelector('.dir-cat-tag') ? card.querySelector('.dir-cat-tag').textContent.trim() : '';
+    document.querySelectorAll('#dir-list-view .dir-full-card').forEach(card => {
+      const cardCat = card.getAttribute('data-cat') || '';
       card.style.display = (cat === 'All' || cardCat === cat) ? 'flex' : 'none';
     });
-    // Update count
-    const visible = [...document.querySelectorAll('.dir-full-card')].filter(c => c.style.display !== 'none').length;
+    const visible = [...document.querySelectorAll('#dir-list-view .dir-full-card')].filter(c => c.style.display !== 'none').length;
     const countEl = document.querySelector('.results-count strong');
     if (countEl) countEl.textContent = visible;
   }
@@ -693,6 +679,40 @@
   {name:'The Dutch Key',icon:'🗝️',cat:'Property & Housing',city:'South Holland',website:'https://www.thedutchkey.nl',contact:'Christelle Le Roux'},
   {name:'Grow Nova',icon:'🌱',cat:'Health & Wellness',city:'Den Haag',website:'https://grownova.nl',contact:'Wanda Winterboer'},
 ];
+
+  function filterCity(el, city) {
+    document.querySelectorAll('#city-pills .pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    const grid = document.getElementById('city-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    BIZ_DATA.forEach((b, i) => {
+      if (city !== 'all' && b.city !== city) return;
+      const div = document.createElement('div');
+      div.className = 'dir-full-card';
+      div.setAttribute('data-cat', b.cat);
+      div.onclick = () => openBiz(i);
+      div.innerHTML = `
+        <div class="dir-card-top">
+          <div class="dir-icon-lg">${b.icon}</div>
+          <div><div class="dir-name">${b.name}</div><span class="dir-cat-tag">${b.cat}</span></div>
+        </div>
+        <div class="dir-desc">${b.desc}</div>
+        <div class="dir-card-footer">
+          <span class="dir-loc">📍 ${b.city}</span>
+          <span class="dir-web">${b.website ? 'Visit website →' : 'No website'}</span>
+        </div>`;
+      grid.appendChild(div);
+    });
+    if (grid.children.length === 0) {
+      grid.innerHTML = '<p style="color:var(--muted);padding:20px 0">No businesses listed in this city yet.</p>';
+    }
+  }
+
+  // Init city grid on load
+  document.addEventListener('DOMContentLoaded', () => {
+    filterCity(document.querySelector('#city-pills .pill'), 'all');
+  });
 
   function openBiz(idx) {
     const b = BIZ_DATA[idx];
