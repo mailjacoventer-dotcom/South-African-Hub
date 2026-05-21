@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Events — southafricanhub.nl</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
   .events-hero { padding-bottom: 52px; }
@@ -22,7 +25,7 @@
   .event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.09); }
   .event-top { background: var(--ink); padding: 16px 20px; display: flex; align-items: center; gap: 16px; }
   .event-date { text-align: center; flex-shrink: 0; }
-  .event-date .day { font-family: 'Playfair Display', serif; font-size: 34px; color: white; line-height: 1; }
+  .event-date .day { font-family: 'Montserrat', sans-serif; font-size: 34px; color: white; line-height: 1; }
   .event-date .month { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 2px; }
   .event-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.1); }
   .event-city-block {}
@@ -54,7 +57,7 @@
     position: relative; overflow: hidden;
   }
   .submit-event-band::before { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(232,80,26,0.15) 0%, transparent 70%); }
-  .submit-event-band h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: white; margin-bottom: 6px; }
+  .submit-event-band h3 { font-family: 'Montserrat', sans-serif; font-size: 24px; color: white; margin-bottom: 6px; }
   .submit-event-band p { color: rgba(255,255,255,0.5); font-size: 14px; }
 </style>
 </head>
@@ -252,14 +255,14 @@
   <div style="background:white;border-radius:14px;padding:36px;width:440px;max-width:90vw;position:relative;">
     <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:#78716c;">✕</button>
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#1a5c2a;margin-bottom:10px;">RSVP</div>
-    <div id="modal-title" style="font-family:'Playfair Display',serif;font-size:22px;color:#1c1917;margin-bottom:20px;line-height:1.2;"></div>
+    <div id="modal-title" style="font-family:'Montserrat',sans-serif;font-size:22px;color:#1c1917;margin-bottom:20px;line-height:1.2;"></div>
     <div style="display:flex;flex-direction:column;gap:12px;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <input id="rsvp-first" type="text" placeholder="First name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;">
-        <input id="rsvp-last" type="text" placeholder="Last name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;">
+        <input id="rsvp-first" type="text" placeholder="First name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;">
+        <input id="rsvp-last" type="text" placeholder="Last name" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;">
       </div>
-      <input id="rsvp-email" type="email" placeholder="Email address" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Outfit',sans-serif;outline:none;width:100%;">
-      <button onclick="sendRsvp()" style="background:#1a5c2a;color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;">Confirm RSVP →</button>
+      <input id="rsvp-email" type="email" placeholder="Email address" style="border:1.5px solid #e2e0dc;border-radius:6px;padding:10px 13px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;width:100%;">
+      <button onclick="sendRsvp()" style="background:#1a5c2a;color:white;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;font-family:'Open Sans',sans-serif;cursor:pointer;">Confirm RSVP →</button>
       <p style="font-size:11px;color:#78716c;margin:0;">Your RSVP goes to <strong>info@southafricanhub.nl</strong>. We'll confirm by email.</p>
     </div>
   </div>
