@@ -90,6 +90,31 @@
 
   /* Load more */
   .load-more-row { text-align: center; margin-top: 40px; }
+
+  /* Listing detail popup */
+  .listing-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
+  .listing-modal-overlay.open { display: flex; }
+  .listing-modal { background: white; border-radius: 14px; width: 100%; max-width: 640px; overflow: hidden; box-shadow: 0 24px 64px rgba(0,0,0,0.3); animation: popIn .2s ease; }
+  @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .lm-photos { position: relative; height: 320px; background: var(--subtle); overflow: hidden; }
+  .lm-photos img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #f0f0f0; opacity: 0; transition: opacity 0.3s; }
+  .lm-photos img.active { opacity: 1; }
+  .lm-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; background: white; border: 1.5px solid var(--wire); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 5; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+  .lm-arrow.prev { left: 12px; }
+  .lm-arrow.next { right: 12px; }
+  .lm-arrow:hover { background: var(--navy); color: white; }
+  .lm-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; }
+  .lm-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(0,0,0,0.25); cursor: pointer; }
+  .lm-dot.active { background: var(--navy); }
+  .lm-close { position: absolute; top: 10px; right: 10px; background: white; border: 1.5px solid var(--wire); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; z-index: 5; }
+  .lm-body { padding: 24px 28px; }
+  .lm-badges { display: flex; gap: 8px; margin-bottom: 12px; }
+  .lm-title { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+  .lm-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+  .lm-meta-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; padding: 14px; background: var(--subtle); border-radius: 8px; }
+  .lm-meta-item { font-size: 12px; color: var(--navy); display: flex; align-items: center; gap: 6px; }
+  .lm-price { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; color: var(--navy); margin-bottom: 16px; }
+  .lm-price.free { color: var(--green); }
   .card-img-carousel { position: relative; height: 140px; overflow: hidden; background: var(--subtle); }
   .card-img-carousel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.3s; }
   .card-img-carousel img.active { opacity: 1; }
@@ -224,41 +249,7 @@
       </div>
     </div>
 
-    <div class="listing-card" data-type="free OR sale" data-cat="Furniture">
-      <div class="card-img">
-        <img src="YOUR_CLOUDINARY_URL" alt="Item title">
-        <span class="card-badge badge-free">Free</span>
-        <span class="card-cat-badge">Furniture</span>
-      </div>
-      <div class="card-body">
-        <div class="card-title">Item title</div>
-        <div class="card-desc">Description here</div>
-        <div class="card-footer">
-          <span class="card-price free">Free</span>
-          <div class="card-meta"><span class="card-city">📍 City</span><span class="card-age">X days ago</span></div>
-        </div>
-        <a class="wa-btn" href="https://wa.me/31XXXXXXXXX?text=Hi%2C+I%27m+interested+in+your+ITEM+listed+on+southafricanhub.nl" target="_blank">
-          [WhatsApp SVG] WhatsApp Seller
-        </a>
-      </div>
-    </div>
-    ══════════════════════════════
-    -->
-
-    <div class="listing-card" data-type="free" data-cat="Furniture">
-      <div class="card-img warm">🛋️<span class="card-badge badge-free">Free</span><span class="card-cat-badge">Furniture</span></div>
-      <div class="card-body">
-        <div class="card-title">IKEA 3-seater sofa — grey</div>
-        <div class="card-desc">Good condition, light grey fabric. No stains. You arrange collection and transport.</div>
-        <div class="card-footer"><span class="card-price free">Free</span><div class="card-meta"><span class="card-city">📍 Amsterdam</span><span class="card-age">2 days ago</span></div></div>
-        <a class="wa-btn" href="https://wa.me/31600000001?text=Hi%2C+I%27m+interested+in+your+IKEA+sofa+listed+on+southafricanhub.nl" target="_blank">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp Seller
-        </a>
-      </div>
-    </div>
-
-    <div class="listing-card" data-type="sale" data-cat="Kitchen">
+        <div class="listing-card" data-type="sale" data-cat="Kitchen">
       <div class="card-img cool">🍳<span class="card-badge badge-sale">For Sale</span><span class="card-cat-badge">Kitchen</span></div>
       <div class="card-body">
         <div class="card-title">Pots &amp; pans set — barely used</div>
@@ -432,6 +423,110 @@
     });
   });
 
+  // ── LISTING DETAIL POPUP ──
+  var lmPhotos = [];
+  var lmIdx = 0;
+
+  function openListingModal(card) {
+    // Gather photos
+    var carousel = card.querySelector('.card-img-carousel');
+    var singleImg = card.querySelector('.card-img img');
+    lmPhotos = [];
+    if (carousel) {
+      carousel.querySelectorAll('img').forEach(function(img) { lmPhotos.push(img.src); });
+    } else if (singleImg) {
+      lmPhotos.push(singleImg.src);
+    }
+
+    // Build photo area
+    var photosDiv = document.getElementById('lm-photos');
+    // Remove old imgs
+    photosDiv.querySelectorAll('img').forEach(function(img) { img.remove(); });
+    lmPhotos.forEach(function(src, i) {
+      var img = document.createElement('img');
+      img.src = src;
+      if (i === 0) img.classList.add('active');
+      photosDiv.insertBefore(img, photosDiv.querySelector('.lm-arrow.prev'));
+    });
+    lmIdx = 0;
+
+    // Dots
+    var dotsDiv = document.getElementById('lm-dots');
+    dotsDiv.innerHTML = '';
+    if (lmPhotos.length > 1) {
+      lmPhotos.forEach(function(_, i) {
+        var dot = document.createElement('div');
+        dot.className = 'lm-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = function() { lmGoTo(i); };
+        dotsDiv.appendChild(dot);
+      });
+      photosDiv.querySelector('.lm-arrow.prev').style.display = 'flex';
+      photosDiv.querySelector('.lm-arrow.next').style.display = 'flex';
+    } else {
+      photosDiv.querySelector('.lm-arrow.prev').style.display = 'none';
+      photosDiv.querySelector('.lm-arrow.next').style.display = 'none';
+    }
+
+    // Details
+    var title = card.querySelector('.card-title') ? card.querySelector('.card-title').textContent : '';
+    var desc  = card.querySelector('.card-desc')  ? card.querySelector('.card-desc').textContent  : '';
+    var price = card.querySelector('.card-price') ? card.querySelector('.card-price').textContent : '';
+    var city  = card.querySelector('.card-city')  ? card.querySelector('.card-city').textContent  : '';
+    var age   = card.querySelector('.card-age')   ? card.querySelector('.card-age').textContent   : '';
+    var typeBadge = card.querySelector('.card-badge') ? card.querySelector('.card-badge').textContent : '';
+    var catBadge  = card.querySelector('.card-cat-badge') ? card.querySelector('.card-cat-badge').textContent : '';
+    var delivery  = card.querySelector('[style*="Collection"]') ? card.querySelector('[style*="Collection"]').textContent.replace('🚗','').trim() : '';
+    var waLink = card.querySelector('.wa-btn') ? card.querySelector('.wa-btn').href : '#';
+
+    document.getElementById('lm-title').textContent  = title;
+    document.getElementById('lm-desc').textContent   = desc;
+    document.getElementById('lm-city').textContent   = city.replace('📍','').trim();
+    document.getElementById('lm-age').textContent    = age;
+    document.getElementById('lm-delivery').textContent = delivery;
+    document.getElementById('lm-delivery-wrap').style.display = delivery ? 'flex' : 'none';
+    document.getElementById('lm-cat-badge').textContent = catBadge;
+    document.getElementById('lm-wa-btn').href = waLink;
+
+    var priceEl = document.getElementById('lm-price');
+    priceEl.textContent = price;
+    priceEl.className = 'lm-price' + (price.toLowerCase() === 'free' ? ' free' : '');
+
+    var typeBadgeEl = document.getElementById('lm-type-badge');
+    var isFree = typeBadge.toLowerCase() === 'free';
+    typeBadgeEl.textContent = typeBadge;
+    typeBadgeEl.style.cssText = 'font-size:11px;font-family:Montserrat,sans-serif;font-weight:700;padding:3px 9px;border-radius:3px;text-transform:uppercase;letter-spacing:0.06em;' + (isFree ? 'background:#e8f4ec;color:#1a5c2a' : 'background:#fef3c7;color:#92400e');
+
+    document.getElementById('listing-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeListingModal() {
+    document.getElementById('listing-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function lmGoTo(idx) {
+    lmIdx = idx;
+    var photosDiv = document.getElementById('lm-photos');
+    photosDiv.querySelectorAll('img').forEach(function(img, i) { img.classList.toggle('active', i === idx); });
+    document.getElementById('lm-dots').querySelectorAll('.lm-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  }
+
+  function lmSlide(dir) {
+    lmGoTo((lmIdx + dir + lmPhotos.length) % lmPhotos.length);
+  }
+
+  // Click on card to open (not on WA button)
+  document.querySelectorAll('.listing-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('.wa-btn')) return;
+      openListingModal(card);
+    });
+  });
+
+  document.getElementById('listing-modal').addEventListener('click', function(e) { if (e.target === this) closeListingModal(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeListingModal(); });
+
   // ── LISTING PHOTO CAROUSEL ──
   function carouselDot(carouselId, dotsId, idx) {
     var imgs = document.getElementById(carouselId).querySelectorAll('img');
@@ -455,5 +550,36 @@
     }, 3000);
   });
 </script>
+
+<!-- LISTING DETAIL POPUP -->
+<div class="listing-modal-overlay" id="listing-modal">
+  <div class="listing-modal">
+    <div class="lm-photos" id="lm-photos">
+      <button class="lm-close" onclick="closeListingModal()">✕</button>
+      <div class="lm-arrow prev" onclick="lmSlide(-1)">‹</div>
+      <div class="lm-arrow next" onclick="lmSlide(1)">›</div>
+      <div class="lm-dots" id="lm-dots"></div>
+    </div>
+    <div class="lm-body">
+      <div class="lm-badges">
+        <span id="lm-type-badge"></span>
+        <span id="lm-cat-badge" style="font-size:11px;color:var(--muted);font-family:'Montserrat',sans-serif;font-weight:600;padding:3px 8px;background:var(--subtle);border-radius:3px"></span>
+        <span id="lm-cond-badge" style="font-size:11px;color:var(--muted);font-family:'Montserrat',sans-serif;font-weight:600;padding:3px 8px;background:var(--subtle);border-radius:3px"></span>
+      </div>
+      <div class="lm-title" id="lm-title"></div>
+      <div class="lm-desc" id="lm-desc"></div>
+      <div class="lm-meta-row">
+        <div class="lm-meta-item">📍 <span id="lm-city"></span></div>
+        <div class="lm-meta-item" id="lm-delivery-wrap">🚗 <span id="lm-delivery"></span></div>
+        <div class="lm-meta-item">🕐 <span id="lm-age"></span></div>
+      </div>
+      <div class="lm-price" id="lm-price"></div>
+      <a id="lm-wa-btn" class="wa-btn" href="#" target="_blank" style="display:flex;width:100%;justify-content:center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp Seller
+      </a>
+    </div>
+  </div>
+</div>
 </body>
 </html>
