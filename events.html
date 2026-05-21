@@ -303,7 +303,7 @@
         <h3>Organising an event for the SA community?</h3>
         <p>Submit it here and we'll list it on the hub — free of charge.</p>
       </div>
-      <a href="#" class="btn-primary" onclick="submitEvent(event)">Submit an Event</a>
+      <button class="btn-primary" onclick="openEventSubmit()">Submit an Event</button>
     </div>
   </div>
 </div>
@@ -460,6 +460,60 @@ Name: ' + first + ' ' + last);
 
   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
   document.getElementById('rsvp-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+  // ── EVENT SUBMISSION MODAL ──
+  function openEventSubmit() {
+    document.getElementById('event-submit-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeEventSubmit() {
+    document.getElementById('event-submit-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  async function doSubmitEvent() {
+    var name  = document.getElementById('ev-name').value.trim();
+    var date  = document.getElementById('ev-date').value;
+    var city  = document.getElementById('ev-city').value.trim();
+    var time  = document.getElementById('ev-time').value.trim();
+    var desc  = document.getElementById('ev-desc').value.trim();
+    var org   = document.getElementById('ev-organiser').value.trim();
+    var email = document.getElementById('ev-email').value.trim();
+    var wa    = document.getElementById('ev-wa').value.trim();
+    if (!name || !date || !city || !time || !desc || !org || !email) {
+      alert('Please fill in all required fields.'); return;
+    }
+    var btn = document.getElementById('ev-submit-btn');
+    btn.textContent = 'Sending…'; btn.disabled = true;
+    try {
+      var res = await fetch('https://formspree.io/f/mlgvbeap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Event Submission — ' + name,
+          _replyto: email,
+          event_name: name,
+          date: date,
+          city: city,
+          time: time,
+          description: desc,
+          organiser_name: org,
+          organiser_email: email,
+          whatsapp: wa || 'Not provided'
+        })
+      });
+      if (res.ok) {
+        closeEventSubmit();
+        showToast('✅ Event submitted! We’ll add it within 24 hours.');
+        btn.textContent = 'Submit Event →'; btn.disabled = false;
+      } else { throw new Error('Failed'); }
+    } catch(e) {
+      btn.textContent = 'Submit Event →'; btn.disabled = false;
+      alert('Something went wrong. Please email info@southafricanhub.nl directly.');
+    }
+  }
+  document.getElementById('event-submit-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeEventSubmit();
+  });
 </script>
   function setFilter(el) {
     document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
@@ -517,5 +571,61 @@ Name: ' + first + ' ' + last);
     setTimeout(() => t.classList.remove('show'), 3500);
   }
 <\/script>
+
+<!-- EVENT SUBMISSION MODAL -->
+<div id="event-submit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:600;align-items:center;justify-content:center;padding:20px">
+  <div style="background:white;border-radius:14px;width:100%;max-width:520px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.25)">
+    <div style="background:var(--navy);padding:24px 28px;position:relative">
+      <button onclick="closeEventSubmit()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.1);border:none;color:white;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--green);margin-bottom:6px;font-family:'Montserrat',sans-serif">Submit an Event</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:18px;font-weight:800;color:white;letter-spacing:-0.01em">List your event on the hub</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px">Free to list · Goes live within 24 hours</div>
+    </div>
+    <div style="padding:24px 28px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">Event name *</label>
+          <input id="ev-name" type="text" placeholder="e.g. SA Braai Night" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">Date *</label>
+          <input id="ev-date" type="date" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">City *</label>
+          <input id="ev-city" type="text" placeholder="Amsterdam" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">Time *</label>
+          <input id="ev-time" type="text" placeholder="18:00 – 21:00" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">Description *</label>
+        <textarea id="ev-desc" placeholder="What is the event about, what to bring, cost…" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none;resize:vertical;min-height:80px;line-height:1.6"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">Your name *</label>
+          <input id="ev-organiser" type="text" placeholder="Organiser name" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">Your email *</label>
+          <input id="ev-email" type="email" placeholder="you@email.com" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:700;font-family:'Montserrat',sans-serif;color:var(--navy);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.06em">WhatsApp number <span style="font-weight:400;text-transform:none;letter-spacing:0">(for RSVPs — include country code)</span></label>
+        <input id="ev-wa" type="tel" placeholder="+31 6 12 34 56 78" style="width:100%;border:1.5px solid var(--wire);border-radius:6px;padding:9px 12px;font-size:13px;font-family:'Open Sans',sans-serif;outline:none">
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--wire)">
+        <p style="font-size:11px;color:var(--muted);margin:0;line-height:1.5">Sent to <strong>info@southafricanhub.nl</strong><br>We'll add it within 24 hours</p>
+        <button id="ev-submit-btn" onclick="doSubmitEvent()" style="background:var(--green);color:white;border:none;border-radius:6px;padding:11px 24px;font-size:13px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:0.04em;transition:background .15s">Submit Event →</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
