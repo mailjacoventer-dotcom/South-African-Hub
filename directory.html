@@ -778,6 +778,23 @@ document.getElementById("f-submit").addEventListener("click", async function() {
   if (ok) { this.textContent = "✅ Submitted!"; }
   else { this.textContent = "Submit for Review →"; this.disabled = false; alert("Something went wrong. Please try again."); }
 });
+
+  // ── AUTO-FILTER FROM URL PARAM ──
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    var cat = params.get("cat");
+    if (!cat) return;
+    // Find matching pill and click it
+    document.querySelectorAll(".filter-bar .pill").forEach(function(pill) {
+      var pillCat = pill.getAttribute("data-cat");
+      if (pillCat && pillCat === cat) {
+        // Deactivate all, activate this one, filter
+        document.querySelectorAll(".filter-bar .pill").forEach(function(p) { p.classList.remove("active"); });
+        pill.classList.add("active");
+        filterByCat(cat);
+      }
+    });
+  })();
 </script>
 </body>
 </html>

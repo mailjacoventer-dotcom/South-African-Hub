@@ -76,7 +76,7 @@
   .dir-card-text .loc { font-size: 11px; color: var(--green); margin-top: 4px; }
 
   /* MAP VIEW */
-  #map-view { display: none !important; }
+  #map-view { display: none !important; visibility: hidden; height: 0; overflow: hidden; }
   #map-view.visible { display: block !important; }
   #list-view { display: grid; }
   #list-view.hidden { display: none !important; }
@@ -330,28 +330,25 @@
     </div>
   </div>
   <div class="hero-stats-grid">
-    <div class="hero-stat-card"><span class="n">23+</span><span class="l">Businesses</span></div>
     <div class="hero-stat-card"><span class="n">23</span><span class="l">Businesses</span></div>
-    <div class="hero-stat-card"><span class="n">12</span><span class="l">Cities</span></div>
+    <div class="hero-stat-card"><span class="n">23</span><span class="l">Businesses</span></div>
+    <div class="hero-stat-card"><span class="n">15</span><span class="l">Cities</span></div>
     <div class="hero-stat-card"><span class="n">Free</span><span class="l">To list</span></div>
   </div>
 </section>
 
 <!-- CAT BAR -->
 <div class="cat-bar">
-  <div class="pill active" onclick="filterCat(this)">All</div>
-  <div class="pill" onclick="filterCat(this)">Property & Housing</div>
-  <div class="pill" onclick="filterCat(this)">Tax & Accounting</div>
-  <div class="pill" onclick="filterCat(this)">Legal</div>
-  <div class="pill" onclick="filterCat(this)">Health & Wellness</div>
-  <div class="pill" onclick="filterCat(this)">Marketing & Creative</div>
-  <div class="pill" onclick="filterCat(this)">Recruitment</div>
-  <div class="pill" onclick="filterCat(this)">Food & Retail</div>
-  <div class="pill" onclick="filterCat(this)">Professional Services</div>
-  <div class="view-toggle">
-    <button class="toggle-btn on" id="btn-list" onclick="showList()">☰ List</button>
-    <button class="toggle-btn off" id="btn-map" onclick="showMap()">⊕ Map</button>
-  </div>
+  <a class="pill active" href="directory.html">All</a>
+  <a class="pill" href="directory.html?cat=Property+%26+Housing">Property &amp; Housing</a>
+  <a class="pill" href="directory.html?cat=Tax+%26+Accounting">Tax &amp; Accounting</a>
+  <a class="pill" href="directory.html?cat=Legal">Legal</a>
+  <a class="pill" href="directory.html?cat=Health+%26+Wellness">Health &amp; Wellness</a>
+  <a class="pill" href="directory.html?cat=Marketing+%26+Creative">Marketing &amp; Creative</a>
+  <a class="pill" href="directory.html?cat=Recruitment">Recruitment</a>
+  <a class="pill" href="directory.html?cat=Food+%26+Retail">Food &amp; Retail</a>
+  <a class="pill" href="directory.html?cat=Professional+Services">Professional Services</a>
+  <a class="pill nav-cta" href="directory.html" style="margin-left:auto;border-radius:6px;padding:6px 16px">Browse all →</a>
 </div>
 
 <!-- LIST VIEW -->
@@ -361,78 +358,10 @@
     <div class="section-title">SA businesses near you</div>
     <div class="section-sub">Trusted professionals and entrepreneurs from the community.</div>
     <div class="dir-grid">
-      <a href="directory.html" class="dir-card"><div class="dir-icon">📊</div><div class="dir-card-text"><div class="name">Advisory Group</div><div class="cat">Tax & Accounting</div><div class="loc">📍 Almere</div></div></a>
-      <a href="directory.html" class="dir-card"><div class="dir-icon">🏡</div><div class="dir-card-text"><div class="name">Ruimte en Rust</div><div class="cat">Professional Services</div><div class="loc">📍 Netherlands</div></div></a>
-      <a href="directory.html" class="dir-card"><div class="dir-icon">🧠</div><div class="dir-card-text"><div class="name">Sanet van Tonder Counselling</div><div class="cat">Health & Wellness</div><div class="loc">📍 Netherlands</div></div></a>
-      <a href="directory.html" class="dir-card"><div class="dir-icon">💪</div><div class="dir-card-text"><div class="name">LuusFit</div><div class="cat">Health & Wellness</div><div class="loc">📍 Leiden</div></div></a>
-    </div>
-    <a href="directory.html" class="view-all-link" style="margin-top:16px;display:inline-flex;">View all 80+ businesses →</a>
-  </div>
-  <div class="dual-col">
-    <div class="section-eyebrow">Resources & Guides</div>
-    <div class="section-title">Settle smarter in NL</div>
-    <div class="section-sub">Practical guides written for South Africans navigating Dutch life.</div>
-    <div class="resource-list">
-      <a href="#" class="resource-item"><span class="res-tag guide">Guide</span><div><div class="res-title">30% Ruling: what SA expats need to know</div><div class="res-meta">Tax guide · 5 min read</div></div></a>
-      <a href="#" class="resource-item"><span class="res-tag tip">Tip</span><div><div class="res-title">How to register your business as a ZZP'er</div><div class="res-meta">KvK & BTW registration walkthrough</div></div></a>
-      <a href="#" class="resource-item"><span class="res-tag guide">Guide</span><div><div class="res-title">Understanding Box 3 as a South African expat</div><div class="res-meta">Dutch tax guide · IB-aangifte</div></div></a>
-      <a href="#" class="resource-item"><span class="res-tag tip">Tip</span><div><div class="res-title">Getting your DigiD & BSN sorted on arrival</div><div class="res-meta">Practical arrival checklist</div></div></a>
-    </div>
-    <a href="#" class="view-all-link" style="margin-top:16px;display:inline-flex;">All resources & guides →</a>
-  </div>
-</div>
-
-<!-- MAP VIEW -->
-<div id="map-view">
-  <div class="map-shell">
-    <div class="section-eyebrow">Business Directory</div>
-    <div class="section-title">SA businesses across the Netherlands</div>
-    <div class="map-container">
-      <div class="map-canvas">
-        <div class="map-grid"></div>
-        <div class="map-city" style="left:49%;top:22%">Amsterdam</div>
-        <div class="map-city" style="left:40%;top:41%">Rotterdam</div>
-        <div class="map-city" style="left:46%;top:36%">Utrecht</div>
-        <div class="map-city" style="left:55%;top:28%">Almere</div>
-        <div class="map-city" style="left:38%;top:39%">Den Haag</div>
-        <div class="map-city" style="left:51%;top:56%">Eindhoven</div>
-        <div class="map-pin" style="left:51%;top:26%"><div class="map-pin-label">Van der Berg Legal</div><div class="map-pin-dot"></div></div>
-        <div class="map-pin" style="left:57%;top:32%"><div class="map-pin-label">Smith Venter Advisory</div><div class="map-pin-dot"></div></div>
-        <div class="map-pin" style="left:42%;top:44%"><div class="map-pin-label">Botha Makelaars</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
-        <div class="map-pin" style="left:48%;top:39%"><div class="map-pin-label">Cape & Calm</div><div class="map-pin-dot"></div></div>
-        <div class="map-pin" style="left:40%;top:42%"><div class="map-pin-label">Naidoo Recruitment</div><div class="map-pin-dot" style="background:var(--green)"></div></div>
-        <div class="map-pin" style="left:52%;top:59%"><div class="map-pin-label">Khumalo Dev</div><div class="map-pin-dot"></div></div>
-        <div class="map-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Amsterdam / Almere / Utrecht</div>
-          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Rotterdam / Den Haag</div>
-        </div>
-      </div>
-      <div class="map-sidebar">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding:4px 0 8px;">23 businesses</div>
-        <a href="https://www.theadvisorygroup.nl" target="_blank" class="map-list-item"><div class="name">Advisory Group</div><div class="cat">Tax & Accounting</div><div class="loc">📍 Almere</div></a>
-        <a href="https://www.ruimteenrustdoordina.nl" target="_blank" class="map-list-item"><div class="name">Ruimte en Rust</div><div class="cat">Professional Services</div><div class="loc">📍 Netherlands</div></a>
-        <a href="https://www.sanetvantonder.nl/" target="_blank" class="map-list-item"><div class="name">Sanet van Tonder Counselling</div><div class="cat">Health & Wellness</div><div class="loc">📍 Netherlands</div></a>
-        <a href="#" target="_blank" class="map-list-item"><div class="name">LuusFit</div><div class="cat">Health & Wellness</div><div class="loc">📍 Leiden</div></a>
-        <a href="https://www.hardehoutnl.com/" target="_blank" class="map-list-item"><div class="name">Hardehout</div><div class="cat">Professional Services</div><div class="loc">📍 Bitgummole</div></a>
-        <a href="https://www.marketingzoo.co.za" target="_blank" class="map-list-item"><div class="name">Marketing Zoo</div><div class="cat">Marketing & Creative</div><div class="loc">📍 Almere</div></a>
-        <a href="https://www.expatthings.nl/" target="_blank" class="map-list-item"><div class="name">Expat Things</div><div class="cat">Property & Housing</div><div class="loc">📍 Hilversum</div></a>
-        <a href="https://www.make-it-special.nl/" target="_blank" class="map-list-item"><div class="name">Make-It-Special</div><div class="cat">Food & Retail</div><div class="loc">📍 Heemskerk</div></a>
-        <a href="https://www.thelekkerstore.nl/" target="_blank" class="map-list-item"><div class="name">The Lekker Store</div><div class="cat">Food & Retail</div><div class="loc">📍 Utrecht</div></a>
-        <a href="https://www.expatrentalsolutions.nl" target="_blank" class="map-list-item"><div class="name">Expat Rental Solutions</div><div class="cat">Property & Housing</div><div class="loc">📍 Utrecht</div></a>
-        <a href="#" target="_blank" class="map-list-item"><div class="name">Thuisgebak</div><div class="cat">Food & Retail</div><div class="loc">📍 Apeldoorn</div></a>
-        <a href="https://www.amstelkoffie.nl/" target="_blank" class="map-list-item"><div class="name">Amstel Koffie</div><div class="cat">Food & Retail</div><div class="loc">📍 Netherlands</div></a>
-        <a href="https://www.youtube.com/@VanRockMedia" target="_blank" class="map-list-item"><div class="name">Van Rock Media</div><div class="cat">Marketing & Creative</div><div class="loc">📍 Zaandam</div></a>
-        <a href="https://homesforexpats.nl/" target="_blank" class="map-list-item"><div class="name">Homes for Expats</div><div class="cat">Property & Housing</div><div class="loc">📍 Netherlands</div></a>
-        <a href="https://www.kilnandkettle.com/" target="_blank" class="map-list-item"><div class="name">Kiln & Kettle</div><div class="cat">Professional Services</div><div class="loc">📍 Heemstede</div></a>
-        <a href="https://www.debeeshive.nl/" target="_blank" class="map-list-item"><div class="name">De Bees Hive</div><div class="cat">Food & Retail</div><div class="loc">📍 Utrecht</div></a>
-        <a href="https://www.uitafrika.nl/" target="_blank" class="map-list-item"><div class="name">Uit Afrika</div><div class="cat">Food & Retail</div><div class="loc">📍 Meerssen</div></a>
-        <a href="https://www.jbmakelaars.nl/" target="_blank" class="map-list-item"><div class="name">J&B Makelaars</div><div class="cat">Property & Housing</div><div class="loc">📍 Woerden</div></a>
-        <a href="https://www.facebook.com/search/top?q=whisk%20%26%20bake" target="_blank" class="map-list-item"><div class="name">Whisk and Bake</div><div class="cat">Food & Retail</div><div class="loc">📍 Gouda</div></a>
-        <a href="#" target="_blank" class="map-list-item"><div class="name">Bella Donna Hairstylists</div><div class="cat">Health & Wellness</div><div class="loc">📍 Utrecht</div></a>
-        <a href="https://www.tandartspraktijkbitgummole.nl" target="_blank" class="map-list-item"><div class="name">Tandartspraktijk Bitgummole</div><div class="cat">Health & Wellness</div><div class="loc">📍 Bitgummole</div></a>
-        <a href="https://www.thedutchkey.nl" target="_blank" class="map-list-item"><div class="name">The Dutch Key</div><div class="cat">Property & Housing</div><div class="loc">📍 South Holland</div></a>
-        <a href="https://grownova.nl" target="_blank" class="map-list-item"><div class="name">Grow Nova</div><div class="cat">Health & Wellness</div><div class="loc">📍 Den Haag</div></a>
-      </div>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">📊</div><div class="dir-card-text"><div class="name">Advisory Group</div><div class="cat">Tax &amp; Accounting</div><div class="loc">📍 Almere</div></div></a>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">🛒</div><div class="dir-card-text"><div class="name">The Lekker Store</div><div class="cat">Food &amp; Retail</div><div class="loc">📍 Utrecht</div></div></a>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">🏠</div><div class="dir-card-text"><div class="name">Expat Things</div><div class="cat">Property &amp; Housing</div><div class="loc">📍 Hilversum</div></div></a>
+      <a href="directory.html" class="dir-card"><div class="dir-icon">🌱</div><div class="dir-card-text"><div class="name">Grow Nova</div><div class="cat">Health &amp; Wellness</div><div class="loc">📍 Den Haag</div></div></a>
     </div>
     <a href="directory.html" class="view-all-link" style="margin-top:16px;display:inline-flex;">View full directory → directory →</a>
   </div>
