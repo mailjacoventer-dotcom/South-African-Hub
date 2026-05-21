@@ -26,12 +26,13 @@
   }
   .hero-content {
     position: relative; z-index: 1;
-    text-align: left;
-    padding: 60px 48px 48px 60px;
-    width: 55%;
+    text-align: center;
+    padding: 48px 48px 48px 48px;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-end;
+    align-items: center;
     min-height: 520px;
   }
   .hero-eyebrow {
@@ -61,7 +62,7 @@
   }
   .hero-btns {
     display: flex; gap: 12px;
-    flex-wrap: nowrap; justify-content: flex-start;
+    flex-wrap: wrap; justify-content: center;
     margin-bottom: 0;
     align-items: center;
   }
@@ -703,15 +704,7 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-text">
-      <div class="hero-eyebrow">southafricanhub.nl</div>
-      <h1>
-        South African
-        <span class="line2">Business &amp; Services</span>
-        <span class="line3">Netherlands</span>
-      </h1>
-      <p class="hero-tagline">Connecting South African businesses, professionals and opportunities in <strong>the Netherlands.</strong></p>
-      <div class="hero-btns">
+    <div class="hero-btns">
         <a href="directory.html" class="hero-btn hero-btn-primary">
           <span class="hero-btn-icon">🔍</span> Browse Businesses
         </a>
@@ -728,7 +721,6 @@
           <span class="hero-btn-icon">➕</span> List Your Business
         </a>
       </div>
-    </div>
     <div class="hero-pillars">
       <div class="hero-pillar" onclick="window.location='events.html'">
         <div class="p-icon-circle">🤝</div>
