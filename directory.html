@@ -393,16 +393,31 @@ function renderCards(list) {
     card.setAttribute("data-cat", b.cat);
     card.setAttribute("data-city", b.city);
     card.setAttribute("data-idx", idx);
+    // Build footer contact link — priority: website > WA > email > phone
+    var contactLink = "";
+    if (hasWebsite) {
+      contactLink = '<a class="biz-link" href="' + b.website + '" target="_blank" onclick="event.stopPropagation()">Visit website →</a>';
+    } else if (b.wa) {
+      var waNum = b.wa.replace(/[^0-9]/g,"");
+      var waMsg = encodeURIComponent("Hi " + b.contact + ", I found your business on southafricanhub.nl and would like to get in touch.");
+      contactLink = '<a class="biz-link biz-link-wa" href="https://wa.me/'+waNum+'?text='+waMsg+'" target="_blank" onclick="event.stopPropagation()">WhatsApp →</a>';
+    } else if (b.email) {
+      contactLink = '<a class="biz-link biz-link-email" href="mailto:'+b.email+'" onclick="event.stopPropagation()">Email →</a>';
+    } else if (b.phone) {
+      contactLink = '<a class="biz-link biz-link-phone" href="tel:'+b.phone+'" onclick="event.stopPropagation()">Call →</a>';
+    } else {
+      contactLink = '<span class="biz-link biz-link-none">No contact</span>';
+    }
+
     card.innerHTML =
       '<div class="biz-card-top">' +
         '<div class="biz-icon">' + b.icon + '</div>' +
         '<div><div class="biz-name">' + b.name + '</div><span class="biz-cat">' + b.cat + '</span></div>' +
       '</div>' +
       '<div class="biz-desc">' + b.desc + '</div>' +
-      (badges ? '<div class="biz-contact-badges">' + badges + '</div>' : '') +
       '<div class="biz-foot">' +
         '<span class="biz-city">📍 ' + b.city + '</span>' +
-        '<span class="biz-link">' + (hasWebsite ? 'Visit website →' : 'No website') + '</span>' +
+        contactLink +
       '</div>';
     card.addEventListener("click", function() { openModal(parseInt(this.getAttribute("data-idx"))); });
     grid.appendChild(card);
