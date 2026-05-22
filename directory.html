@@ -392,66 +392,89 @@ document.addEventListener("keydown", function(e) { if (e.key === "Escape") close
 function renderCards(list) {
   var grid = document.getElementById("biz-grid");
   grid.innerHTML = "";
-  list.forEach(function(b, i) {
+  list.forEach(function(b) {
     var idx = BIZ.indexOf(b);
-    var hasWebsite = b.website && b.website.length > 0;
-    var badges = "";
-    if (b.wa) {
-      var waNum = b.wa.replace(/[^0-9]/g,"");
-      var waMsg = encodeURIComponent("Hi " + b.contact + ", I found your business on southafricanhub.nl and would like to get in touch.");
-      badges += '<a class="biz-badge biz-badge-wa" href="https://wa.me/'+waNum+'?text='+waMsg+'" target="_blank" onclick="event.stopPropagation()">'+
-        '<svg width="10" height="10" viewBox="0 0 24 24" fill="#1a5c2a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>';
-    }
-    if (b.email) {
-      badges += '<a class="biz-badge biz-badge-email" href="mailto:'+b.email+'" onclick="event.stopPropagation()">✉️ Email</a>';
-    }
-    if (b.phone && !b.wa) {
-      badges += '<a class="biz-badge biz-badge-phone" href="tel:'+b.phone+'" onclick="event.stopPropagation()">📞 Call</a>';
-    }
-
     var card = document.createElement("div");
     card.className = "biz-card";
     card.setAttribute("data-cat", b.cat);
     card.setAttribute("data-city", b.city);
     card.setAttribute("data-idx", idx);
-    // Build footer contact link — priority: website > WA > email > phone
-                var contactLink = "";
-    if (hasWebsite) {
-      contactLink = '<a class="biz-link" href="' + b.website + '" target="_blank" onclick="event.stopPropagation()">Visit website →</a>';
-    } else if (b.wa) {
-      var waNum = b.wa.replace(/[^0-9]/g,"");
+
+    // Top
+    var top = document.createElement("div");
+    top.className = "biz-card-top";
+    top.innerHTML = '<div class="biz-icon">' + b.icon + '</div><div><div class="biz-name">' + b.name + '</div><span class="biz-cat">' + b.cat + '</span></div>';
+    card.appendChild(top);
+
+    // Desc
+    var desc = document.createElement("div");
+    desc.className = "biz-desc";
+    desc.textContent = b.desc;
+    card.appendChild(desc);
+
+    // Footer
+    var foot = document.createElement("div");
+    foot.className = "biz-foot";
+
+    var city = document.createElement("span");
+    city.className = "biz-city";
+    city.textContent = "📍 " + b.city;
+    foot.appendChild(city);
+
+    // Icon buttons
+    var btns = document.createElement("div");
+    btns.className = "biz-icon-btns";
+
+    if (b.website) {
+      var wb = document.createElement("a");
+      wb.className = "biz-icon-btn biz-icon-web";
+      wb.href = b.website;
+      wb.target = "_blank";
+      wb.title = "Visit website";
+      wb.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>';
+      wb.addEventListener("click", function(e) { e.stopPropagation(); });
+      btns.appendChild(wb);
+    }
+    if (b.wa) {
+      var waNum = b.wa.replace(/[^0-9]/g, "");
       var waMsg = encodeURIComponent("Hi " + b.contact + ", I found your business on southafricanhub.nl and would like to get in touch.");
-      contactLink = '<a class="biz-link biz-link-wa" href="https://wa.me/'+waNum+'?text='+waMsg+'" target="_blank" onclick="event.stopPropagation()"><span class=\'link-icon-wa\'></span> WhatsApp</a>';
-    } else if (b.email) {
-      contactLink = '<a class="biz-link biz-link-email" href="mailto:'+b.email+'" onclick="event.stopPropagation()"><span class=\'link-icon-email\'></span> Email</a>';
-    } else if (b.phone) {
-      contactLink = '<a class="biz-link biz-link-phone" href="tel:'+b.phone+'" onclick="event.stopPropagation()"><span class=\'link-icon-phone\'></span> Call</a>';
-    } else {
-      contactLink = '<span class="biz-link biz-link-none">No contact</span>';
+      var wa = document.createElement("a");
+      wa.className = "biz-icon-btn biz-icon-wa";
+      wa.href = "https://wa.me/" + waNum + "?text=" + waMsg;
+      wa.target = "_blank";
+      wa.title = "WhatsApp";
+      wa.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
+      wa.addEventListener("click", function(e) { e.stopPropagation(); });
+      btns.appendChild(wa);
+    }
+    if (b.email) {
+      var em = document.createElement("a");
+      em.className = "biz-icon-btn biz-icon-email";
+      em.href = "mailto:" + b.email;
+      em.title = "Send email";
+      em.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>';
+      em.addEventListener("click", function(e) { e.stopPropagation(); });
+      btns.appendChild(em);
+    }
+    if (b.phone) {
+      var ph = document.createElement("a");
+      ph.className = "biz-icon-btn biz-icon-phone";
+      ph.href = "tel:" + b.phone;
+      ph.title = "Call";
+      ph.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.09 6.09l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>';
+      ph.addEventListener("click", function(e) { e.stopPropagation(); });
+      btns.appendChild(ph);
     }
 
-    card.innerHTML =
-      '<div class="biz-card-top">' +
-        '<div class="biz-icon">' + b.icon + '</div>' +
-        '<div><div class="biz-name">' + b.name + '</div><span class="biz-cat">' + b.cat + '</span></div>' +
-      '</div>' +
-      '<div class="biz-desc">' + b.desc + '</div>' +
-      '<div class="biz-foot">' +
-        '<span class="biz-city">📍 ' + b.city + '</span>' +
-        '<div class="biz-icon-btns">' + icons + '</div>' +
-      '</div>';
+    foot.appendChild(btns);
+    card.appendChild(foot);
     card.addEventListener("click", function() { openModal(parseInt(this.getAttribute("data-idx"))); });
     grid.appendChild(card);
   });
   document.getElementById("result-num").textContent = list.length;
 }
 
-/* ── ATTACH CARD CLICKS ── */
-document.querySelectorAll(".biz-card").forEach(function(card) {
-  card.addEventListener("click", function() {
-    openModal(parseInt(this.getAttribute("data-idx")));
-  });
-});
+
 
 /* ── CATEGORY FILTER ── */
 function filterByCat(cat) {
