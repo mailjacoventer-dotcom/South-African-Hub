@@ -80,7 +80,7 @@
   .modal-meta { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
   .modal-row { font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center; }
   .modal-row strong { color:var(--ink); }
-  .modal-actions { display:flex; gap:10px; }
+  .modal-actions { display:flex; gap:10px; flex-wrap:wrap; }
   .modal-btn-primary { flex:1; background:var(--green); color:white; border:none; border-radius:6px; padding:12px; font-size:14px; font-weight:600; font-family:"Open Sans",sans-serif; cursor:pointer; text-decoration:none; text-align:center; display:block; }
   .modal-btn-primary:hover { background:var(--green-light); }
   .modal-btn-secondary { flex:1; background:var(--subtle); color:var(--ink); border:1px solid var(--wire); border-radius:6px; padding:12px; font-size:14px; font-weight:500; font-family:"Open Sans",sans-serif; cursor:pointer; }
@@ -678,6 +678,8 @@
       </div>
       <div class="modal-actions">
         <a class="modal-btn-primary" id="m-website" href="#" target="_blank">Visit Website →</a>
+        <a class="modal-btn-secondary" id="m-email" href="#" style="display:none">✉️ Send Email</a>
+        <a class="modal-btn-secondary" id="m-phone" href="#" style="display:none">📞 Call</a>
         <button class="modal-btn-secondary" id="modal-close-btn">Close</button>
       </div>
     </div>
@@ -724,9 +726,9 @@ var BIZ = [
   {name:"The Dutch Key",icon:"🗝️",cat:"Property & Housing",city:"South Holland",website:"https://www.thedutchkey.nl",contact:"Christelle Le Roux",desc:"Helping expats find and secure rental homes in the Netherlands"},
   {name:"Grow Nova",icon:"🌱",cat:"Health & Wellness",city:"Den Haag",website:"https://grownova.nl",contact:"Wanda Winterboer",desc:"Leadership and life coaching for expats navigating personal and professional growth in the Netherlands"},
   {name:"FX Web Lab",icon:"💻",cat:"Marketing & Creative",city:"Deventer",website:"https://fx-weblab.nl",contact:"Robin Felix",desc:"Websites, e-commerce stores, dropshipping stores, landing pages with booking and payment integrations."},
-  {name:"DG Keukens",icon:"🍳",cat:"Professional Services",city:"Amsterdam",website:"https://dgkeukens.nl",contact:"Justin",desc:"Design, manufacturing and installation of kitchens, bedrooms and bathroom cabinets. Full kitchen renovations, project management and quality customer service."},
-  {name:"Jorietha Rabie Photography",icon:"📸",cat:"Marketing & Creative",city:"Woerden",website:"https://www.jorietha.com",contact:"Jorietha Rabie",desc:"Family photographer specialising in natural family, couples, maternity and newborn photography in Utrecht and across Europe."},
-  {name:"Find My Dutch School",icon:"🏫",cat:"Professional Services",city:"Amstelveen",website:"",contact:"Melani Young",desc:"Supports expat families relocating to the Netherlands with the entire school search and enrollment process for their children. Dutch and international school guidance."}
+  {name:"DG Keukens",icon:"🍳",cat:"Professional Services",city:"Amsterdam",website:"https://dgkeukens.nl",email:"info@dgkeukens.nl",contact:"Justin",desc:"Design, manufacturing and installation of kitchens, bedrooms and bathroom cabinets. Full kitchen renovations, project management and quality customer service."},
+  {name:"Jorietha Rabie Photography",icon:"📸",cat:"Marketing & Creative",city:"Woerden",website:"https://www.jorietha.com",email:"photography@jorietha.com",contact:"Jorietha Rabie",desc:"Family photographer specialising in natural family, couples, maternity and newborn photography in Utrecht and across Europe."},
+  {name:"Find My Dutch School",icon:"🏫",cat:"Professional Services",city:"Amstelveen",website:"",email:"findmydutchschool@gmail.com",contact:"Melani Young",desc:"Supports expat families relocating to the Netherlands with the entire school search and enrollment process for their children. Dutch and international school guidance."}
 ];
 
 /* ── MODAL ── */
@@ -739,8 +741,14 @@ function openModal(idx) {
   document.getElementById("m-city").textContent    = b.city;
   document.getElementById("m-contact").textContent = b.contact;
   var wb = document.getElementById("m-website");
-  if (b.website) { wb.href = b.website; wb.style.display = "block"; }
+  if (b.website) { wb.href = b.website; wb.style.display = "inline-flex"; }
   else { wb.style.display = "none"; }
+  var em = document.getElementById("m-email");
+  if (b.email) { em.href = "mailto:" + b.email; em.textContent = "✉️ " + b.email; em.style.display = "inline-flex"; }
+  else { em.style.display = "none"; }
+  var ph = document.getElementById("m-phone");
+  if (b.phone) { ph.href = "tel:" + b.phone; ph.textContent = "📞 " + b.phone; ph.style.display = "inline-flex"; }
+  else { ph.style.display = "none"; }
   document.getElementById("modal").classList.add("open");
   document.body.style.overflow = "hidden";
 }
