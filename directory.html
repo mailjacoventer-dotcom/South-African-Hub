@@ -572,8 +572,10 @@ document.getElementById("f-submit").addEventListener("click", async function() {
 });
 
   // ── INITIAL RENDER ──
-  renderCards(BIZ);
-  renderCityGrid("all");
+  document.addEventListener("DOMContentLoaded", function() {
+    renderCards(BIZ);
+    renderCityGrid("all");
+  });
 
   // ── AUTO-FILTER FROM URL PARAM ──
   (function() {
