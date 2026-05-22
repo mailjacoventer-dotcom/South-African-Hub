@@ -635,10 +635,12 @@
         </div>
         <div class="f-row">
           <div class="f-field"><label>Website</label><input type="text" id="f-website" placeholder="https://yoursite.nl"></div>
-          <div class="f-field"><label>Email *</label><input type="email" id="f-email" placeholder="you@email.com"></div>
+          <div class="f-field"><label>Email *</label><input type="email" id="f-email" placeholder="you@email.com" required></div>
         </div>
         <div class="f-row">
-          <div class="f-field"><label>Category *</label>
+          <div class="f-field"><label>Phone number *</label><input type="tel" id="f-phone" placeholder="+31 6 12 34 56 78" required></div>
+          <div class="f-field"><label>WhatsApp number <span style="font-weight:400;font-size:10px">(if different)</span></label><input type="tel" id="f-wa" placeholder="+31 6 12 34 56 78"></div>
+        </div>
             <select id="f-cat">
               <option value="">Select…</option>
               <option>Property &amp; Housing</option>
@@ -678,6 +680,10 @@
       </div>
       <div class="modal-actions">
         <a class="modal-btn-primary" id="m-website" href="#" target="_blank">Visit Website →</a>
+        <a class="modal-btn-wa" id="m-wa" href="#" target="_blank" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
         <a class="modal-btn-secondary" id="m-email" href="#" style="display:none">✉️ Send Email</a>
         <a class="modal-btn-secondary" id="m-phone" href="#" style="display:none">📞 Call</a>
         <button class="modal-btn-secondary" id="modal-close-btn">Close</button>
@@ -705,7 +711,7 @@ var BIZ = [
   {name:"Smith Venter Advisory",icon:"📊",cat:"Tax & Accounting",city:"Almere",website:"https://www.theadvisorygroup.nl",contact:"Jaco Venter",desc:"Accounting, tax, VAT, payroll and financial advisory for growing SMEs and ZZPers"},
   {name:"Ruimte en Rust",icon:"🏡",cat:"Professional Services",city:"Netherlands",website:"https://www.ruimteenrustdoordina.nl",contact:"Nadine Potgieter",desc:"Home organisation and deep cleaning services for a clean, organised and stress-free home"},
   {name:"Sanet van Tonder Counselling",icon:"🧠",cat:"Health & Wellness",city:"Netherlands",website:"https://www.sanetvantonder.nl/",contact:"Sanet van Tonder",desc:"Counselling for individuals, couples and families focused on mental health, relationships and life transitions"},
-  {name:"LuusFit",icon:"💪",cat:"Health & Wellness",city:"Leiden",website:"",phone:"+31 6 29140364",contact:"Luhandre Luus",desc:"Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition"},
+  {name:"LuusFit",icon:"💪",cat:"Health & Wellness",city:"Leiden",website:"",phone:"+31 6 29140364",wa:"31629140364",contact:"Luhandre Luus",desc:"Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition"},
   {name:"Hardehout",icon:"🪵",cat:"Professional Services",city:"Bitgummole",website:"https://www.hardehoutnl.com/",contact:"Wynand Vosser",desc:"Supply of premium hardwood for braai, fireplace and home heating in the Netherlands"},
   {name:"Marketing Zoo",icon:"🎨",cat:"Marketing & Creative",city:"Almere",website:"https://www.marketingzoo.co.za",contact:"Wian Smith",desc:"Full-service marketing agency offering branding, digital marketing, social media, design, websites and event activations"},
   {name:"Expat Things",icon:"🏠",cat:"Property & Housing",city:"Hilversum",website:"https://www.expatthings.nl/",contact:"Chante Lindes",desc:"Independent rental and buying agent supporting expats with housing search and relocation in the Netherlands"},
@@ -749,6 +755,12 @@ function openModal(idx) {
   var ph = document.getElementById("m-phone");
   if (b.phone) { ph.href = "tel:" + b.phone; ph.textContent = "📞 " + b.phone; ph.style.display = "inline-flex"; }
   else { ph.style.display = "none"; }
+  var wa = document.getElementById("m-wa");
+  if (b.wa) {
+    var waNum = b.wa.replace(/[^0-9]/g, "");
+    wa.href = "https://wa.me/" + waNum + "?text=" + encodeURIComponent("Hi " + b.contact + ", I found your business on southafricanhub.nl and would like to get in touch.");
+    wa.style.display = "inline-flex";
+  } else { wa.style.display = "none"; }
   document.getElementById("modal").classList.add("open");
   document.body.style.overflow = "hidden";
 }
@@ -866,18 +878,20 @@ document.getElementById("f-submit").addEventListener("click", async function() {
   var contact = document.getElementById("f-contact").value.trim();
   var website = document.getElementById("f-website").value.trim();
   var email   = document.getElementById("f-email").value.trim();
+  var phone   = document.getElementById("f-phone").value.trim();
+  var wa      = document.getElementById("f-wa").value.trim();
   var cat     = document.getElementById("f-cat").value;
   var city    = document.getElementById("f-city").value.trim();
   var desc    = document.getElementById("f-desc").value.trim();
-  if (!name || !contact || !email || !cat || !city || !desc) {
-    alert("Please fill in all required fields."); return;
+  if (!name || !contact || !email || !phone || !cat || !city || !desc) {
+    alert("Please fill in all required fields including email and phone number."); return;
   }
   this.textContent = "Sending…"; this.disabled = true;
   var ok = await sendToFormspree("xvzyapnk", {
     _subject: "Business Listing — " + name,
     business_name: name, contact_person: contact,
     website: website || "N/A", email: email,
-    category: cat, city: city, description: desc
+    phone: phone, whatsapp: wa || phone, category: cat, city: city, description: desc
   });
   if (ok) { this.textContent = "✅ Submitted!"; }
   else { this.textContent = "Submit for Review →"; this.disabled = false; alert("Something went wrong. Please try again."); }
