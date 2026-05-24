@@ -377,10 +377,10 @@ function openModal(idx) {
   if (b.website) { wb.href = b.website; wb.style.display = "inline-flex"; }
   else { wb.style.display = "none"; }
   var em = document.getElementById("m-email");
-  if (b.email) { em.href = "mailto:" + b.email; em.textContent = "✉️ " + b.email; em.style.display = "inline-flex"; }
+  if (b.email) { em.href = "mailto:" + b.email; em.textContent = "✉️"; em.title = b.email; em.style.display = "inline-flex"; }
   else { em.style.display = "none"; }
   var ph = document.getElementById("m-phone");
-  if (b.phone) { ph.href = "tel:" + b.phone; ph.textContent = "📞 " + b.phone; ph.style.display = "inline-flex"; }
+  if (b.phone) { ph.href = "tel:" + b.phone; ph.textContent = "📞"; ph.title = b.phone; ph.style.display = "inline-flex"; }
   else { ph.style.display = "none"; }
   var wa = document.getElementById("m-wa");
   if (b.wa) {
