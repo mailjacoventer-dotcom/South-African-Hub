@@ -1131,12 +1131,11 @@
   }
 
   // ── CAROUSEL ──
-  const SLIDE_COUNT = 5;
-  let current = 0;
-  let autoTimer = null;
-
   const track  = document.getElementById('carouselTrack');
   const dotsEl = document.getElementById('carouselDots');
+  const SLIDE_COUNT = track.querySelectorAll('.carousel-slide').length;
+  let current = 0;
+  let autoTimer = null;
 
   // Build dots
   for (let i = 0; i < SLIDE_COUNT; i++) {
