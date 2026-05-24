@@ -505,7 +505,6 @@
   function openEventDetail(card) {
     var type      = card.getAttribute('data-type') || 'third-party';
     var kaartjies = card.getAttribute('data-kaartjies') || '';
-    var eventId   = card.getAttribute('data-id') || '';
     var title     = card.querySelector('.event-title').textContent;
     var tag       = card.querySelector('.event-tag') ? card.querySelector('.event-tag').textContent : '';
     var day       = card.querySelector('.day') ? card.querySelector('.day').textContent : '';
@@ -541,7 +540,6 @@
     }
 
     document.getElementById('event-detail-modal').classList.add('open');
-    document.getElementById('event-detail-modal').setAttribute('data-current-id', eventId);
     document.body.style.overflow = 'hidden';
   }
 
@@ -555,18 +553,10 @@
   document.getElementById('event-detail-modal').addEventListener('click', function(e) { if (e.target===this) closeEventDetail(); });
   document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeRsvp(); closeEventSubmit(); closeEventDetail(); } });
 
-  // Auto-open event from shared URL hash
-  document.addEventListener('DOMContentLoaded', function() {
-    var hash = window.location.hash.replace('#', '');
-    if (!hash) return;
-    var card = document.querySelector('.event-card[data-id="' + hash + '"]');
-    if (card) { openEventDetail(card); }
-  });
-
   function shareEvent() {
     var title   = document.getElementById('ed-title').textContent;
     var eventId = document.getElementById('event-detail-modal').getAttribute('data-current-id') || '';
-    var base    = window.location.href.split('#')[0].split('?')[0];
+    var base    = window.location.origin + window.location.pathname.replace(/\/?$/, '');
     var url     = eventId ? base + '#' + eventId : base;
     var btn     = document.getElementById('ed-share-btn');
     if (navigator.share) {
@@ -579,6 +569,22 @@
       }).catch(function() { window.prompt('Copy this link:', url); });
     }
   }
+
+  // Store event id on modal when opened
+  var _origOpenEventDetail = openEventDetail;
+  openEventDetail = function(card) {
+    _origOpenEventDetail(card);
+    var id = card.getAttribute('data-id') || '';
+    document.getElementById('event-detail-modal').setAttribute('data-current-id', id);
+  };
+
+  // Auto-open popup when URL contains a hash matching an event
+  document.addEventListener('DOMContentLoaded', function() {
+    var hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    var card = document.querySelector('.event-card[data-id="' + hash + '"]');
+    if (card) openEventDetail(card);
+  });
 
 
 </script>
