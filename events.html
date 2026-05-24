@@ -556,12 +556,12 @@
   document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeRsvp(); closeEventSubmit(); closeEventDetail(); } });
 
   // Auto-open event from shared URL hash
-  (function() {
+  document.addEventListener('DOMContentLoaded', function() {
     var hash = window.location.hash.replace('#', '');
     if (!hash) return;
     var card = document.querySelector('.event-card[data-id="' + hash + '"]');
-    if (card) { setTimeout(function() { openEventDetail(card); }, 300); }
-  })();
+    if (card) { openEventDetail(card); }
+  });
 
   function shareEvent() {
     var title   = document.getElementById('ed-title').textContent;
