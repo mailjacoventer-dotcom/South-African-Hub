@@ -389,6 +389,7 @@ function openModal(idx) {
     wa.style.display = "inline-flex";
   } else { wa.style.display = "none"; }
   document.getElementById("modal").classList.add("open");
+  document.getElementById("modal").setAttribute("data-current-id", b.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
   document.body.style.overflow = "hidden";
 }
 function closeModal() {
