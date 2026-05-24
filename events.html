@@ -505,7 +505,6 @@
   function openEventDetail(card) {
     var type      = card.getAttribute('data-type') || 'third-party';
     var kaartjies = card.getAttribute('data-kaartjies') || '';
-    var eventId   = card.getAttribute('data-id') || '';
     var title     = card.querySelector('.event-title').textContent;
     var tag       = card.querySelector('.event-tag') ? card.querySelector('.event-tag').textContent : '';
     var day       = card.querySelector('.day') ? card.querySelector('.day').textContent : '';
@@ -541,7 +540,7 @@
     }
 
     document.getElementById('event-detail-modal').classList.add('open');
-    document.getElementById('event-detail-modal').setAttribute('data-current-id', eventId);
+    document.getElementById('event-detail-modal').setAttribute('data-current-id', card.getAttribute('data-id') || '');
     document.body.style.overflow = 'hidden';
   }
 
@@ -558,7 +557,7 @@
   function shareEvent() {
     var title   = document.getElementById('ed-title').textContent;
     var eventId = document.getElementById('event-detail-modal').getAttribute('data-current-id') || '';
-    var base    = window.location.origin + window.location.pathname;
+    var base    = window.location.origin + window.location.pathname.replace(/\/?$/, '');
     var url     = eventId ? base + '#' + eventId : base;
     var btn     = document.getElementById('ed-share-btn');
     if (navigator.share) {
@@ -579,8 +578,8 @@
     var card = document.querySelector('.event-card[data-id="' + hash + '"]');
     if (card) openEventDetail(card);
   }
-  openEventFromHash();
-  window.addEventListener('load', openEventFromHash);
+  setTimeout(openEventFromHash, 0);
+
 
 </script>
 
