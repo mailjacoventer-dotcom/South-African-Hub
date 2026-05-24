@@ -1131,46 +1131,48 @@
   }
 
   // ── CAROUSEL ──
-  const track  = document.getElementById('carouselTrack');
-  const dotsEl = document.getElementById('carouselDots');
-  const SLIDE_COUNT = track.querySelectorAll('.carousel-slide').length;
-  let current = 0;
-  let autoTimer = null;
+  var _carouselTrack  = document.getElementById('carouselTrack');
+  var _carouselDots   = document.getElementById('carouselDots');
+  var _slideCount     = _carouselTrack.querySelectorAll('.carousel-slide').length;
+  var _current        = 0;
+  var _autoTimer      = null;
 
   // Build dots
-  for (let i = 0; i < SLIDE_COUNT; i++) {
-    const d = document.createElement('div');
-    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => goTo(i);
-    dotsEl.appendChild(d);
+  for (var _i = 0; _i < _slideCount; _i++) {
+    (function(idx) {
+      var d = document.createElement('div');
+      d.className = 'carousel-dot' + (idx === 0 ? ' active' : '');
+      d.onclick = function() { goTo(idx); };
+      _carouselDots.appendChild(d);
+    })(_i);
   }
 
   function goTo(idx) {
-    current = (idx + SLIDE_COUNT) % SLIDE_COUNT;
-    track.style.transform = `translateX(-${current * 100}%)`;
-    document.querySelectorAll('.carousel-dot').forEach((d, i) => {
-      d.classList.toggle('active', i === current);
+    _current = (idx + _slideCount) % _slideCount;
+    _carouselTrack.style.transform = 'translateX(-' + (_current * 100) + '%)';
+    document.querySelectorAll('.carousel-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === _current);
     });
     resetAuto();
   }
 
-  function carouselMove(dir) { goTo(current + dir); }
+  function carouselMove(dir) { goTo(_current + dir); }
 
   function resetAuto() {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(() => goTo(current + 1), 5000);
+    clearInterval(_autoTimer);
+    _autoTimer = setInterval(function() { goTo(_current + 1); }, 5000);
   }
   resetAuto();
 
   // Pause on hover
-  document.querySelector('.carousel-outer').addEventListener('mouseenter', () => clearInterval(autoTimer));
+  document.querySelector('.carousel-outer').addEventListener('mouseenter', function() { clearInterval(_autoTimer); });
   document.querySelector('.carousel-outer').addEventListener('mouseleave', resetAuto);
 
   // Touch / swipe support
-  let touchStartX = 0;
-  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  track.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
+  var _touchStartX = 0;
+  _carouselTrack.addEventListener('touchstart', function(e) { _touchStartX = e.touches[0].clientX; }, { passive: true });
+  _carouselTrack.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - _touchStartX;
     if (Math.abs(dx) > 40) carouselMove(dx < 0 ? 1 : -1);
   });
 
