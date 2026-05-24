@@ -628,6 +628,14 @@ document.getElementById("f-submit").addEventListener("click", async function() {
   document.addEventListener("DOMContentLoaded", function() {
     renderCards(BIZ);
     renderCityGrid("all");
+    // Auto-open business from shared URL hash
+    var hash = window.location.hash.replace('#', '');
+    if (hash) {
+      for (var i = 0; i < BIZ.length; i++) {
+        var slug = BIZ[i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+        if (slug === hash) { openModal(i); break; }
+      }
+    }
   });
 
   // ── AUTO-FILTER FROM URL PARAM ──
