@@ -187,7 +187,7 @@
   <h1>Find trusted<br><em>SA businesses</em></h1>
   <p>South African professionals and entrepreneurs across the Netherlands.</p>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="n">27</div><div class="l">Businesses</div></div>
+    <div class="hero-stat"><div class="n">28</div><div class="l">Businesses</div></div>
     <div class="hero-stat"><div class="n">8</div><div class="l">Categories</div></div>
     <div class="hero-stat"><div class="n">15</div><div class="l">Cities</div></div>
   </div>
@@ -328,6 +328,7 @@
 <script>
 var BIZ = [
   {name:"Smith Venter Advisory",icon:"📊",cat:"Tax & Accounting",city:"Almere",website:"https://smithventer.nl",contact:"Jaco Venter",desc:"Accounting, tax, VAT, payroll and financial advisory for growing SMEs and ZZPers"},
+  {name:"The Counselling Path",icon:"🧘",cat:"Health & Wellness",city:"Almere",website:"https://www.thecounsellingpath.nl",email:"sharon@thecounsellingpath.nl",phone:"+31630732062",wa:"31630732062",contact:"Sharon Singh",desc:"Registered Psychologist providing psychological support for expats navigating relocation and cultural adjustment. Specialises in employee wellness, burnout, trauma, anxiety, depression and relationship difficulties."},
   {name:"Ruimte en Rust",icon:"🏡",cat:"Professional Services",city:"Netherlands",website:"https://www.ruimteenrustdoordina.nl",contact:"Nadine Potgieter",desc:"Home organisation and deep cleaning services for a clean, organised and stress-free home"},
   {name:"Sanet van Tonder Counselling",icon:"🧠",cat:"Health & Wellness",city:"Netherlands",website:"https://www.sanetvantonder.nl/",contact:"Sanet van Tonder",desc:"Counselling for individuals, couples and families focused on mental health, relationships and life transitions"},
   {name:"LuusFit",icon:"💪",cat:"Health & Wellness",city:"Leiden",website:"",phone:"+31 6 29140364",wa:"31629140364",contact:"Luhandre Luus",desc:"Personal training and online coaching for fat loss, muscle gain and athletic performance, including strength, recovery and nutrition"},
@@ -381,8 +382,6 @@ function openModal(idx) {
     wa.style.display = "inline-flex";
   } else { wa.style.display = "none"; }
   document.getElementById("modal").classList.add("open");
-  var bslug = BIZ[idx].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  document.getElementById("modal").setAttribute("data-current-id", bslug);
   document.body.style.overflow = "hidden";
 }
 function closeModal() {
@@ -395,10 +394,8 @@ document.getElementById("modal").onclick = function(e) { if (e.target === this) 
 document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeModal(); });
 
 function shareBusiness() {
-  var name   = document.getElementById('m-name').textContent;
-  var bizId  = document.getElementById('modal').getAttribute('data-current-id') || '';
-  var base   = window.location.origin + window.location.pathname;
-  var url    = bizId ? base + '#' + bizId : base;
+  var name = document.getElementById('m-name').textContent;
+  var url  = window.location.href;
   var btn  = document.getElementById('dir-share-btn');
   if (navigator.share) {
     navigator.share({ title: name + ' — southafricanhub.nl', url: url }).catch(function(){});
@@ -422,7 +419,6 @@ function renderCards(list) {
     card.setAttribute("data-cat", b.cat);
     card.setAttribute("data-city", b.city);
     card.setAttribute("data-idx", idx);
-    card.setAttribute("data-id", b.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
 
     // Top
     var top = document.createElement("div");
@@ -563,7 +559,6 @@ function renderCityGrid(city) {
     var div = document.createElement("div");
     div.className = "biz-card";
     div.setAttribute("data-idx", i);
-    div.setAttribute("data-id", b.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
     div.innerHTML =
       "<div class=\"biz-card-top\"><div class=\"biz-icon\">" + b.icon + "</div>" +
       "<div><div class=\"biz-name\">" + b.name + "</div><span class=\"biz-cat\">" + b.cat + "</span></div></div>" +
@@ -648,16 +643,6 @@ document.getElementById("f-submit").addEventListener("click", async function() {
       }
     }
   })();
-
-function openBizFromHash() {
-  var hash = window.location.hash.replace('#', '');
-  if (!hash) return;
-  for (var i = 0; i < BIZ.length; i++) {
-    var slug = BIZ[i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-    if (slug === hash) { openModal(i); break; }
-  }
-}
 </script>
-<script>openBizFromHash();</script>
 </body>
 </html>
