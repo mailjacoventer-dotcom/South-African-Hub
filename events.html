@@ -578,7 +578,6 @@
     var card = document.querySelector('.event-card[data-id="' + hash + '"]');
     if (card) openEventDetail(card);
   }
-  setTimeout(openEventFromHash, 0);
 
 
 </script>
@@ -616,5 +615,6 @@
     </div>
   </div>
 </div>
+<script>openEventFromHash();</script>
 </body>
 </html>
