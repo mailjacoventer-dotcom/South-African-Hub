@@ -137,11 +137,6 @@
     .jm-actions { flex-direction: column; }
     .jm-meta { grid-template-columns: 1fr; }
   }
-
-  /* ── SHARE BUTTON ── */
-  .share-btn { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); color: white; border-radius: 6px; padding: 8px 16px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.15s; position: relative; z-index: 1; margin-top: 20px; }
-  .share-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.4); }
-  .share-btn svg { flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -181,10 +176,6 @@
     <div class="hero-stat"><div class="n">SA</div><div class="l">Owned businesses</div></div>
     <div class="hero-stat"><div class="n">Free</div><div class="l">To post & apply</div></div>
   </div>
-  <button class="share-btn" onclick="sharePage()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-    Share this page
-  </button>
 </div>
 
 <div class="filter-bar" id="filter-bar">
@@ -405,12 +396,29 @@
       actions += '<a class="btn-apply-email" href="mailto:' + j.email + '?subject=' + encodeURIComponent('Application: ' + j.title) + '" style="flex:1">✉️ Apply via Email</a>';
     }
     document.getElementById('jm-actions').innerHTML = actions;
+    // Share button always present
+    document.getElementById('jm-actions').innerHTML += '<button id="jm-share-btn" onclick="shareJob()" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--wire);border-radius:6px;padding:11px;font-size:13px;font-weight:700;font-family:\'Montserrat\',sans-serif;cursor:pointer;letter-spacing:0.04em;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s" onmouseover="this.style.borderColor=\'#1a5c2a\';this.style.color=\'#1a5c2a\'" onmouseout="this.style.borderColor=\'var(--wire)\';this.style.color=\'var(--navy)\'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share this job</button>';
     document.getElementById('job-detail-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
   function closeJobDetail() {
     document.getElementById('job-detail-modal').classList.remove('open');
     document.body.style.overflow = '';
+  }
+
+  function shareJob() {
+    var title = document.getElementById('jm-title').textContent;
+    var url   = window.location.href;
+    var btn   = document.getElementById('jm-share-btn');
+    if (navigator.share) {
+      navigator.share({ title: title + ' — southafricanhub.nl', url: url }).catch(function(){});
+    } else {
+      navigator.clipboard.writeText(url).then(function() {
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Link copied!';
+        setTimeout(function() { btn.innerHTML = orig; }, 2000);
+      }).catch(function() { window.prompt('Copy this link:', url); });
+    }
   }
 
   // ── POST JOB ──
@@ -503,21 +511,6 @@
 
   // Init
   renderJobs(JOBS);
-
-  function sharePage() {
-    var url   = window.location.href;
-    var title = document.title;
-    if (navigator.share) {
-      navigator.share({ title: title, url: url }).catch(function(){});
-    } else {
-      navigator.clipboard.writeText(url).then(function() {
-        var btn  = document.querySelector('.share-btn');
-        var orig = btn.innerHTML;
-        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Link copied!';
-        setTimeout(function() { btn.innerHTML = orig; }, 2000);
-      }).catch(function() { window.prompt('Copy this link:', url); });
-    }
-  }
 </script>
 </body>
 </html>

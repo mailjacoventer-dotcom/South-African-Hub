@@ -103,11 +103,6 @@
   .event-body { padding: 12px !important; }
   .event-title { font-size: 14px !important; }
 }
-
-  /* ── SHARE BUTTON ── */
-  .share-btn { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25); color: white; border-radius: 6px; padding: 8px 16px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; cursor: pointer; transition: all 0.15s; position: relative; z-index: 1; margin-top: 20px; }
-  .share-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.4); }
-  .share-btn svg { flex-shrink: 0; }
 </style>
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </head>
@@ -147,10 +142,6 @@
     <div class="hero-stat"><div class="n">2</div><div class="l">Cities</div></div>
     <div class="hero-stat"><div class="n">Free</div><div class="l">To submit</div></div>
   </div>
-  <button class="share-btn" onclick="sharePage()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-    Share this page
-  </button>
 </div>
 
 <div class="filter-bar">
@@ -562,14 +553,29 @@
   document.getElementById('event-detail-modal').addEventListener('click', function(e) { if (e.target===this) closeEventDetail(); });
   document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeRsvp(); closeEventSubmit(); closeEventDetail(); } });
 
-  function sharePage() {
+  function shareEvent() {
+    var title = document.getElementById('ed-title').textContent;
+    var url   = window.location.href;
+    var btn   = document.getElementById('ed-share-btn');
+    if (navigator.share) {
+      navigator.share({ title: title + ' — southafricanhub.nl', url: url }).catch(function(){});
+    } else {
+      navigator.clipboard.writeText(url).then(function() {
+        var orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Link copied!';
+        setTimeout(function() { btn.innerHTML = orig; }, 2000);
+      }).catch(function() { window.prompt('Copy this link:', url); });
+    }
+  }
+
+
     var url   = window.location.href;
     var title = document.title;
     if (navigator.share) {
       navigator.share({ title: title, url: url }).catch(function(){});
     } else {
       navigator.clipboard.writeText(url).then(function() {
-        var btn  = document.querySelector('.share-btn');
+        var btn  = document.getElementById('ed-share-btn');
         var orig = btn.innerHTML;
         btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Link copied!';
         setTimeout(function() { btn.innerHTML = orig; }, 2000);
@@ -604,6 +610,10 @@
       </div>
       <div id="ed-desc" style="font-size:13px;color:var(--muted);line-height:1.75;white-space:pre-line;margin-bottom:24px;max-height:200px;overflow-y:auto"></div>
       <button id="ed-cta-btn" style="width:100%;background:#c8102e;color:white;border:none;border-radius:6px;padding:13px;font-size:14px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:0.04em;transition:background .15s" onmouseover="this.style.background='#a50d26'" onmouseout="this.style.background='#c8102e'">Get Tickets →</button>
+      <button id="ed-share-btn" onclick="shareEvent()" style="width:100%;margin-top:10px;background:white;color:var(--navy);border:1.5px solid var(--wire);border-radius:6px;padding:11px;font-size:13px;font-weight:700;font-family:'Montserrat',sans-serif;cursor:pointer;letter-spacing:0.04em;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s" onmouseover="this.style.borderColor='#1a5c2a';this.style.color='#1a5c2a'" onmouseout="this.style.borderColor='var(--wire)';this.style.color='var(--navy)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share this event
+      </button>
     </div>
   </div>
 </div>
