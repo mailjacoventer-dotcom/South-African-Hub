@@ -505,6 +505,7 @@
   function openEventDetail(card) {
     var type      = card.getAttribute('data-type') || 'third-party';
     var kaartjies = card.getAttribute('data-kaartjies') || '';
+    var eventId   = card.getAttribute('data-id') || '';
     var title     = card.querySelector('.event-title').textContent;
     var tag       = card.querySelector('.event-tag') ? card.querySelector('.event-tag').textContent : '';
     var day       = card.querySelector('.day') ? card.querySelector('.day').textContent : '';
@@ -540,6 +541,7 @@
     }
 
     document.getElementById('event-detail-modal').classList.add('open');
+    document.getElementById('event-detail-modal').setAttribute('data-current-id', eventId);
     document.body.style.overflow = 'hidden';
   }
 
@@ -556,7 +558,7 @@
   function shareEvent() {
     var title   = document.getElementById('ed-title').textContent;
     var eventId = document.getElementById('event-detail-modal').getAttribute('data-current-id') || '';
-    var base    = window.location.origin + window.location.pathname.replace(/\/?$/, '');
+    var base    = window.location.origin + window.location.pathname;
     var url     = eventId ? base + '#' + eventId : base;
     var btn     = document.getElementById('ed-share-btn');
     if (navigator.share) {
@@ -570,14 +572,6 @@
     }
   }
 
-  // Store event id on modal when opened
-  var _origOpenEventDetail = openEventDetail;
-  openEventDetail = function(card) {
-    _origOpenEventDetail(card);
-    var id = card.getAttribute('data-id') || '';
-    document.getElementById('event-detail-modal').setAttribute('data-current-id', id);
-  };
-
   // Auto-open popup when URL contains a hash matching an event
   function openEventFromHash() {
     var hash = window.location.hash.replace('#', '');
@@ -585,11 +579,8 @@
     var card = document.querySelector('.event-card[data-id="' + hash + '"]');
     if (card) openEventDetail(card);
   }
-  // Try immediately (script is at bottom, DOM is ready)
-  // and also on load in case of any late rendering
   openEventFromHash();
   window.addEventListener('load', openEventFromHash);
-
 
 </script>
 
