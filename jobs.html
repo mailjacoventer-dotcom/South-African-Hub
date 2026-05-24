@@ -337,7 +337,7 @@
       var idx = JOBS.indexOf(j);
       var waHref = j.wa ? 'https://wa.me/' + j.wa.replace(/[^0-9]/g,'') + '?text=' + encodeURIComponent('Hi, I\'m interested in the ' + j.title + ' position at ' + j.company + ' listed on southafricanhub.nl') : '';
       var emailHref = j.email ? 'mailto:' + j.email + '?subject=' + encodeURIComponent('Application: ' + j.title + ' at ' + j.company) : '';
-      html += '<div class="job-card" onclick="openJobDetail(' + idx + ')">' +
+      html += '<div class="job-card" data-id="job-' + idx + '" onclick="openJobDetail(' + idx + ')">' +
         '<div class="job-card-top">' +
           '<div class="job-icon">' + (j.icon || '💼') + '</div>' +
           '<div><div class="job-company">' + j.company + '</div><div class="job-title">' + j.title + '</div></div>' +
@@ -399,6 +399,7 @@
     // Share button always present
     document.getElementById('jm-actions').innerHTML += '<button id="jm-share-btn" onclick="shareJob()" style="flex:1;background:white;color:var(--navy);border:1.5px solid var(--wire);border-radius:6px;padding:11px;font-size:13px;font-weight:700;font-family:\'Montserrat\',sans-serif;cursor:pointer;letter-spacing:0.04em;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s" onmouseover="this.style.borderColor=\'#1a5c2a\';this.style.color=\'#1a5c2a\'" onmouseout="this.style.borderColor=\'var(--wire)\';this.style.color=\'var(--navy)\'"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share this job</button>';
     document.getElementById('job-detail-modal').classList.add('open');
+    document.getElementById('job-detail-modal').setAttribute('data-current-id', 'job-' + idx);
     document.body.style.overflow = 'hidden';
   }
   function closeJobDetail() {
@@ -407,9 +408,11 @@
   }
 
   function shareJob() {
-    var title = document.getElementById('jm-title').textContent;
-    var url   = window.location.href;
-    var btn   = document.getElementById('jm-share-btn');
+    var title  = document.getElementById('jm-title').textContent;
+    var jobId  = document.getElementById('job-detail-modal').getAttribute('data-current-id') || '';
+    var base   = window.location.origin + window.location.pathname;
+    var url    = jobId ? base + '#' + jobId : base;
+    var btn    = document.getElementById('jm-share-btn');
     if (navigator.share) {
       navigator.share({ title: title + ' — southafricanhub.nl', url: url }).catch(function(){});
     } else {
@@ -511,6 +514,17 @@
 
   // Init
   renderJobs(JOBS);
+  function openJobFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    var card = document.querySelector('.job-card[data-id="' + hash + '"]');
+    if (card) {
+      var idx = parseInt(hash.replace('job-', ''));
+      if (!isNaN(idx)) openJobDetail(idx);
+    }
+  }
+
 </script>
+<script>openJobFromHash();</script>
 </body>
 </html>

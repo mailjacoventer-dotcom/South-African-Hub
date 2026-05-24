@@ -249,7 +249,7 @@
   <div class="listings-grid" id="listings-grid">
 
     <!-- REAL LISTING: Electric desk and ergonomic chair -->
-    <div class="listing-card" data-type="sale" data-cat="Furniture">
+    <div class="listing-card" data-id="electric-desk-chair" data-type="sale" data-cat="Furniture">
       <div class="card-img-carousel" id="carousel-desk">
         <img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779366249/WhatsApp_Image_2026-05-21_at_14.12.38_viq1yq.jpg" alt="Electric desk and ergonomic chair" class="active">
         <img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779366248/WhatsApp_Image_2026-05-21_at_14.12.38_2_rqzhwv.jpg" alt="Electric desk and ergonomic chair">
@@ -419,6 +419,7 @@
     typeBadgeEl.style.cssText = 'font-size:11px;font-family:Montserrat,sans-serif;font-weight:700;padding:3px 9px;border-radius:3px;text-transform:uppercase;letter-spacing:0.06em;' + (isFree ? 'background:#e8f4ec;color:#1a5c2a' : 'background:#fef3c7;color:#92400e');
 
     document.getElementById('listing-modal').classList.add('open');
+    document.getElementById('listing-modal').setAttribute('data-current-id', card.getAttribute('data-id') || '');
     document.body.style.overflow = 'hidden';
   }
 
@@ -473,9 +474,11 @@
   });
 
   function shareItem() {
-    var title = document.getElementById('lm-title').textContent;
-    var url   = window.location.href;
-    var btn   = document.getElementById('lm-share-btn');
+    var title   = document.getElementById('lm-title').textContent;
+    var itemId  = document.getElementById('listing-modal').getAttribute('data-current-id') || '';
+    var base    = window.location.origin + window.location.pathname;
+    var url     = itemId ? base + '#' + itemId : base;
+    var btn     = document.getElementById('lm-share-btn');
     if (navigator.share) {
       navigator.share({ title: title + ' — southafricanhub.nl', url: url }).catch(function(){});
     } else {
@@ -486,6 +489,13 @@
       }).catch(function() { window.prompt('Copy this link:', url); });
     }
   }
+  function openListingFromHash() {
+    var hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    var card = document.querySelector('.listing-card[data-id="' + hash + '"]');
+    if (card) openListingModal(card);
+  }
+
 </script>
 
 <!-- LISTING DETAIL POPUP -->
@@ -522,5 +532,6 @@
     </div>
   </div>
 </div>
+<script>openListingFromHash();</script>
 </body>
 </html>
