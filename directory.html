@@ -625,18 +625,8 @@ document.getElementById("f-submit").addEventListener("click", async function() {
 });
 
   // ── INITIAL RENDER ──
-  document.addEventListener("DOMContentLoaded", function() {
-    renderCards(BIZ);
-    renderCityGrid("all");
-    // Auto-open business from shared URL hash
-    var hash = window.location.hash.replace('#', '');
-    if (hash) {
-      for (var i = 0; i < BIZ.length; i++) {
-        var slug = BIZ[i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-        if (slug === hash) { openModal(i); break; }
-      }
-    }
-  });
+  renderCards(BIZ);
+  renderCityGrid("all");
 
   // ── AUTO-FILTER FROM URL PARAM ──
   (function() {
@@ -661,6 +651,15 @@ document.getElementById("f-submit").addEventListener("click", async function() {
       }
     }
   })();
+</script>
+<script>
+  var _hash = window.location.hash.replace('#', '');
+  if (_hash) {
+    for (var _i = 0; _i < BIZ.length; _i++) {
+      var _slug = BIZ[_i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      if (_slug === _hash) { openModal(_i); break; }
+    }
+  }
 </script>
 </body>
 </html>
