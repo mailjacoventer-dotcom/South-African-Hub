@@ -162,7 +162,7 @@
   <div class="section-divider">May 2026</div>
   <div class="events-grid">
 
-    <div class="event-card" data-type="own" data-kaartjies="https://kaartjies.nl/country-is-for-me/" data-organiser="wian@marketingzoo.net">
+    <div class="event-card" data-type="own" data-id="netherlands-goes-nashville" data-kaartjies="https://kaartjies.nl/country-is-for-me/" data-organiser="wian@marketingzoo.net">
       <div class="event-banner" onclick="openEventDetail(this.closest('.event-card'))" style="cursor:pointer">
         <img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779364295/CIFM_1_popeix.jpg" alt="Netherlands Goes Nashville" class="loaded" style="object-position:top">
         <div class="event-banner-hover"><span>🎟️ Get Tickets</span></div>
@@ -190,7 +190,7 @@
   <div class="section-divider" style="margin-top:40px">June 2026</div>
   <div class="events-grid">
 
-    <div class="event-card" data-type="own" data-kaartjies="https://www.kikkoandkoast.nl/event-details-registration/blooms-brunch-floral-centerpiece-workshop" data-organiser="hello@kikkoandkoast.nl">
+    <div class="event-card" data-type="own" data-id="blooms-and-brunch" data-kaartjies="https://www.kikkoandkoast.nl/event-details-registration/blooms-brunch-floral-centerpiece-workshop" data-organiser="hello@kikkoandkoast.nl">
       <div class="event-banner" onclick="openEventDetail(this.closest('.event-card'))" style="cursor:pointer">
         <img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779653542/kikko-and-koast-blooms-and-brunch-floral-centrepiece-workshop-7-june-2026_banner_1_n2oamo.png" alt="Blooms & Brunch" class="loaded">
         <div class="event-banner-hover"><span>🎟️ Get Tickets</span></div>
@@ -505,6 +505,7 @@
   function openEventDetail(card) {
     var type      = card.getAttribute('data-type') || 'third-party';
     var kaartjies = card.getAttribute('data-kaartjies') || '';
+    var eventId   = card.getAttribute('data-id') || '';
     var title     = card.querySelector('.event-title').textContent;
     var tag       = card.querySelector('.event-tag') ? card.querySelector('.event-tag').textContent : '';
     var day       = card.querySelector('.day') ? card.querySelector('.day').textContent : '';
@@ -540,6 +541,7 @@
     }
 
     document.getElementById('event-detail-modal').classList.add('open');
+    document.getElementById('event-detail-modal').setAttribute('data-current-id', eventId);
     document.body.style.overflow = 'hidden';
   }
 
@@ -553,10 +555,20 @@
   document.getElementById('event-detail-modal').addEventListener('click', function(e) { if (e.target===this) closeEventDetail(); });
   document.addEventListener('keydown', function(e) { if (e.key==='Escape') { closeRsvp(); closeEventSubmit(); closeEventDetail(); } });
 
+  // Auto-open event from shared URL hash
+  (function() {
+    var hash = window.location.hash.replace('#', '');
+    if (!hash) return;
+    var card = document.querySelector('.event-card[data-id="' + hash + '"]');
+    if (card) { setTimeout(function() { openEventDetail(card); }, 300); }
+  })();
+
   function shareEvent() {
-    var title = document.getElementById('ed-title').textContent;
-    var url   = window.location.href;
-    var btn   = document.getElementById('ed-share-btn');
+    var title   = document.getElementById('ed-title').textContent;
+    var eventId = document.getElementById('event-detail-modal').getAttribute('data-current-id') || '';
+    var base    = window.location.href.split('#')[0].split('?')[0];
+    var url     = eventId ? base + '#' + eventId : base;
+    var btn     = document.getElementById('ed-share-btn');
     if (navigator.share) {
       navigator.share({ title: title + ' — southafricanhub.nl', url: url }).catch(function(){});
     } else {
