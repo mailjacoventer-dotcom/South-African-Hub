@@ -402,9 +402,11 @@ document.getElementById("modal").onclick = function(e) { if (e.target === this) 
 document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeModal(); });
 
 function shareBusiness() {
-  var name = document.getElementById('m-name').textContent;
-  var url  = window.location.href;
-  var btn  = document.getElementById('dir-share-btn');
+  var name  = document.getElementById('m-name').textContent;
+  var bizId = document.getElementById('modal').getAttribute('data-current-id') || '';
+  var base  = window.location.origin + window.location.pathname;
+  var url   = bizId ? base + '#' + bizId : base;
+  var btn   = document.getElementById('dir-share-btn');
   if (navigator.share) {
     navigator.share({ title: name + ' — southafricanhub.nl', url: url }).catch(function(){});
   } else {
