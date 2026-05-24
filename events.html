@@ -579,12 +579,16 @@
   };
 
   // Auto-open popup when URL contains a hash matching an event
-  document.addEventListener('DOMContentLoaded', function() {
+  function openEventFromHash() {
     var hash = window.location.hash.replace('#', '');
     if (!hash) return;
     var card = document.querySelector('.event-card[data-id="' + hash + '"]');
     if (card) openEventDetail(card);
-  });
+  }
+  // Try immediately (script is at bottom, DOM is ready)
+  // and also on load in case of any late rendering
+  openEventFromHash();
+  window.addEventListener('load', openEventFromHash);
 
 
 </script>
