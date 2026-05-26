@@ -1,0 +1,42 @@
+name: Create Approval Issue
+
+on:
+  repository_dispatch:
+    types: [directory-submission, markplaats-submission, event-submission]
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create approval issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PAT_TOKEN }}
+          script: |
+            const payload = context.payload.client_payload;
+            const formType = context.payload.action;
+
+            const typeLabels = {
+              'directory-submission': '📋 directory',
+              'markplaats-submission': '🛒 markplaats',
+              'event-submission': '📅 event',
+            };
+
+            const typeLabel = typeLabels[formType] || formType;
+
+            let body = `## New ${typeLabel} submission\n\n`;
+            body += `> Add the \`approve\` label to publish, or \`reject\` label to discard.\n\n`;
+            body += `### Details\n\n`;
+            body += '```json\n' + JSON.stringify(payload, null, 2) + '\n```\n\n';
+            body += `<!-- PAYLOAD:${Buffer.from(JSON.stringify(payload)).toString('base64')} -->\n`;
+            body += `<!-- FORM_TYPE:${formType} -->\n`;
+
+            const title = payload.business_name || payload.item || payload.event_name || 'New submission';
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[${typeLabel}] ${title}`,
+              body: body,
+              labels: ['pending'],
+            });
