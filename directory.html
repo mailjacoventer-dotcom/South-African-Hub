@@ -750,13 +750,17 @@ document.getElementById("f-submit").addEventListener("click", async function() {
   })();
 </script>
 <script>
-  var _hash = window.location.hash.replace('#', '');
-  if (_hash) {
-    for (var _i = 0; _i < BIZ.length; _i++) {
-      var _slug = BIZ[_i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-      if (_slug === _hash) { openModal(_i); break; }
+  function openBizFromHash() {
+    var _hash = window.location.hash.replace('#', '');
+    if (_hash) {
+      for (var _i = 0; _i < BIZ.length; _i++) {
+        var _slug = BIZ[_i].name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+        if (_slug === _hash) { openModal(_i); break; }
+      }
     }
   }
+  openBizFromHash();
+  window.addEventListener('hashchange', openBizFromHash);
 </script>
 </body>
 </html>
