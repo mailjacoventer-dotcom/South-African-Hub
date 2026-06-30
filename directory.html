@@ -243,6 +243,9 @@
     <div class="biz-grid" id="biz-grid">
     <!-- Cards rendered by JS -->
     </div>
+    <div id="load-more-wrap" style="text-align:center;margin-top:32px;display:none">
+      <button id="load-more-btn" onclick="loadMoreCards()" style="background:var(--navy);color:white;border:none;border-radius:6px;padding:13px 32px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.04em;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#1a3a5c'" onmouseout="this.style.background='var(--navy)'">Show More Businesses ↓</button>
+    </div>
   </div>
 
   <!-- CITY VIEW -->
@@ -478,10 +481,27 @@ function shareBusiness() {
 }
 
 /* ── RENDER CARDS FROM BIZ ARRAY ── */
+var PAGE_SIZE = 24;
+var currentList = BIZ;
+var visibleCount = PAGE_SIZE;
+
 function renderCards(list) {
+  currentList = list;
+  visibleCount = PAGE_SIZE;
+  renderVisibleCards();
+}
+
+function loadMoreCards() {
+  visibleCount += PAGE_SIZE;
+  renderVisibleCards();
+}
+
+function renderVisibleCards() {
   var grid = document.getElementById("biz-grid");
   grid.innerHTML = "";
-  list.forEach(function(b) {
+  var list = currentList;
+  var slice = list.slice(0, visibleCount);
+  slice.forEach(function(b) {
     var idx = BIZ.indexOf(b);
     var card = document.createElement("div");
     card.className = "biz-card" + (b.featured ? " biz-card-featured" : "");
@@ -570,6 +590,15 @@ function renderCards(list) {
     grid.appendChild(card);
   });
   document.getElementById("result-num").textContent = list.length;
+
+  var wrap = document.getElementById("load-more-wrap");
+  var btn = document.getElementById("load-more-btn");
+  if (list.length > visibleCount) {
+    wrap.style.display = "block";
+    btn.textContent = "Show More Businesses (" + (list.length - visibleCount) + " left) ↓";
+  } else {
+    wrap.style.display = "none";
+  }
 }
 
 
