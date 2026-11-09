@@ -748,6 +748,33 @@
   body:not(:has(.carousel-slide)) .home-events-empty { display: block; }
   body:not(:has(.carousel-slide)) .carousel-outer, body:not(:has(.carousel-slide)) .carousel-dots { display: none; }
   body:not(:has(.mp-card-preview)) .home-mp-empty { display: block; }
+
+  /* Business of the Week */
+  .botw-section { padding: 40px 48px; background: #f4f6fa; border-top: 1px solid #dde1e8; }
+  .botw-card { position: relative; max-width: 960px; margin: 0 auto; background: #0d1f3c; border-radius: 14px; padding: 48px 40px 36px; overflow: hidden; box-shadow: 0 10px 32px rgba(13,31,60,0.18); }
+  .botw-card::before { content: ''; position: absolute; right: -60px; top: -60px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(240,165,0,0.22) 0%, transparent 70%); pointer-events: none; }
+  .botw-ribbon { position: absolute; top: 0; left: 40px; background: #f0a500; color: #0d1f3c; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 7px 14px; border-radius: 0 0 8px 8px; }
+  .botw-main { position: relative; display: flex; gap: 28px; align-items: center; }
+  .botw-icon { flex: 0 0 auto; width: 88px; height: 88px; border-radius: 18px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 44px; }
+  .botw-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .botw-cat { background: #1a5c2a; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 4px 9px; border-radius: 4px; }
+  .botw-city { color: rgba(255,255,255,0.65); font-size: 13px; }
+  .botw-name { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 900; color: #fff; line-height: 1.15; margin: 0 0 8px; }
+  .botw-desc { color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.7; margin: 0 0 20px; max-width: 560px; }
+  .botw-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .botw-btn { display: inline-block; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-decoration: none; padding: 11px 20px; border-radius: 6px; transition: background .15s, border-color .15s; }
+  .botw-btn-primary { background: #f0a500; color: #0d1f3c; }
+  .botw-btn-primary:hover { background: #ffb81f; }
+  .botw-btn-ghost { border: 1.5px solid rgba(255,255,255,0.35); color: #fff; }
+  .botw-btn-ghost:hover { border-color: #fff; }
+  @media (max-width: 768px) {
+    .botw-section { padding: 28px 16px; }
+    .botw-card { padding: 52px 22px 26px; }
+    .botw-ribbon { left: 22px; }
+    .botw-main { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .botw-icon { width: 68px; height: 68px; font-size: 34px; border-radius: 14px; }
+    .botw-name { font-size: 22px; }
+  }
 </style>
 </head>
 <body>
@@ -871,6 +898,22 @@
 </div>
 
 <!-- FEATURED BUSINESS -->
+<!-- BUSINESS OF THE WEEK -->
+<section class="botw-section" id="business-of-the-week">
+  <div class="botw-card">
+    <div class="botw-ribbon">⭐ Business of the Week</div>
+    <div class="botw-main">
+      <div class="botw-icon" aria-hidden="true">🛒</div>
+      <div class="botw-body">
+        <div class="botw-meta"><span class="botw-cat">Food &amp; Retail</span><span class="botw-city">📍 Utrecht</span></div>
+        <h2 class="botw-name">The Lekker Store</h2>
+        <p class="botw-desc">Online and in-store South African food products and treats in the Netherlands</p>
+        <div class="botw-actions"><a class="botw-btn botw-btn-primary" href="https://www.thelekkerstore.nl/" target="_blank" rel="noopener">Visit website →</a><a class="botw-btn botw-btn-ghost" href="directory.html?q=The%20Lekker%20Store">See in directory</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- EVENTS CAROUSEL -->
 <section class="events-section">
   <div class="section-header">
