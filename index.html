@@ -741,6 +741,13 @@
   .discord-section-inner { flex-direction: column !important; }
   .discord-section-inner iframe { width: 100% !important; }
 }
+
+  /* Empty states: shown only when a page has no cards (pure CSS, so the add-* automation can keep appending cards) */
+  .empty-note { display: none; text-align: center; padding: 56px 20px; color: var(--muted, #64748b); font-size: 14px; line-height: 1.6; }
+  .empty-note strong { display: block; font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 800; color: var(--navy, #0d1f3c); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .02em; }
+  body:not(:has(.carousel-slide)) .home-events-empty { display: block; }
+  body:not(:has(.carousel-slide)) .carousel-outer, body:not(:has(.carousel-slide)) .carousel-dots { display: none; }
+  body:not(:has(.mp-card-preview)) .home-mp-empty { display: block; }
 </style>
 </head>
 <body>
@@ -871,43 +878,10 @@
     <a href="events.html" class="view-all-link">View all events →</a>
   </div>
 
+  <div class="empty-note home-events-empty"><strong>No upcoming events yet</strong>New community events will show up here.</div>
   <div class="carousel-outer">
     <div class="carousel-track-wrap">
       <div class="carousel-track" id="carouselTrack">
-
-        <!-- NickleBlack -->
-        <a href="events.html#nickleblack-jo-black-refentse" class="carousel-slide">
-          <div class="slide-banner" id="banner-1" style="background-image:url('https://res.cloudinary.com/dqawhi00g/image/upload/v1780345924/Nickleblack_mzkw9i.png');background-size:cover;background-position:center"></div>
-          <div class="slide-overlay"></div>
-          <div class="slide-content">
-            <span class="slide-tag community">Live Music</span>
-            <div class="slide-date-row">
-              <div class="slide-date-block"><div class="day">12</div><div class="month">Jul</div></div>
-              <div class="slide-date-sep"></div>
-              <div class="slide-city">Amsterdam</div>
-            </div>
-            <div class="slide-title">NickleBlack — Jo Black & Refentse</div>
-            <div class="slide-meta">'t Zonnehuis · Doors 12:00 · Show 13:00–15:30 · Limited tickets</div>
-            <span class="slide-cta">Get Tickets →</span>
-          </div>
-        </a>
-
-        <!-- Trots Afrikaans 2026 -->
-        <a href="events.html#trots-afrikaans-2026" class="carousel-slide">
-          <div class="slide-banner" id="banner-2" style="background-image:url('https://res.cloudinary.com/dqawhi00g/image/upload/v1780346016/Trots_Afrikaans_n4d3rq.png');background-size:cover;background-position:center"></div>
-          <div class="slide-overlay"></div>
-          <div class="slide-content">
-            <span class="slide-tag community">Live Music</span>
-            <div class="slide-date-row">
-              <div class="slide-date-block"><div class="day">30</div><div class="month">Oct</div></div>
-              <div class="slide-date-sep"></div>
-              <div class="slide-city">Veenendaal</div>
-            </div>
-            <div class="slide-title">Trots Afrikaans 2026 — Bok van Blerk · Appel · Dodo</div>
-            <div class="slide-meta">De Basiliek · Doors 18:00 · Show 19:00–22:00 · Limited seats</div>
-            <span class="slide-cta">Get Tickets →</span>
-          </div>
-        </a>
 
       </div>
     </div>
@@ -946,19 +920,9 @@
     <div><div class="section-eyebrow">Markplaats</div><div class="section-title">Help each other settle in</div><p class="section-sub" style="margin-top:6px;">Free & affordable items from the SA community — for newly arriving families.</p></div>
     <a href="markplaats.html" class="view-all-link">Browse all listings →</a>
   </div>
+  <div class="empty-note home-mp-empty"><strong>No listings yet</strong>Post an item to help a fellow South African settle in.</div>
   <div class="mp-grid-preview">
-    <a href="markplaats.html" class="mp-card-preview">
-      <div class="mp-img" style="padding:0;overflow:hidden"><img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779366249/WhatsApp_Image_2026-05-21_at_14.12.38_viq1yq.jpg" alt="Electric desk" style="width:100%;height:100%;object-fit:cover"><span class="mp-badge sale">For Sale</span></div>
-      <div class="mp-body-preview"><div class="mp-title-preview">Electric desk &amp; ergonomic chair</div><div class="mp-footer-preview"><span class="mp-price">€250</span><span class="mp-city-preview">📍 Almere</span></div></div>
-    </a>
-    <a href="markplaats.html#dish-fruit-bowl" class="mp-card-preview">
-      <div class="mp-img" style="padding:0;overflow:hidden"><img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779821690/1000048297_c4wtqn.jpg" alt="Dish / Fruit Bowl" style="width:100%;height:100%;object-fit:cover"><span class="mp-badge sale">For Sale</span></div>
-      <div class="mp-body-preview"><div class="mp-title-preview">Dish / Fruit Bowl</div><div class="mp-footer-preview"><span class="mp-price">€25</span><span class="mp-city-preview">📍 Leusden</span></div></div>
-    </a>
-    <a href="markplaats.html#fridge-freezer" class="mp-card-preview">
-      <div class="mp-img" style="padding:0;overflow:hidden"><img src="https://res.cloudinary.com/dqawhi00g/image/upload/v1779888407/1000042409_grqmw1.jpg" alt="Liebherr Fridge/Freezer" style="width:100%;height:100%;object-fit:cover"><span class="mp-badge free">Free</span></div>
-      <div class="mp-body-preview"><div class="mp-title-preview">Liebherr Fridge/Freezer</div><div class="mp-footer-preview"><span class="mp-price" style="color:var(--green)">Free</span><span class="mp-city-preview">📍 Lelystad</span></div></div>
-    </a>
+
   </div>
 </section>
 
@@ -1079,6 +1043,18 @@
 </footer>
 
 <script>
+  // ── FORMSPREE HELPER (used by the newsletter and business listing forms) ──
+  async function sendToFormspree(id, data) {
+    try {
+      const res = await fetch('https://formspree.io/f/' + id, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return res.ok;
+    } catch (e) { return false; }
+  }
+
   // ── NEWSLETTER SIGNUP ──
   async function submitSignup() {
     const first = document.getElementById('signup-first').value.trim();
@@ -1185,6 +1161,7 @@
   }
 
   function goTo(idx) {
+    if (!_slideCount) return;
     _current = (idx + _slideCount) % _slideCount;
     _carouselTrack.style.transform = 'translateX(-' + (_current * 100) + '%)';
     document.querySelectorAll('.carousel-dot').forEach(function(d, i) {
